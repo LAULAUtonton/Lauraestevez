@@ -24,7 +24,7 @@ body{
   color:var(--text);
 }
 .app{
-  max-width:860px;
+  max-width:900px;
   margin:auto;
   padding:12px;
   display:flex;
@@ -39,9 +39,23 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  gap:12px;
 }
 .title{font-size:1.4rem;font-weight:900}
 .subtitle{font-size:0.95rem;color:#bae6fd}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+}
+.stat{
+  background:white;
+  border-radius:10px;
+  padding:10px;
+  text-align:center;
+  font-weight:900;
+}
+.stat small{display:block;font-weight:700;color:#64748b}
 .game{
   background:var(--card);
   border-radius:16px;
@@ -51,11 +65,7 @@ body{
   flex-direction:column;
   gap:12px;
 }
-.badge{
-  text-align:center;
-  font-weight:900;
-  color:var(--surface);
-}
+.badge{text-align:center;font-weight:900;color:var(--surface)}
 .sentence{
   background:white;
   border:3px solid var(--accent);
@@ -65,36 +75,31 @@ body{
   font-weight:900;
   text-align:center;
 }
-.words,.choices{
-  display:flex;
-  flex-wrap:wrap;
+.choices{
+  display:grid;
+  grid-template-columns:1fr 1fr;
   gap:10px;
-  justify-content:center;
-}
-.word-btn{
-  padding:10px 14px;
-  border-radius:10px;
-  border:2px solid var(--accent);
-  background:white;
-  font-weight:800;
-  cursor:pointer;
 }
 .choice{
-  flex:1 1 45%;
   background:var(--accent);
   color:white;
   padding:14px;
   border-radius:12px;
   font-weight:900;
   cursor:pointer;
-}
-.feedback{
   text-align:center;
-  font-size:1.2rem;
-  font-weight:900;
 }
+.choice:hover{background:var(--accent-dark)}
+.feedback{text-align:center;font-size:1.2rem;font-weight:900}
 .ok{color:var(--good)}
 .no{color:var(--bad)}
+.leaderboard{
+  background:white;
+  border-radius:14px;
+  padding:12px;
+}
+.leaderboard h3{text-align:center;margin-bottom:6px}
+.leaderboard li{font-weight:800;margin:4px 0}
 </style>
 </head>
 
@@ -106,78 +111,254 @@ body{
     <div class="title">🕰️ Past Tense Mastery</div>
     <div class="subtitle">Past Simple · Past Continuous · There was / were</div>
   </div>
+  <input id="nameInput" placeholder="Your name"
+    style="padding:8px;border-radius:8px;border:none;font-weight:800">
+</div>
+
+<div class="stats">
+  <div class="stat"><small>Streak</small><span id="streak">0</span></div>
+  <div class="stat"><small>Mistakes</small><span id="mistakes">0</span></div>
+  <div class="stat"><small>Time</small><span id="time">00:00</span></div>
+  <div class="stat"><small>Best</small><span id="best">0</span></div>
 </div>
 
 <div class="game">
-  <div class="badge" id="type">Ready</div>
+  <div class="badge">Pick the tense</div>
   <div class="sentence" id="sentence"></div>
-  <div class="words" id="words"></div>
   <div class="choices" id="choices"></div>
   <div class="feedback" id="feedback"></div>
+</div>
+
+<div class="leaderboard">
+  <h3>🏆 Class Leaderboard</h3>
+  <ol id="ranking"></ol>
 </div>
 
 </div>
 
 <script>
+/* ================= CONFIG ================= */
+const SHEET_URL="https://script.google.com/macros/s/AKfycbz7-wab54ASbX5JFkk3vfLxgiX6c1Le9YI7ze-ZTwiTnBU-e4Ek37gOEiVzqEsq1SYL/exec";
+const SECRET="SECRET_KEY";
+const GOAL=25;
+
+/* ================= STATE ================= */
+let streak=0,best=0,mistakes=0,start=Date.now(),timer=null;
+
+/* ================= BANK (135) ================= */
 const BANK=[
-{t:"I watched TV last night.",f:"ps",s:"aff",m:"finished"},
-{t:"Did you watch TV last night?",f:"ps",s:"int",m:"finished"},
-{t:"I didn't watch TV last night.",f:"ps",s:"neg",m:"finished"},
 
-{t:"She was studying when I arrived.",f:"pc",s:"aff",m:"background"},
-{t:"Was she studying when you arrived?",f:"pc",s:"int",m:"background"},
-{t:"She wasn't studying when I arrived.",f:"pc",s:"neg",m:"background"},
+/* -------- PAST SIMPLE (45) -------- */
+{t:"I watched TV last night.",f:"ps"},{t:"We visited our grandparents yesterday.",f:"ps"},
+{t:"She finished her homework after dinner.",f:"ps"},{t:"They played football after school.",f:"ps"},
+{t:"He studied for the exam last night.",f:"ps"},{t:"I woke up early yesterday.",f:"ps"},
+{t:"We had an English test last Friday.",f:"ps"},{t:"She wrote a message two hours ago.",f:"ps"},
+{t:"They arrived late yesterday.",f:"ps"},{t:"I cleaned my room last night.",f:"ps"},
+{t:"He bought a new phone last week.",f:"ps"},{t:"We watched a movie at the weekend.",f:"ps"},
+{t:"She called her friend yesterday afternoon.",f:"ps"},{t:"They ate lunch at home.",f:"ps"},
+{t:"I lost my keys yesterday.",f:"ps"},
 
-{t:"There was a cat in the garden yesterday.",f:"tw",s:"aff",m:"existence"},
-{t:"Was there a cat in the garden yesterday?",f:"tw",s:"int",m:"existence"},
-{t:"There wasn't a cat in the garden yesterday.",f:"tw",s:"neg",m:"existence"},
+{t:"I didn't watch TV yesterday.",f:"ps"},{t:"We didn't go to school on Monday.",f:"ps"},
+{t:"She didn't like the movie.",f:"ps"},{t:"They didn't understand the instructions.",f:"ps"},
+{t:"He didn't bring his homework.",f:"ps"},{t:"I didn't remember the answer.",f:"ps"},
+{t:"We didn't have class yesterday.",f:"ps"},{t:"She didn't finish the exercise.",f:"ps"},
+{t:"They didn't play football.",f:"ps"},{t:"He didn't study last night.",f:"ps"},
+{t:"I didn't hear the teacher.",f:"ps"},{t:"We didn't watch the video.",f:"ps"},
+{t:"She didn't arrive on time.",f:"ps"},{t:"They didn't eat lunch at school.",f:"ps"},
+{t:"He didn't pass the test.",f:"ps"},
 
-{t:"They were playing football at 6 p.m.",f:"pc",s:"aff",m:"progress"},
-{t:"Were they playing football at 6 p.m.?",f:"pc",s:"int",m:"progress"},
-{t:"They weren't playing football at 6 p.m.",f:"pc",s:"neg",m:"progress"}
+{t:"Did you watch TV last night?",f:"ps"},{t:"Did they visit their grandparents?",f:"ps"},
+{t:"Did she finish her homework?",f:"ps"},{t:"Did he study for the exam?",f:"ps"},
+{t:"Did we have English yesterday?",f:"ps"},{t:"Did you see the teacher?",f:"ps"},
+{t:"Did they arrive on time?",f:"ps"},{t:"Did she write a message?",f:"ps"},
+{t:"Did he buy a new phone?",f:"ps"},{t:"Did you lose your keys?",f:"ps"},
+{t:"Did we watch a movie?",f:"ps"},{t:"Did she call her friend?",f:"ps"},
+{t:"Did they play football?",f:"ps"},{t:"Did he clean his room?",f:"ps"},
+{t:"Did you wake up early?",f:"ps"},
+
+/* -------- PAST CONTINUOUS (45) -------- */
+{t:"I was studying when the teacher arrived.",f:"pc"},
+{t:"She was sleeping when the phone rang.",f:"pc"},
+{t:"They were playing football at 6 p.m.",f:"pc"},
+{t:"We were having dinner at 7 o’clock.",f:"pc"},
+{t:"He was talking to his friend at that moment.",f:"pc"},
+{t:"I was listening to music when my mother called.",f:"pc"},
+{t:"She was writing an email at that moment.",f:"pc"},
+{t:"They were waiting for the bus at 5 p.m.",f:"pc"},
+{t:"We were working in groups when the teacher entered.",f:"pc"},
+{t:"He was playing video games at 8 p.m.",f:"pc"},
+{t:"I was thinking about the answer when you asked.",f:"pc"},
+{t:"She was talking to the teacher at that moment.",f:"pc"},
+{t:"They were watching TV at 9 o’clock.",f:"pc"},
+{t:"We were doing the exercise when the bell rang.",f:"pc"},
+{t:"He was walking home when it started to rain.",f:"pc"},
+
+{t:"I wasn't studying when the teacher arrived.",f:"pc"},
+{t:"She wasn't sleeping when the phone rang.",f:"pc"},
+{t:"They weren't playing football at 6 p.m.",f:"pc"},
+{t:"We weren't having dinner at 7 o’clock.",f:"pc"},
+{t:"He wasn't talking to his friend at that moment.",f:"pc"},
+{t:"I wasn't listening to music when my mother called.",f:"pc"},
+{t:"She wasn't writing an email at that moment.",f:"pc"},
+{t:"They weren't waiting for the bus at 5 p.m.",f:"pc"},
+{t:"We weren't working in groups when the teacher entered.",f:"pc"},
+{t:"He wasn't playing video games at 8 p.m.",f:"pc"},
+{t:"I wasn't thinking about the answer when you asked.",f:"pc"},
+{t:"She wasn't talking to the teacher at that moment.",f:"pc"},
+{t:"They weren't watching TV at 9 o’clock.",f:"pc"},
+{t:"We weren't doing the exercise when the bell rang.",f:"pc"},
+{t:"He wasn't walking home when it started to rain.",f:"pc"},
+
+{t:"Were you studying when the teacher arrived?",f:"pc"},
+{t:"Was she sleeping when the phone rang?",f:"pc"},
+{t:"Were they playing football at 6 p.m.?",f:"pc"},
+{t:"Were we having dinner at 7 o’clock?",f:"pc"},
+{t:"Was he talking to his friend at that moment?",f:"pc"},
+{t:"Were you listening to music when your mother called?",f:"pc"},
+{t:"Was she writing an email at that moment?",f:"pc"},
+{t:"Were they waiting for the bus at 5 p.m.?",f:"pc"},
+{t:"Were we working in groups when the teacher entered?",f:"pc"},
+{t:"Was he playing video games at 8 p.m.?",f:"pc"},
+{t:"Were you thinking about the answer when I asked?",f:"pc"},
+{t:"Was she talking to the teacher at that moment?",f:"pc"},
+{t:"Were they watching TV at 9 o’clock?",f:"pc"},
+{t:"Were we doing the exercise when the bell rang?",f:"pc"},
+{t:"Was he walking home when it started to rain?",f:"pc"},
+
+/* -------- THERE WAS / WERE (45) -------- */
+{t:"There was a test last Friday.",f:"tw"},
+{t:"There were many students in class.",f:"tw"},
+{t:"There was a problem with the computer.",f:"tw"},
+{t:"There were two exams last week.",f:"tw"},
+{t:"There was a teacher in the room.",f:"tw"},
+{t:"There were some chairs in the hall.",f:"tw"},
+{t:"There was a message for you.",f:"tw"},
+{t:"There were no students yesterday.",f:"tw"},
+{t:"There was an accident on the road.",f:"tw"},
+{t:"There were many mistakes in the test.",f:"tw"},
+{t:"There was a lot of noise in class.",f:"tw"},
+{t:"There were some books on the table.",f:"tw"},
+{t:"There was a party last night.",f:"tw"},
+{t:"There were many people at the event.",f:"tw"},
+{t:"There was a new student in class.",f:"tw"},
+
+{t:"There wasn't any homework yesterday.",f:"tw"},
+{t:"There weren't many people at the party.",f:"tw"},
+{t:"There wasn't a bus this morning.",f:"tw"},
+{t:"There weren't enough chairs.",f:"tw"},
+{t:"There wasn't a test yesterday.",f:"tw"},
+{t:"There weren't any students outside.",f:"tw"},
+{t:"There wasn't any noise in class.",f:"tw"},
+{t:"There weren't any messages for you.",f:"tw"},
+{t:"There wasn't a problem with the homework.",f:"tw"},
+{t:"There weren't any books on the desk.",f:"tw"},
+{t:"There wasn't a party last night.",f:"tw"},
+{t:"There weren't many cars on the road.",f:"tw"},
+{t:"There wasn't any food left.",f:"tw"},
+{t:"There weren't enough computers.",f:"tw"},
+{t:"There wasn't a teacher in the room.",f:"tw"},
+
+{t:"Was there a test last Friday?",f:"tw"},
+{t:"Were there many students in class?",f:"tw"},
+{t:"Was there a problem with the computer?",f:"tw"},
+{t:"Were there two exams last week?",f:"tw"},
+{t:"Was there a teacher in the room?",f:"tw"},
+{t:"Were there any chairs in the hall?",f:"tw"},
+{t:"Was there a message for you?",f:"tw"},
+{t:"Were there any students yesterday?",f:"tw"},
+{t:"Was there an accident on the road?",f:"tw"},
+{t:"Were there many mistakes in the test?",f:"tw"},
+{t:"Was there a lot of noise in class?",f:"tw"},
+{t:"Were there any books on the table?",f:"tw"},
+{t:"Was there a party last night?",f:"tw"},
+{t:"Were there many people at the event?",f:"tw"},
+{t:"Was there a new student in class?",f:"tw"}
 ];
 
-const TENSES={
-ps:"Past Simple",
-pc:"Past Continuous",
-tw:"There was / were"
-};
+/* ================= LOGIC ================= */
+const TENSES={ps:"Past Simple",pc:"Past Continuous",tw:"There was / were"};
+const $=id=>document.getElementById(id);
 
-let curQ=null;
-
-function pick(){
-  curQ=BANK[Math.floor(Math.random()*BANK.length)];
-  document.getElementById("sentence").textContent=curQ.t;
-  document.getElementById("type").textContent="Pick the tense";
-  renderChoices();
+function startGame(){
+  start=Date.now();
+  timer=setInterval(updateTime,1000);
+  next();
 }
 
-function renderChoices(){
-  const box=document.getElementById("choices");
-  box.innerHTML="";
+function next(){
+  const q=BANK[Math.floor(Math.random()*BANK.length)];
+  $("sentence").textContent=q.t;
+  $("choices").innerHTML="";
+  $("feedback").textContent="";
   Object.entries(TENSES).forEach(([k,v])=>{
     const b=document.createElement("div");
     b.className="choice";
     b.textContent=v;
-    b.onclick=()=>grade(k===curQ.f);
-    box.appendChild(b);
+    b.onclick=()=>check(k===q.f);
+    $("choices").appendChild(b);
   });
 }
 
-function grade(ok){
-  const f=document.getElementById("feedback");
+function check(ok){
   if(ok){
-    f.textContent="Correct!";
-    f.className="feedback ok";
+    streak++; best=Math.max(best,streak);
+    $("feedback").textContent="Correct!";
+    $("feedback").className="feedback ok";
   }else{
-    f.textContent="Wrong!";
-    f.className="feedback no";
+    streak=0; mistakes++;
+    $("feedback").textContent="Wrong!";
+    $("feedback").className="feedback no";
   }
-  setTimeout(pick,900);
+  updateStats();
+  if(best>=GOAL) endGame();
+  else setTimeout(next,700);
 }
 
-pick();
+function updateStats(){
+  $("streak").textContent=streak;
+  $("mistakes").textContent=mistakes;
+  $("best").textContent=best;
+}
+
+function updateTime(){
+  const s=Math.floor((Date.now()-start)/1000);
+  $("time").textContent=
+    String(Math.floor(s/60)).padStart(2,"0")+":"+
+    String(s%60).padStart(2,"0");
+}
+
+function endGame(){
+  clearInterval(timer);
+  fetch(SHEET_URL,{
+    method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      secret:SECRET,
+      name:$("nameInput").value||"Anonymous",
+      score:best,
+      time_s:Math.floor((Date.now()-start)/1000),
+      mistakes:mistakes,
+      activity:"WIN",
+      user_agent:navigator.userAgent
+    })
+  });
+}
+
+function loadLeaderboard(){
+  fetch(SHEET_URL)
+    .then(r=>r.json())
+    .then(d=>{
+      $("ranking").innerHTML="";
+      d.forEach(r=>{
+        const li=document.createElement("li");
+        li.textContent=`${r.name} — ${r.score}`;
+        $("ranking").appendChild(li);
+      });
+    });
+}
+
+startGame();
+loadLeaderboard();
+setInterval(loadLeaderboard,5000);
 </script>
 </body>
 </html>
-
