@@ -1,1 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Past Tense Mastery</title>
+
+<style>
+:root{
+  --bg:#0ea5e9;
+  --surface:#1e3a8a;
+  --card:#e0f2fe;
+  --accent:#38bdf8;
+  --accent-dark:#0284c7;
+  --good:#22c55e;
+  --bad:#ef4444;
+  --text:#0f172a;
+  --white:#ffffff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Nunito',system-ui;
+  background:var(--bg);
+  color:var(--text);
+}
+.app{
+  max-width:860px;
+  margin:auto;
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.header{
+  background:var(--surface);
+  color:white;
+  padding:14px;
+  border-radius:14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.title{font-size:1.4rem;font-weight:900}
+.subtitle{font-size:0.95rem;color:#bae6fd}
+.game{
+  background:var(--card);
+  border-radius:16px;
+  padding:16px;
+  min-height:320px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.badge{
+  text-align:center;
+  font-weight:900;
+  color:var(--surface);
+}
+.sentence{
+  background:white;
+  border:3px solid var(--accent);
+  border-radius:12px;
+  padding:16px;
+  font-size:1.3rem;
+  font-weight:900;
+  text-align:center;
+}
+.words,.choices{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:center;
+}
+.word-btn{
+  padding:10px 14px;
+  border-radius:10px;
+  border:2px solid var(--accent);
+  background:white;
+  font-weight:800;
+  cursor:pointer;
+}
+.choice{
+  flex:1 1 45%;
+  background:var(--accent);
+  color:white;
+  padding:14px;
+  border-radius:12px;
+  font-weight:900;
+  cursor:pointer;
+}
+.feedback{
+  text-align:center;
+  font-size:1.2rem;
+  font-weight:900;
+}
+.ok{color:var(--good)}
+.no{color:var(--bad)}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<div class="header">
+  <div>
+    <div class="title">🕰️ Past Tense Mastery</div>
+    <div class="subtitle">Past Simple · Past Continuous · There was / were</div>
+  </div>
+</div>
+
+<div class="game">
+  <div class="badge" id="type">Ready</div>
+  <div class="sentence" id="sentence"></div>
+  <div class="words" id="words"></div>
+  <div class="choices" id="choices"></div>
+  <div class="feedback" id="feedback"></div>
+</div>
+
+</div>
+
+<script>
+const BANK=[
+{t:"I watched TV last night.",f:"ps",s:"aff",m:"finished"},
+{t:"Did you watch TV last night?",f:"ps",s:"int",m:"finished"},
+{t:"I didn't watch TV last night.",f:"ps",s:"neg",m:"finished"},
+
+{t:"She was studying when I arrived.",f:"pc",s:"aff",m:"background"},
+{t:"Was she studying when you arrived?",f:"pc",s:"int",m:"background"},
+{t:"She wasn't studying when I arrived.",f:"pc",s:"neg",m:"background"},
+
+{t:"There was a cat in the garden yesterday.",f:"tw",s:"aff",m:"existence"},
+{t:"Was there a cat in the garden yesterday?",f:"tw",s:"int",m:"existence"},
+{t:"There wasn't a cat in the garden yesterday.",f:"tw",s:"neg",m:"existence"},
+
+{t:"They were playing football at 6 p.m.",f:"pc",s:"aff",m:"progress"},
+{t:"Were they playing football at 6 p.m.?",f:"pc",s:"int",m:"progress"},
+{t:"They weren't playing football at 6 p.m.",f:"pc",s:"neg",m:"progress"}
+];
+
+const TENSES={
+ps:"Past Simple",
+pc:"Past Continuous",
+tw:"There was / were"
+};
+
+let curQ=null;
+
+function pick(){
+  curQ=BANK[Math.floor(Math.random()*BANK.length)];
+  document.getElementById("sentence").textContent=curQ.t;
+  document.getElementById("type").textContent="Pick the tense";
+  renderChoices();
+}
+
+function renderChoices(){
+  const box=document.getElementById("choices");
+  box.innerHTML="";
+  Object.entries(TENSES).forEach(([k,v])=>{
+    const b=document.createElement("div");
+    b.className="choice";
+    b.textContent=v;
+    b.onclick=()=>grade(k===curQ.f);
+    box.appendChild(b);
+  });
+}
+
+function grade(ok){
+  const f=document.getElementById("feedback");
+  if(ok){
+    f.textContent="Correct!";
+    f.className="feedback ok";
+  }else{
+    f.textContent="Wrong!";
+    f.className="feedback no";
+  }
+  setTimeout(pick,900);
+}
+
+pick();
+</script>
+</body>
+</html>
 
