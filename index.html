@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Grammar Arena · Multi-System</title>
+<title>Grammar Arena · Fixed</title>
 
 <style>
 :root{
@@ -13,10 +13,10 @@
   --orange:#fb923c;
   --purple:#a855f7;
   --yellow:#facc15;
+  --teal:#14b8a6;
   --bg:#f8fafc;
   --dark:#0f172a;
   --white:#ffffff;
-  --gray:#64748b;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -29,7 +29,7 @@ body{
 }
 
 .app{
-  max-width:1200px;
+  max-width:1100px;
   margin:auto;
   padding:18px;
   display:flex;
@@ -38,9 +38,9 @@ body{
 }
 
 .header{
-  background:var(--blue);
+  background:var(--purple);
   color:white;
-  padding:20px;
+  padding:22px;
   border-radius:18px;
   display:flex;
   justify-content:space-between;
@@ -48,43 +48,20 @@ body{
 }
 
 .title{font-size:2rem;font-weight:900}
-.subtitle{font-size:1rem;opacity:.9}
-
-.controls{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
-
-select,input,button{
-  padding:10px 14px;
-  border-radius:12px;
-  border:none;
-  font-size:1rem;
-  font-weight:800;
-}
-
-button{cursor:pointer}
-
-.music{background:var(--purple);color:white}
-.mode{background:var(--yellow)}
-.teacher{background:var(--orange);color:white}
 
 .stats{
   display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:12px;
+  grid-template-columns:repeat(6,1fr);
+  gap:14px;
 }
 
 .stat{
   background:var(--white);
   padding:14px;
-  border-radius:14px;
+  border-radius:16px;
   text-align:center;
   font-weight:900;
 }
-
-.stat small{display:block;color:var(--gray)}
 
 .game{
   background:#e0f2fe;
@@ -104,6 +81,19 @@ button{cursor:pointer}
   font-weight:900;
   text-align:center;
 }
+
+.mode-tag{
+  text-align:center;
+  font-weight:900;
+  font-size:1.1rem;
+  color:white;
+  padding:6px 12px;
+  border-radius:12px;
+  width:fit-content;
+  margin:auto;
+}
+.mode-choose{background:var(--blue)}
+.mode-order{background:var(--teal)}
 
 .choices{
   display:grid;
@@ -144,7 +134,7 @@ button{cursor:pointer}
 .answer-box{
   min-height:60px;
   background:var(--white);
-  border:3px dashed var(--blue);
+  border:3px dashed var(--teal);
   border-radius:16px;
   display:flex;
   justify-content:center;
@@ -154,14 +144,27 @@ button{cursor:pointer}
   font-size:1.3rem;
 }
 
-.feedback{
-  text-align:center;
-  font-size:1.4rem;
+.check-btn{
+  background:var(--teal);
+  color:white;
+  padding:12px;
+  border-radius:14px;
   font-weight:900;
+  text-align:center;
+  cursor:pointer;
 }
 
-.ok{color:var(--green)}
-.no{color:var(--pink)}
+.feedback{
+  text-align:center;
+  font-size:1.5rem;
+  font-weight:900;
+  padding:10px;
+  border-radius:14px;
+}
+
+.ok{background:#dcfce7;color:#166534}
+.no{background:#fee2e2;color:#991b1b}
+
 .hidden{display:none}
 </style>
 </head>
@@ -171,182 +174,32 @@ button{cursor:pointer}
 <div class="app">
 
 <div class="header">
-  <div>
-    <div class="title">Grammar Arena</div>
-    <div class="subtitle">Multi-System Pedagogical Engine</div>
-  </div>
-  <div class="controls">
-    <input id="nameInput" placeholder="Name">
-    <select id="systemSelect">
-      <option value="be">Be & There Be</option>
-    </select>
-    <button class="music" onclick="toggleMusic()">🎵</button>
-    <button class="mode" onclick="toggleMode()" id="modeBtn">Student</button>
-    <button class="teacher" onclick="openTeacher()">Teacher</button>
-  </div>
+  <div class="title">Grammar Arena</div>
 </div>
 
 <div class="stats">
-  <div class="stat"><small>Score</small><span id="score">0</span></div>
-  <div class="stat"><small>Streak</small><span id="streak">0</span></div>
-  <div class="stat"><small>Mistakes</small><span id="mistakes">0</span></div>
-  <div class="stat"><small>Best</small><span id="best">0</span></div>
-  <div class="stat"><small>Time</small><span id="time">00:00</span></div>
-  <div class="stat"><small>Mode</small><span id="modeShow">Student</span></div>
-  <div class="stat"><small>System</small>Be</div>
+  <div class="stat">Score<br><span id="score">0</span></div>
+  <div class="stat">Streak<br><span id="streak">0</span></div>
+  <div class="stat">Mistakes<br><span id="mistakes">0</span></div>
+  <div class="stat">Best<br><span id="best">0</span></div>
+  <div class="stat">Time<br><span id="time">00:00</span></div>
+  <div class="stat">Mode<br><span id="modeShow">Choose</span></div>
 </div>
 
 <div class="game">
   <div class="sentence" id="sentence"></div>
+  <div class="mode-tag" id="modeTag"></div>
 
   <div class="choices hidden" id="choices"></div>
+
   <div class="answer-box hidden" id="answerBox"></div>
   <div class="wordbank hidden" id="wordbank"></div>
+  <div class="check-btn hidden" id="checkBtn">CHECK</div>
 
-  <div class="feedback" id="feedback"></div>
+  <div class="feedback hidden" id="feedback"></div>
 </div>
 
 </div>
-
-<audio id="bgm" loop src="audio/bgm.mp3"></audio>
-<audio id="okSound" src="audio/correct.mp3"></audio>
-<audio id="noSound" src="audio/wrong.mp3"></audio>
 
 <script>
-const TEACHER_PIN="1234";
-
-const bgm=document.getElementById("bgm");
-const okSound=document.getElementById("okSound");
-const noSound=document.getElementById("noSound");
-
-let musicOn=false, mode="student";
-let score=0,streak=0,best=0,mistakes=0;
-let start=Date.now(),current=null,successRun=0,errorRun=0;
-
-/* ===== SYSTEMS ===== */
-const SYSTEMS={
-  be:{
-    bank:[
-      {t:"Yesterday, ____ a test at school.",a:"there was",exp:"Past + singular"},
-      {t:"Last night, ____ two exams.",a:"there were",exp:"Plural past"},
-      {t:"Right now, ____ two teachers here.",a:"there are",exp:"Present"},
-      {t:"I ____ tired yesterday.",a:"was",exp:"Past of be"},
-      {t:"Yesterday, ____ any homework.",a:"there wasn't",exp:"Negative past"},
-      {t:"We ____ interested in the film.",a:"weren't",exp:"Plural negative"}
-    ],
-    options:[
-      "there is","there are","there was","there were",
-      "there wasn't","there weren't","was","were","wasn't","weren't"
-    ]
-  }
-};
-
-function toggleMusic(){
-  bgm.volume=.25;
-  musicOn?bgm.pause():bgm.play().catch(()=>{});
-  musicOn=!musicOn;
-}
-
-function toggleMode(){
-  mode=mode==="student"?"projector":"student";
-  modeBtn.textContent=mode==="student"?"Student":"Projector";
-  modeShow.textContent=mode.charAt(0).toUpperCase()+mode.slice(1);
-  document.body.style.fontSize=mode==="projector"?"26px":"20px";
-}
-
-function openTeacher(){
-  if(prompt("Teacher PIN")!==TEACHER_PIN) return;
-  exportCSV();
-}
-
-function next(){
-  const sys=SYSTEMS.be;
-  current=sys.bank[Math.floor(Math.random()*sys.bank.length)];
-  sentence.textContent=current.t;
-  feedback.textContent="";
-  answerBox.textContent="";
-  choices.classList.add("hidden");
-  wordbank.classList.add("hidden");
-  answerBox.classList.add("hidden");
-
-  const modeQ=(errorRun>=2)?"choose":(successRun>=3?"order":Math.random()<.5?"choose":"order");
-  modeQ==="choose"?renderChoose(sys):renderOrder(sys);
-}
-
-function renderChoose(sys){
-  choices.classList.remove("hidden");
-  choices.innerHTML="";
-  const opts=[current.a,...shuffle(sys.options.filter(x=>x!==current.a)).slice(0,2)];
-  shuffle(opts).forEach((o,i)=>{
-    const b=document.createElement("div");
-    b.className="choice c"+(i+1);
-    b.textContent=o;
-    b.onclick=()=>check(o);
-    choices.appendChild(b);
-  });
-}
-
-function renderOrder(sys){
-  wordbank.classList.remove("hidden");
-  answerBox.classList.remove("hidden");
-  shuffle(current.a.split(" ")).forEach(w=>{
-    const s=document.createElement("div");
-    s.className="word";
-    s.textContent=w;
-    s.onclick=()=>answerBox.textContent+=(answerBox.textContent?" ":"")+w;
-    wordbank.appendChild(s);
-  });
-  answerBox.onclick=()=>check(answerBox.textContent);
-}
-
-function check(val){
-  if(val===current.a){
-    okSound.play().catch(()=>{});
-    successRun++; errorRun=0;
-    streak++; best=Math.max(best,streak); score+=10;
-    feedback.textContent="✔ "+current.exp;
-    feedback.className="feedback ok";
-  }else{
-    noSound.play().catch(()=>{});
-    errorRun++; successRun=0;
-    streak=0; mistakes++;
-    feedback.textContent="✘ "+current.exp;
-    feedback.className="feedback no";
-  }
-  updateStats();
-  setTimeout(next,1200);
-}
-
-function updateStats(){
-  scoreEl.textContent=score;
-  streakEl.textContent=streak;
-  bestEl.textContent=best;
-  mistakesEl.textContent=mistakes;
-}
-
-function exportCSV(){
-  const name=nameInput.value||"Student";
-  const time=timeEl.textContent;
-  const row=`${name},Be & There Be,${score},${mistakes},${time}\n`;
-  const blob=new Blob([`Name,System,Score,Mistakes,Time\n${row}`],{type:"text/csv"});
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  a.download="grammar_results.csv";
-  a.click();
-}
-
-function updateTime(){
-  const s=Math.floor((Date.now()-start)/1000);
-  timeEl.textContent=
-    String(Math.floor(s/60)).padStart(2,"0")+":"+
-    String(s%60).padStart(2,"0");
-}
-
-function shuffle(a){return [...a].sort(()=>Math.random()-0.5);}
-
-setInterval(updateTime,1000);
-next();
-</script>
-
-</body>
-</html>
+let score=0,streak=0,best=0,mistake
