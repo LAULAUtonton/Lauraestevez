@@ -3,31 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Was / Were & There Be – Mastery</title>
+<title>Grammar Arena · Multi-System</title>
 
 <style>
 :root{
-  --blue:#2563eb;
+  --blue:#3b82f6;
+  --pink:#ec4899;
   --green:#22c55e;
-  --coral:#fb7185;
-  --yellow:#fde047;
-  --light:#f8fafc;
+  --orange:#fb923c;
+  --purple:#a855f7;
+  --yellow:#facc15;
+  --bg:#f8fafc;
   --dark:#0f172a;
-  --gray:#64748b;
   --white:#ffffff;
+  --gray:#64748b;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
 
 body{
   font-family:'Nunito',system-ui;
-  background:var(--light);
+  background:var(--bg);
   color:var(--dark);
   font-size:20px;
 }
 
 .app{
-  max-width:1100px;
+  max-width:1200px;
   margin:auto;
   padding:18px;
   display:flex;
@@ -38,7 +40,7 @@ body{
 .header{
   background:var(--blue);
   color:white;
-  padding:22px;
+  padding:20px;
   border-radius:18px;
   display:flex;
   justify-content:space-between;
@@ -46,47 +48,38 @@ body{
 }
 
 .title{font-size:2rem;font-weight:900}
-.subtitle{font-size:1.2rem;opacity:.9}
+.subtitle{font-size:1rem;opacity:.9}
 
-.controls-top{
+.controls{
   display:flex;
-  gap:10px;
-  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
 }
 
-input{
+select,input,button{
   padding:10px 14px;
   border-radius:12px;
   border:none;
-  font-size:1.1rem;
+  font-size:1rem;
   font-weight:800;
 }
 
-button{
-  padding:10px 16px;
-  border-radius:12px;
-  border:none;
-  font-size:1.1rem;
-  font-weight:900;
-  cursor:pointer;
-}
+button{cursor:pointer}
 
-button.blue{background:var(--blue);color:white}
-button.green{background:var(--green);color:white}
-button.coral{background:var(--coral);color:white}
-button.yellow{background:var(--yellow);color:var(--dark)}
-button.gray{background:#e5e7eb}
+.music{background:var(--purple);color:white}
+.mode{background:var(--yellow)}
+.teacher{background:var(--orange);color:white}
 
 .stats{
   display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:14px;
+  grid-template-columns:repeat(7,1fr);
+  gap:12px;
 }
 
 .stat{
   background:var(--white);
-  padding:16px;
-  border-radius:16px;
+  padding:14px;
+  border-radius:14px;
   text-align:center;
   font-weight:900;
 }
@@ -94,7 +87,7 @@ button.gray{background:#e5e7eb}
 .stat small{display:block;color:var(--gray)}
 
 .game{
-  background:#dbeafe;
+  background:#e0f2fe;
   border-radius:22px;
   padding:26px;
   display:flex;
@@ -104,10 +97,10 @@ button.gray{background:#e5e7eb}
 
 .sentence{
   background:var(--white);
-  border:5px solid var(--yellow);
+  border:4px solid var(--yellow);
   border-radius:22px;
-  padding:28px;
-  font-size:1.8rem;
+  padding:30px;
+  font-size:2rem;
   font-weight:900;
   text-align:center;
 }
@@ -128,17 +121,48 @@ button.gray{background:#e5e7eb}
   cursor:pointer;
 }
 
-.choice.be{background:var(--green)}
-.choice.tw{background:var(--coral)}
+.c1{background:var(--green)}
+.c2{background:var(--pink)}
+.c3{background:var(--orange)}
+
+.wordbank{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+.word{
+  background:var(--purple);
+  color:white;
+  padding:14px 18px;
+  border-radius:16px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.answer-box{
+  min-height:60px;
+  background:var(--white);
+  border:3px dashed var(--blue);
+  border-radius:16px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  font-weight:900;
+  font-size:1.3rem;
+}
 
 .feedback{
   text-align:center;
-  font-size:1.6rem;
+  font-size:1.4rem;
   font-weight:900;
 }
 
 .ok{color:var(--green)}
-.no{color:var(--coral)}
+.no{color:var(--pink)}
+.hidden{display:none}
 </style>
 </head>
 
@@ -148,135 +172,177 @@ button.gray{background:#e5e7eb}
 
 <div class="header">
   <div>
-    <div class="title">Was / Were & There Be</div>
-    <div class="subtitle">A2 · Grammar Game</div>
+    <div class="title">Grammar Arena</div>
+    <div class="subtitle">Multi-System Pedagogical Engine</div>
   </div>
-  <div class="controls-top">
+  <div class="controls">
     <input id="nameInput" placeholder="Name">
-    <button class="gray" onclick="toggleMusic()">🎵</button>
-    <button class="yellow" onclick="toggleLevel()" id="levelBtn">Easy</button>
+    <select id="systemSelect">
+      <option value="be">Be & There Be</option>
+    </select>
+    <button class="music" onclick="toggleMusic()">🎵</button>
+    <button class="mode" onclick="toggleMode()" id="modeBtn">Student</button>
+    <button class="teacher" onclick="openTeacher()">Teacher</button>
   </div>
 </div>
 
 <div class="stats">
+  <div class="stat"><small>Score</small><span id="score">0</span></div>
   <div class="stat"><small>Streak</small><span id="streak">0</span></div>
   <div class="stat"><small>Mistakes</small><span id="mistakes">0</span></div>
   <div class="stat"><small>Best</small><span id="best">0</span></div>
   <div class="stat"><small>Time</small><span id="time">00:00</span></div>
-  <div class="stat"><small>Level</small><span id="levelShow">Easy</span></div>
+  <div class="stat"><small>Mode</small><span id="modeShow">Student</span></div>
+  <div class="stat"><small>System</small>Be</div>
 </div>
 
 <div class="game">
   <div class="sentence" id="sentence"></div>
-  <div class="choices" id="choices"></div>
+
+  <div class="choices hidden" id="choices"></div>
+  <div class="answer-box hidden" id="answerBox"></div>
+  <div class="wordbank hidden" id="wordbank"></div>
+
   <div class="feedback" id="feedback"></div>
 </div>
 
 </div>
 
-<audio id="bgm" loop src="audio/koala3.mp3"></audio>
-<audio id="winSound" src="audio/tadaa.mp3"></audio>
+<audio id="bgm" loop src="audio/bgm.mp3"></audio>
+<audio id="okSound" src="audio/correct.mp3"></audio>
+<audio id="noSound" src="audio/wrong.mp3"></audio>
 
 <script>
-/* ================= AUDIO ================= */
+const TEACHER_PIN="1234";
+
 const bgm=document.getElementById("bgm");
-const winSound=document.getElementById("winSound");
-let musicOn=false;
+const okSound=document.getElementById("okSound");
+const noSound=document.getElementById("noSound");
 
-/* ================= STATE ================= */
-let streak=0,best=0,mistakes=0,start=Date.now();
-let level="easy";
-let current=null;
+let musicOn=false, mode="student";
+let score=0,streak=0,best=0,mistakes=0;
+let start=Date.now(),current=null,successRun=0,errorRun=0;
 
-/* ================= BANK ================= */
-const BANK = [
-  { t:"Yesterday, ____ a test at school.", a:"there was", lvl:"easy" },
-  { t:"Last night, ____ two exams.", a:"there were", lvl:"easy" },
-  { t:"Right now, ____ two teachers in the room.", a:"there are", lvl:"easy" },
-  { t:"At the moment, ____ a bus outside.", a:"there is", lvl:"easy" },
-  { t:"I ____ very tired yesterday.", a:"was", lvl:"easy" },
-  { t:"They ____ late to school.", a:"were", lvl:"easy" },
+/* ===== SYSTEMS ===== */
+const SYSTEMS={
+  be:{
+    bank:[
+      {t:"Yesterday, ____ a test at school.",a:"there was",exp:"Past + singular"},
+      {t:"Last night, ____ two exams.",a:"there were",exp:"Plural past"},
+      {t:"Right now, ____ two teachers here.",a:"there are",exp:"Present"},
+      {t:"I ____ tired yesterday.",a:"was",exp:"Past of be"},
+      {t:"Yesterday, ____ any homework.",a:"there wasn't",exp:"Negative past"},
+      {t:"We ____ interested in the film.",a:"weren't",exp:"Plural negative"}
+    ],
+    options:[
+      "there is","there are","there was","there were",
+      "there wasn't","there weren't","was","were","wasn't","weren't"
+    ]
+  }
+};
 
-  { t:"Yesterday, ____ any homework.", a:"there wasn't", lvl:"hard" },
-  { t:"Last week, ____ enough chairs.", a:"there weren't", lvl:"hard" },
-  { t:"____ there a test yesterday?", a:"Was", lvl:"hard" },
-  { t:"____ there many students in class?", a:"Were", lvl:"hard" },
-  { t:"I ____ ready for the exam.", a:"wasn't", lvl:"hard" },
-  { t:"We ____ interested in the film.", a:"weren't", lvl:"hard" }
-];
-
-const ALL_CHOICES = [
-  "there is","there are","there was","there were",
-  "there isn't","there aren't","there wasn't","there weren't",
-  "was","were","wasn't","weren't","Was","Were"
-];
-
-/* ================= LOGIC ================= */
 function toggleMusic(){
   bgm.volume=.25;
   musicOn?bgm.pause():bgm.play().catch(()=>{});
   musicOn=!musicOn;
 }
 
-function toggleLevel(){
-  level=level==="easy"?"hard":"easy";
-  document.getElementById("levelBtn").textContent =
-    level==="easy"?"Easy":"Hard";
-  document.getElementById("levelShow").textContent =
-    level.charAt(0).toUpperCase()+level.slice(1);
+function toggleMode(){
+  mode=mode==="student"?"projector":"student";
+  modeBtn.textContent=mode==="student"?"Student":"Projector";
+  modeShow.textContent=mode.charAt(0).toUpperCase()+mode.slice(1);
+  document.body.style.fontSize=mode==="projector"?"26px":"20px";
+}
+
+function openTeacher(){
+  if(prompt("Teacher PIN")!==TEACHER_PIN) return;
+  exportCSV();
 }
 
 function next(){
-  const pool = BANK.filter(q => q.lvl === level);
-  current = pool[Math.floor(Math.random()*pool.length)];
-  document.getElementById("sentence").textContent = current.t;
-  document.getElementById("feedback").textContent = "";
+  const sys=SYSTEMS.be;
+  current=sys.bank[Math.floor(Math.random()*sys.bank.length)];
+  sentence.textContent=current.t;
+  feedback.textContent="";
+  answerBox.textContent="";
+  choices.classList.add("hidden");
+  wordbank.classList.add("hidden");
+  answerBox.classList.add("hidden");
 
-  const options = shuffle([
-    current.a,
-    ...shuffle(ALL_CHOICES.filter(x=>x!==current.a)).slice(0,2)
-  ]);
+  const modeQ=(errorRun>=2)?"choose":(successRun>=3?"order":Math.random()<.5?"choose":"order");
+  modeQ==="choose"?renderChoose(sys):renderOrder(sys);
+}
 
-  const box = document.getElementById("choices");
-  box.innerHTML="";
-
-  options.forEach(o=>{
+function renderChoose(sys){
+  choices.classList.remove("hidden");
+  choices.innerHTML="";
+  const opts=[current.a,...shuffle(sys.options.filter(x=>x!==current.a)).slice(0,2)];
+  shuffle(opts).forEach((o,i)=>{
     const b=document.createElement("div");
-    b.className="choice be";
+    b.className="choice c"+(i+1);
     b.textContent=o;
-    b.onclick=()=>answer(o);
-    box.appendChild(b);
+    b.onclick=()=>check(o);
+    choices.appendChild(b);
   });
 }
 
-function answer(choice){
-  if(choice===current.a){
-    streak++; best=Math.max(best,streak);
-    document.getElementById("feedback").textContent="Correct!";
-    document.getElementById("feedback").className="feedback ok";
+function renderOrder(sys){
+  wordbank.classList.remove("hidden");
+  answerBox.classList.remove("hidden");
+  shuffle(current.a.split(" ")).forEach(w=>{
+    const s=document.createElement("div");
+    s.className="word";
+    s.textContent=w;
+    s.onclick=()=>answerBox.textContent+=(answerBox.textContent?" ":"")+w;
+    wordbank.appendChild(s);
+  });
+  answerBox.onclick=()=>check(answerBox.textContent);
+}
+
+function check(val){
+  if(val===current.a){
+    okSound.play().catch(()=>{});
+    successRun++; errorRun=0;
+    streak++; best=Math.max(best,streak); score+=10;
+    feedback.textContent="✔ "+current.exp;
+    feedback.className="feedback ok";
   }else{
+    noSound.play().catch(()=>{});
+    errorRun++; successRun=0;
     streak=0; mistakes++;
-    document.getElementById("feedback").textContent="Wrong!";
-    document.getElementById("feedback").className="feedback no";
+    feedback.textContent="✘ "+current.exp;
+    feedback.className="feedback no";
   }
+  updateStats();
+  setTimeout(next,1200);
+}
 
-  document.getElementById("streak").textContent=streak;
-  document.getElementById("mistakes").textContent=mistakes;
-  document.getElementById("best").textContent=best;
+function updateStats(){
+  scoreEl.textContent=score;
+  streakEl.textContent=streak;
+  bestEl.textContent=best;
+  mistakesEl.textContent=mistakes;
+}
 
-  setTimeout(next,800);
+function exportCSV(){
+  const name=nameInput.value||"Student";
+  const time=timeEl.textContent;
+  const row=`${name},Be & There Be,${score},${mistakes},${time}\n`;
+  const blob=new Blob([`Name,System,Score,Mistakes,Time\n${row}`],{type:"text/csv"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="grammar_results.csv";
+  a.click();
 }
 
 function updateTime(){
   const s=Math.floor((Date.now()-start)/1000);
-  document.getElementById("time").textContent=
+  timeEl.textContent=
     String(Math.floor(s/60)).padStart(2,"0")+":"+
     String(s%60).padStart(2,"0");
 }
 
-function shuffle(a){
-  return [...a].sort(()=>Math.random()-0.5);
-}
+function shuffle(a){return [...a].sort(()=>Math.random()-0.5);}
 
 setInterval(updateTime,1000);
 next();
