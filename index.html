@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Grammar Arena</title>
+<title>Be & There Be – Grammar Arena</title>
 
 <style>
 :root{
@@ -18,10 +18,7 @@
   --dark:#0f172a;
   --white:#ffffff;
 }
-
-/* RESET */
 *{box-sizing:border-box;margin:0;padding:0}
-
 body{
   font-family:system-ui;
   background:var(--bg);
@@ -33,74 +30,62 @@ body{
 .screen{
   min-height:100svh;
   display:flex;
-  align-items:center;
   justify-content:center;
+  align-items:center;
   padding:16px;
 }
 .hidden{display:none}
 
-/* ---------- START SCREEN ---------- */
+/* ---------- START ---------- */
 .start-card{
   background:var(--white);
+  max-width:620px;
   width:100%;
-  max-width:520px;
-  padding:clamp(18px,4vw,32px);
+  padding:clamp(20px,4vw,32px);
   border-radius:24px;
   display:flex;
   flex-direction:column;
-  gap:clamp(14px,3vw,22px);
+  gap:20px;
 }
-
 .start-title{
   text-align:center;
-  font-size:clamp(1.6rem,6vw,2.2rem);
+  font-size:clamp(1.8rem,6vw,2.4rem);
   font-weight:900;
   color:var(--purple);
 }
-
 .instructions{
   background:var(--yellow);
   border-radius:18px;
   padding:18px;
   font-weight:700;
-  line-height:1.4;
 }
-
-.instructions ul{
-  margin-top:8px;
-  padding-left:18px;
-}
-
+.instructions ul{margin-top:8px;padding-left:18px}
 .name-input{
   width:100%;
   padding:14px;
   border-radius:16px;
   border:3px solid var(--purple);
-  font-size:1.05rem;
   font-weight:800;
 }
-
 .start-btn{
-  width:100%;
   padding:16px;
   border-radius:18px;
   background:var(--purple);
   color:white;
-  font-size:1.2rem;
   font-weight:900;
+  font-size:1.2rem;
   text-align:center;
   cursor:pointer;
 }
 
 /* ---------- GAME ---------- */
 .app{
-  max-width:1050px;
+  max-width:1200px;
   width:100%;
   display:flex;
   flex-direction:column;
   gap:18px;
 }
-
 .header{
   background:var(--purple);
   color:white;
@@ -111,13 +96,11 @@ body{
   align-items:center;
   font-weight:900;
 }
-
 .stats{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(110px,1fr));
   gap:12px;
 }
-
 .stat{
   background:var(--white);
   padding:12px;
@@ -125,7 +108,6 @@ body{
   text-align:center;
   font-weight:900;
 }
-
 .game{
   background:#e0f2fe;
   padding:22px;
@@ -134,7 +116,6 @@ body{
   flex-direction:column;
   gap:16px;
 }
-
 .sentence{
   background:var(--white);
   border:4px solid var(--yellow);
@@ -144,25 +125,22 @@ body{
   font-weight:900;
   text-align:center;
 }
-
-/* activity label (informative, not selectable) */
 .activity-label{
   align-self:center;
   padding:6px 14px;
   border-radius:14px;
   color:white;
   font-weight:900;
-  font-size:0.9rem;
+  font-size:.85rem;
 }
 .choose{background:var(--blue)}
 .order{background:var(--teal)}
 
 .choices{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
   gap:14px;
 }
-
 .choice{
   padding:18px;
   border-radius:16px;
@@ -174,6 +152,7 @@ body{
 .c1{background:var(--green)}
 .c2{background:var(--pink)}
 .c3{background:var(--orange)}
+.c4{background:var(--purple)}
 
 .wordbank{
   display:flex;
@@ -181,7 +160,6 @@ body{
   justify-content:center;
   flex-wrap:wrap;
 }
-
 .word{
   background:var(--purple);
   color:white;
@@ -190,9 +168,8 @@ body{
   font-weight:900;
   cursor:pointer;
 }
-
 .answer{
-  min-height:54px;
+  min-height:56px;
   background:var(--white);
   border:3px dashed var(--teal);
   border-radius:14px;
@@ -201,7 +178,6 @@ body{
   align-items:center;
   font-weight:900;
 }
-
 .check{
   background:var(--teal);
   color:white;
@@ -211,7 +187,6 @@ body{
   text-align:center;
   cursor:pointer;
 }
-
 .feedback{
   text-align:center;
   font-weight:900;
@@ -226,27 +201,24 @@ body{
 
 <body>
 
-<!-- START SCREEN -->
+<!-- START -->
 <div class="screen" id="startScreen">
   <div class="start-card">
-    <div class="start-title">Grammar Arena</div>
-
+    <div class="start-title">Be & There Be</div>
     <div class="instructions">
       <b>How to play:</b>
       <ul>
-        <li>Complete the sentence correctly.</li>
-        <li>The activity type changes automatically.</li>
-        <li>Focus and read carefully.</li>
+        <li>Complete or build the sentence correctly.</li>
+        <li>Pay attention to time, number and question words.</li>
+        <li>Activities change automatically.</li>
       </ul>
     </div>
-
     <input id="playerName" class="name-input" placeholder="Enter your name">
-
-    <div class="start-btn" onclick="startGame()">START GAME</div>
+    <div class="start-btn" onclick="startGame()">START</div>
   </div>
 </div>
 
-<!-- GAME SCREEN -->
+<!-- GAME -->
 <div class="screen hidden" id="gameScreen">
   <div class="app">
 
@@ -279,26 +251,67 @@ body{
 </div>
 
 <script>
-/* ---------------- DATA ---------------- */
-const BANK=[
-  {t:"Yesterday, ____ a test.",a:"there was"},
-  {t:"Last night, ____ two exams.",a:"there were"},
-  {t:"I ____ tired yesterday.",a:"was"},
-  {t:"We ____ interested.",a:"were"}
+/* ---------- BANK ---------- */
+const BANK = [
+  /* CHOOSE */
+  {
+    type:"choose",
+    t:"____ many students in the classroom now.",
+    a:"there are",
+    opts:["there is","there are","there were","there aren't"]
+  },
+  {
+    type:"choose",
+    t:"Yesterday, ____ a problem with the computer.",
+    a:"there was",
+    opts:["there is","there was","there were","there wasn't"]
+  },
+  {
+    type:"choose",
+    t:"Right now, the children ____ outside.",
+    a:"are",
+    opts:["are","is","were","aren't"]
+  },
+
+  /* ORDER – AFFIRMATIVE */
+  {
+    type:"order",
+    t:"Order the sentence:",
+    a:"there are three windows in the classroom"
+  },
+
+  /* ORDER – YES / NO QUESTIONS */
+  {
+    type:"order",
+    t:"Order the question:",
+    a:"were there many students in the hall"
+  },
+
+  /* ORDER – WH QUESTIONS */
+  {
+    type:"order",
+    t:"Order the question:",
+    a:"how many students were there in the classroom"
+  },
+  {
+    type:"order",
+    t:"Order the question:",
+    a:"why was there a delay yesterday"
+  },
+  {
+    type:"order",
+    t:"Order the question:",
+    a:"where were there problems last night"
+  }
 ];
 
-/* ---------------- STATE ---------------- */
+/* ---------- STATE ---------- */
 let score=0,streak=0,best=0,mistakes=0;
 let startTime=null;
 let current=null;
+let bank=[],index=0;
 
-/* shuffle bank + index */
-let bank=[], bankIndex=0;
-
-/* activity shuffle */
-let activitySequence=[], activityIndex=0;
-
-/* ---------------- UTILS ---------------- */
+/* ---------- UTILS ---------- */
 function shuffle(arr){
   for(let i=arr.length-1;i>0;i--){
     const j=Math.floor(Math.random()*(i+1));
@@ -307,53 +320,36 @@ function shuffle(arr){
   return arr;
 }
 
-/* ---------------- INIT ---------------- */
-function initGame(){
-  bank = shuffle([...BANK]);
-  bankIndex = 0;
-
-  activitySequence = shuffle(["choose","order","choose","order"]);
-  activityIndex = 0;
-}
-
-/* ---------------- START ---------------- */
+/* ---------- START ---------- */
 function startGame(){
-  const name=playerName.value.trim();
-  if(!name) return alert("Please enter your name");
-
-  playerLabel.textContent=name;
+  if(!playerName.value.trim()) return alert("Enter your name");
+  playerLabel.textContent=playerName.value.trim();
   startScreen.classList.add("hidden");
   gameScreen.classList.remove("hidden");
-
   startTime=Date.now();
-  initGame();
+  bank=shuffle([...BANK]);
+  index=0;
   next();
 }
 
-/* ---------------- GAME FLOW ---------------- */
+/* ---------- FLOW ---------- */
 function next(){
-  if(bankIndex >= bank.length){
-    bank = shuffle([...BANK]);
-    bankIndex = 0;
+  if(index>=bank.length){
+    bank=shuffle([...BANK]);
+    index=0;
   }
-  current = bank[bankIndex++];
-
-  if(activityIndex >= activitySequence.length){
-    activitySequence = shuffle(["choose","order","choose","order"]);
-    activityIndex = 0;
-  }
-  const activity = activitySequence[activityIndex++];
+  current=bank[index++];
 
   sentence.textContent=current.t;
+  activityLabel.textContent=current.type.toUpperCase();
+  activityLabel.className="activity-label "+current.type;
+
   feedback.classList.add("hidden");
-  answer.textContent="";
   choices.innerHTML="";
   wordbank.innerHTML="";
+  answer.textContent="";
 
-  activityLabel.textContent = activity.toUpperCase();
-  activityLabel.className = "activity-label " + activity;
-
-  activity==="choose" ? renderChoose() : renderOrder();
+  current.type==="choose"?renderChoose():renderOrder();
 }
 
 function renderChoose(){
@@ -362,7 +358,7 @@ function renderChoose(){
   answer.classList.add("hidden");
   checkBtn.classList.add("hidden");
 
-  shuffle([current.a,"was","were"]).forEach((o,i)=>{
+  shuffle([...current.opts]).forEach((o,i)=>{
     const d=document.createElement("div");
     d.className="choice c"+(i+1);
     d.textContent=o;
@@ -392,15 +388,15 @@ function check(val){
   feedback.classList.remove("hidden");
   if(val===current.a){
     score+=10; streak++; best=Math.max(best,streak);
-    feedback.textContent="✔ Correct!";
+    feedback.textContent="✔ Correct";
     feedback.className="feedback ok";
   }else{
     streak=0; mistakes++;
-    feedback.textContent="✘ Try again";
+    feedback.textContent="✘ Incorrect";
     feedback.className="feedback no";
   }
   updateStats();
-  setTimeout(next,1000);
+  setTimeout(next,1200);
 }
 
 function updateStats(){
@@ -410,7 +406,7 @@ function updateStats(){
   mistakes.textContent=mistakes;
 }
 
-/* ---------------- TIME ---------------- */
+/* ---------- TIME ---------- */
 setInterval(()=>{
   if(!startTime) return;
   const s=Math.floor((Date.now()-startTime)/1000);
