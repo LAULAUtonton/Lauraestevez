@@ -8,8 +8,8 @@
 <style>
 :root{
   --blue:#3b82f6;
-  --pink:#ec4899;
   --green:#22c55e;
+  --pink:#ec4899;
   --orange:#fb923c;
   --purple:#a855f7;
   --yellow:#facc15;
@@ -19,7 +19,6 @@
   --white:#ffffff;
 }
 
-/* RESET */
 *{box-sizing:border-box;margin:0;padding:0}
 
 body{
@@ -29,18 +28,17 @@ body{
   font-size:clamp(16px,2.5vw,20px);
 }
 
-/* ================= SCREENS ================= */
+/* ---------- SCREENS ---------- */
 .screen{
   min-height:100svh;
   display:flex;
-  align-items:center;
   justify-content:center;
+  align-items:center;
   padding:16px;
 }
-
 .hidden{display:none}
 
-/* ================= START SCREEN ================= */
+/* ---------- START SCREEN ---------- */
 .start-card{
   background:var(--white);
   width:100%;
@@ -49,7 +47,7 @@ body{
   border-radius:24px;
   display:flex;
   flex-direction:column;
-  gap:clamp(14px,3vw,22px);
+  gap:20px;
 }
 
 .start-title{
@@ -62,9 +60,8 @@ body{
 .instructions{
   background:var(--yellow);
   border-radius:18px;
-  padding:clamp(14px,3vw,20px);
+  padding:18px;
   font-weight:700;
-  line-height:1.4;
 }
 
 .instructions ul{
@@ -81,6 +78,24 @@ body{
   font-weight:800;
 }
 
+.activity-select{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.activity{
+  padding:16px;
+  border-radius:16px;
+  font-weight:900;
+  text-align:center;
+  cursor:pointer;
+  color:white;
+}
+.choose-btn{background:var(--blue)}
+.order-btn{background:var(--teal)}
+.activity.active{outline:4px solid var(--orange)}
+
 .start-btn{
   width:100%;
   padding:16px;
@@ -93,12 +108,10 @@ body{
   cursor:pointer;
 }
 
-/* ================= GAME ================= */
+/* ---------- GAME ---------- */
 .app{
   max-width:1050px;
   width:100%;
-  margin:auto;
-  padding:16px;
   display:flex;
   flex-direction:column;
   gap:18px;
@@ -142,13 +155,13 @@ body{
   background:var(--white);
   border:4px solid var(--yellow);
   border-radius:18px;
-  padding:clamp(18px,4vw,26px);
-  font-size:clamp(1.2rem,4.5vw,1.8rem);
+  padding:24px;
+  font-size:1.6rem;
   font-weight:900;
   text-align:center;
 }
 
-.mode{
+.mode-label{
   align-self:center;
   padding:6px 14px;
   border-radius:14px;
@@ -227,7 +240,7 @@ body{
 
 <body>
 
-<!-- ========== START SCREEN ========== -->
+<!-- START SCREEN -->
 <div class="screen" id="startScreen">
   <div class="start-card">
     <div class="start-title">Grammar Arena</div>
@@ -236,19 +249,23 @@ body{
       <b>How to play:</b>
       <ul>
         <li>Complete the sentence correctly.</li>
-        <li>Sometimes you choose.</li>
-        <li>Sometimes you order the words.</li>
-        <li>Read carefully before answering.</li>
+        <li>You will use <b>one activity type only</b>.</li>
+        <li>No mixed tasks.</li>
       </ul>
     </div>
 
     <input id="playerName" class="name-input" placeholder="Enter your name">
 
+    <div class="activity-select">
+      <div class="activity choose-btn active" onclick="selectMode('choose')">CHOOSE</div>
+      <div class="activity order-btn" onclick="selectMode('order')">ORDER</div>
+    </div>
+
     <div class="start-btn" onclick="startGame()">START GAME</div>
   </div>
 </div>
 
-<!-- ========== GAME SCREEN ========== -->
+<!-- GAME SCREEN -->
 <div class="screen hidden" id="gameScreen">
   <div class="app">
 
@@ -263,15 +280,14 @@ body{
       <div class="stat">Mistakes<br><span id="mistakes">0</span></div>
       <div class="stat">Best<br><span id="best">0</span></div>
       <div class="stat">Time<br><span id="time">00:00</span></div>
-      <div class="stat">Mode<br><span id="modeTxt">Choose</span></div>
+      <div class="stat">Activity<br><span id="activityLabel">Choose</span></div>
     </div>
 
     <div class="game">
       <div class="sentence" id="sentence"></div>
-      <div class="mode choose" id="modeTag">CHOOSE</div>
+      <div class="mode-label choose" id="modeTag">CHOOSE</div>
 
-      <div class="choices" id="choices"></div>
-
+      <div class="choices hidden" id="choices"></div>
       <div class="answer hidden" id="answer"></div>
       <div class="wordbank hidden" id="wordbank"></div>
       <div class="check hidden" id="checkBtn">CHECK</div>
@@ -283,6 +299,7 @@ body{
 </div>
 
 <script>
+/* DATA */
 const BANK=[
   {t:"Yesterday, ____ a test.",a:"there was"},
   {t:"Last night, ____ two exams.",a:"there were"},
@@ -290,17 +307,29 @@ const BANK=[
   {t:"We ____ interested.",a:"were"}
 ];
 
+let activityMode="choose";
 let score=0,streak=0,best=0,mistakes=0;
 let startTime=null;
 let current=null;
-let mode="choose";
+
+function selectMode(m){
+  activityMode=m;
+  document.querySelectorAll(".activity").forEach(b=>b.classList.remove("active"));
+  document.querySelector(m==="choose"?".choose-btn":".order-btn").classList.add("active");
+}
 
 function startGame(){
   const name=document.getElementById("playerName").value.trim();
   if(!name) return alert("Please enter your name");
-  document.getElementById("playerLabel").textContent=name;
-  document.getElementById("startScreen").classList.add("hidden");
-  document.getElementById("gameScreen").classList.remove("hidden");
+
+  playerLabel.textContent=name;
+  activityLabel.textContent=activityMode.toUpperCase();
+  modeTag.textContent=activityMode.toUpperCase();
+  modeTag.className="mode-label "+activityMode;
+
+  startScreen.classList.add("hidden");
+  gameScreen.classList.remove("hidden");
+
   startTime=Date.now();
   next();
 }
@@ -313,12 +342,7 @@ function next(){
   choices.innerHTML="";
   wordbank.innerHTML="";
 
-  mode = mode==="choose" ? "order" : "choose";
-  modeTxt.textContent=mode;
-  modeTag.textContent=mode.toUpperCase();
-  modeTag.className="mode "+mode;
-
-  mode==="choose"?renderChoose():renderOrder();
+  activityMode==="choose"?renderChoose():renderOrder();
 }
 
 function renderChoose(){
@@ -378,13 +402,3 @@ function updateStats(){
 setInterval(()=>{
   if(!startTime) return;
   const s=Math.floor((Date.now()-startTime)/1000);
-  time.textContent=
-    String(Math.floor(s/60)).padStart(2,"0")+":"+
-    String(s%60).padStart(2,"0");
-},1000);
-
-function shuffle(a){return [...a].sort(()=>Math.random()-0.5);}
-</script>
-
-</body>
-</html>
