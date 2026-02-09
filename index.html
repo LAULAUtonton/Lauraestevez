@@ -24,12 +24,73 @@
 body{
   font-family:system-ui;
   background:var(--bg);
-  font-size:20px;
   color:var(--dark);
+  font-size:20px;
 }
 
+/* ===== SCREENS ===== */
+.screen{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+
+.card{
+  background:var(--white);
+  padding:30px;
+  border-radius:24px;
+  max-width:600px;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.hidden{display:none}
+
+/* ===== START SCREEN ===== */
+.start-title{
+  font-size:2.2rem;
+  font-weight:900;
+  text-align:center;
+  color:var(--purple);
+}
+
+.start-box{
+  background:var(--yellow);
+  padding:20px;
+  border-radius:16px;
+  font-weight:800;
+}
+
+.start-box ul{
+  margin-left:20px;
+}
+
+.name-input{
+  padding:14px;
+  border-radius:14px;
+  border:2px solid var(--purple);
+  font-size:1.1rem;
+  font-weight:800;
+}
+
+.start-btn{
+  background:var(--purple);
+  color:white;
+  padding:16px;
+  border-radius:16px;
+  font-weight:900;
+  font-size:1.2rem;
+  cursor:pointer;
+  text-align:center;
+}
+
+/* ===== GAME ===== */
 .app{
-  max-width:1000px;
+  max-width:1050px;
   margin:auto;
   padding:18px;
   display:flex;
@@ -41,20 +102,21 @@ body{
   background:var(--purple);
   color:white;
   padding:20px;
-  border-radius:16px;
+  border-radius:18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
   font-weight:900;
-  font-size:2rem;
-  text-align:center;
 }
 
 .stats{
   display:grid;
   grid-template-columns:repeat(6,1fr);
-  gap:12px;
+  gap:14px;
 }
 
 .stat{
-  background:white;
+  background:var(--white);
   padding:14px;
   border-radius:14px;
   text-align:center;
@@ -63,33 +125,30 @@ body{
 
 .game{
   background:#e0f2fe;
-  padding:22px;
-  border-radius:20px;
+  padding:24px;
+  border-radius:22px;
   display:flex;
   flex-direction:column;
   gap:18px;
 }
 
 .sentence{
-  background:white;
-  padding:26px;
-  border-radius:18px;
+  background:var(--white);
   border:4px solid var(--yellow);
+  border-radius:18px;
+  padding:26px;
   font-size:1.8rem;
   font-weight:900;
   text-align:center;
 }
 
 .mode{
-  text-align:center;
-  font-weight:900;
-  color:white;
+  margin:auto;
   padding:6px 14px;
   border-radius:12px;
-  width:fit-content;
-  margin:auto;
+  color:white;
+  font-weight:900;
 }
-
 .choose{background:var(--blue)}
 .order{background:var(--teal)}
 
@@ -102,19 +161,18 @@ body{
 .choice{
   padding:20px;
   border-radius:16px;
-  color:white;
   font-weight:900;
+  color:white;
   text-align:center;
   cursor:pointer;
 }
-
 .c1{background:var(--green)}
 .c2{background:var(--pink)}
 .c3{background:var(--orange)}
 
 .wordbank{
   display:flex;
-  gap:10px;
+  gap:12px;
   justify-content:center;
   flex-wrap:wrap;
 }
@@ -130,7 +188,7 @@ body{
 
 .answer{
   min-height:56px;
-  background:white;
+  background:var(--white);
   border:3px dashed var(--teal);
   border-radius:14px;
   display:flex;
@@ -156,46 +214,70 @@ body{
   padding:10px;
   border-radius:14px;
 }
-
 .ok{background:#dcfce7;color:#166534}
 .no{background:#fee2e2;color:#991b1b}
-
-.hidden{display:none}
 </style>
 </head>
 
 <body>
 
-<div class="app">
+<!-- ================= START SCREEN ================= -->
+<div class="screen" id="startScreen">
+  <div class="card">
+    <div class="start-title">Grammar Arena</div>
 
-<div class="header">Grammar Arena</div>
+    <div class="start-box">
+      <b>How to play:</b>
+      <ul>
+        <li>Complete the sentence correctly.</li>
+        <li>Sometimes you choose.</li>
+        <li>Sometimes you order the words.</li>
+        <li>Read carefully before answering.</li>
+      </ul>
+    </div>
 
-<div class="stats">
-  <div class="stat">Score<br><span id="score">0</span></div>
-  <div class="stat">Streak<br><span id="streak">0</span></div>
-  <div class="stat">Mistakes<br><span id="mistakes">0</span></div>
-  <div class="stat">Best<br><span id="best">0</span></div>
-  <div class="stat">Time<br><span id="time">00:00</span></div>
-  <div class="stat">Mode<br><span id="modeTxt">Choose</span></div>
+    <input id="playerName" class="name-input" placeholder="Enter your name">
+
+    <div class="start-btn" onclick="startGame()">START GAME</div>
+  </div>
 </div>
 
-<div class="game">
-  <div class="sentence" id="sentence"></div>
-  <div class="mode choose" id="modeTag">CHOOSE</div>
+<!-- ================= GAME SCREEN ================= -->
+<div class="screen hidden" id="gameScreen">
+  <div class="app">
 
-  <div class="choices" id="choices"></div>
+    <div class="header">
+      <div>Grammar Arena</div>
+      <div id="playerLabel"></div>
+    </div>
 
-  <div class="answer hidden" id="answer"></div>
-  <div class="wordbank hidden" id="wordbank"></div>
-  <div class="check hidden" id="checkBtn">CHECK</div>
+    <div class="stats">
+      <div class="stat">Score<br><span id="score">0</span></div>
+      <div class="stat">Streak<br><span id="streak">0</span></div>
+      <div class="stat">Mistakes<br><span id="mistakes">0</span></div>
+      <div class="stat">Best<br><span id="best">0</span></div>
+      <div class="stat">Time<br><span id="time">00:00</span></div>
+      <div class="stat">Mode<br><span id="modeTxt">Choose</span></div>
+    </div>
 
-  <div class="feedback hidden" id="feedback"></div>
-</div>
+    <div class="game">
+      <div class="sentence" id="sentence"></div>
+      <div class="mode choose" id="modeTag">CHOOSE</div>
 
+      <div class="choices" id="choices"></div>
+
+      <div class="answer hidden" id="answer"></div>
+      <div class="wordbank hidden" id="wordbank"></div>
+      <div class="check hidden" id="checkBtn">CHECK</div>
+
+      <div class="feedback hidden" id="feedback"></div>
+    </div>
+
+  </div>
 </div>
 
 <script>
-/* ========= DATA ========= */
+/* ===== BANK ===== */
 const BANK=[
   {t:"Yesterday, ____ a test.",a:"there was"},
   {t:"Last night, ____ two exams.",a:"there were"},
@@ -203,31 +285,27 @@ const BANK=[
   {t:"We ____ interested.",a:"were"}
 ];
 
-/* ========= STATE ========= */
 let score=0,streak=0,best=0,mistakes=0;
-let start=Date.now();
+let startTime=null;
 let current=null;
 let mode="choose";
 
-/* ========= ELEMENTS ========= */
-const scoreEl=document.getElementById("score");
-const streakEl=document.getElementById("streak");
-const bestEl=document.getElementById("best");
-const mistakesEl=document.getElementById("mistakes");
-const timeEl=document.getElementById("time");
-const sentenceEl=document.getElementById("sentence");
-const modeTag=document.getElementById("modeTag");
-const modeTxt=document.getElementById("modeTxt");
-const choices=document.getElementById("choices");
-const wordbank=document.getElementById("wordbank");
-const answer=document.getElementById("answer");
-const checkBtn=document.getElementById("checkBtn");
-const feedback=document.getElementById("feedback");
+/* ===== START GAME ===== */
+function startGame(){
+  const name=document.getElementById("playerName").value.trim();
+  if(!name) return alert("Please enter your name");
 
-/* ========= GAME ========= */
+  document.getElementById("playerLabel").textContent=name;
+  document.getElementById("startScreen").classList.add("hidden");
+  document.getElementById("gameScreen").classList.remove("hidden");
+  startTime=Date.now();
+  next();
+}
+
+/* ===== GAME LOGIC ===== */
 function next(){
   current=BANK[Math.floor(Math.random()*BANK.length)];
-  sentenceEl.textContent=current.t;
+  sentence.textContent=current.t;
   feedback.classList.add("hidden");
   answer.textContent="";
   choices.innerHTML="";
@@ -238,8 +316,7 @@ function next(){
   modeTag.textContent=mode.toUpperCase();
   modeTag.className="mode "+mode;
 
-  if(mode==="choose") renderChoose();
-  else renderOrder();
+  mode==="choose"?renderChoose():renderOrder();
 }
 
 function renderChoose(){
@@ -248,8 +325,7 @@ function renderChoose(){
   answer.classList.add("hidden");
   checkBtn.classList.add("hidden");
 
-  const opts=shuffle([current.a,"was","were"]);
-  opts.forEach((o,i)=>{
+  shuffle([current.a,"was","were"]).forEach((o,i)=>{
     const d=document.createElement("div");
     d.className="choice c"+(i+1);
     d.textContent=o;
@@ -279,7 +355,7 @@ function check(val){
   feedback.classList.remove("hidden");
   if(val===current.a){
     score+=10; streak++; best=Math.max(best,streak);
-    feedback.textContent="✔ Correct";
+    feedback.textContent="✔ Correct!";
     feedback.className="feedback ok";
   }else{
     streak=0; mistakes++;
@@ -297,20 +373,8 @@ function updateStats(){
   mistakesEl.textContent=mistakes;
 }
 
-/* ========= TIME ========= */
 setInterval(()=>{
-  const s=Math.floor((Date.now()-start)/1000);
-  timeEl.textContent=
-    String(Math.floor(s/60)).padStart(2,"0")+":"+
-    String(s%60).padStart(2,"0");
-},1000);
-
-/* ========= UTILS ========= */
-function shuffle(a){return [...a].sort(()=>Math.random()-0.5);}
-
-/* ========= START ========= */
-next();
-</script>
-
-</body>
-</html>
+  if(!startTime) return;
+  const s=Math.floor((Date.now()-startTime)/1000);
+  time.textContent=
+    String(Math.floor(s/60)).padStart(2,"0")+
