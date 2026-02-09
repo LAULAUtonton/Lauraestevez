@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Was / Were & There Was / Were – Mastery</title>
+<title>Be Mastery – A2</title>
 
 <style>
 :root{
@@ -43,7 +43,6 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:16px;
 }
 
 .title{font-size:2rem;font-weight:900}
@@ -55,14 +54,6 @@ body{
   align-items:center;
 }
 
-input{
-  padding:10px 14px;
-  border-radius:12px;
-  border:none;
-  font-size:1.1rem;
-  font-weight:800;
-}
-
 button{
   padding:10px 16px;
   border-radius:12px;
@@ -72,11 +63,9 @@ button{
   cursor:pointer;
 }
 
-button.blue{background:var(--blue);color:white}
-button.green{background:var(--green);color:white}
-button.coral{background:var(--coral);color:white}
-button.yellow{background:var(--yellow);color:var(--dark)}
 button.gray{background:#e5e7eb}
+button.yellow{background:var(--yellow)}
+button.blue{background:var(--blue);color:white}
 
 .stats{
   display:grid;
@@ -92,7 +81,7 @@ button.gray{background:#e5e7eb}
   font-weight:900;
 }
 
-.stat small{display:block;color:var(--gray);font-weight:700}
+.stat small{display:block;color:var(--gray)}
 
 .game{
   background:#dbeafe;
@@ -107,7 +96,7 @@ button.gray{background:#e5e7eb}
   background:var(--white);
   border:5px solid var(--yellow);
   border-radius:22px;
-  padding:26px;
+  padding:28px;
   font-size:1.8rem;
   font-weight:900;
   text-align:center;
@@ -115,37 +104,32 @@ button.gray{background:#e5e7eb}
 
 .choices{
   display:grid;
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:repeat(3,1fr);
   gap:16px;
 }
 
 .choice{
-  padding:22px;
+  padding:20px;
   border-radius:18px;
-  font-size:1.3rem;
+  font-size:1.4rem;
   font-weight:900;
   color:white;
   text-align:center;
+  cursor:pointer;
 }
 
-.choice.be{background:var(--green)}
-.choice.tw{background:var(--coral)}
+.choice.green{background:var(--green)}
+.choice.coral{background:var(--coral)}
+.choice.blue{background:var(--blue)}
 
 .feedback{
   text-align:center;
   font-size:1.6rem;
   font-weight:900;
 }
+
 .ok{color:var(--green)}
 .no{color:var(--coral)}
-
-.leaderboard{
-  background:var(--white);
-  border-radius:22px;
-  padding:22px;
-}
-
-.hidden{display:none}
 </style>
 </head>
 
@@ -155,14 +139,12 @@ button.gray{background:#e5e7eb}
 
 <div class="header">
   <div>
-    <div class="title">Was / Were & There Was / Were</div>
-    <div class="subtitle">A2 · Burlington Unit 3 · Grammar Game</div>
+    <div class="title">Be Mastery</div>
+    <div class="subtitle">A2 · Was / Were · There was / were · Is / Are</div>
   </div>
   <div class="controls-top">
-    <input id="nameInput" placeholder="Name">
     <button class="gray" onclick="toggleMusic()">🎵</button>
-    <button class="yellow" onclick="toggleLevel()" id="levelBtn">Easy</button>
-    <button class="blue" onclick="openTeacher()">Teacher</button>
+    <button class="yellow">Goal: 25</button>
   </div>
 </div>
 
@@ -171,120 +153,115 @@ button.gray{background:#e5e7eb}
   <div class="stat"><small>Mistakes</small><span id="mistakes">0</span></div>
   <div class="stat"><small>Best</small><span id="best">0</span></div>
   <div class="stat"><small>Time</small><span id="time">00:00</span></div>
-  <div class="stat"><small>Level</small><span id="levelShow">Easy</span></div>
+  <div class="stat"><small>Goal</small>25</div>
 </div>
 
 <div class="game">
   <div class="sentence" id="sentence"></div>
-  <div class="choices">
-    <div class="choice be" onclick="answer('be')">Was / Were</div>
-    <div class="choice tw" onclick="answer('tw')">There was / There were</div>
-  </div>
+  <div class="choices" id="choices"></div>
   <div class="feedback" id="feedback"></div>
 </div>
 
-<div class="leaderboard">
-  <h3>🏆 Leaderboard</h3>
-  <ol id="ranking"></ol>
 </div>
 
-</div>
-
-<!-- AUDIO -->
 <audio id="bgm" loop src="audio/koala3.mp3"></audio>
 <audio id="winSound" src="audio/tadaa.mp3"></audio>
 
 <script>
-/* ================= CONFIG ================= */
-const GOAL=25;
-const TEACHER_PIN="1234";
+const GOAL = 25;
+const bgm = document.getElementById("bgm");
+const winSound = document.getElementById("winSound");
 
-/* ================= AUDIO ================= */
-const bgm=document.getElementById("bgm");
-const winSound=document.getElementById("winSound");
-let musicOn=false;
+let streak=0, best=0, mistakes=0;
+let start = Date.now();
+let current = null;
+let musicOn = false;
 
-/* ================= STATE ================= */
-let streak=0,best=0,mistakes=0,start=Date.now(),timer=null;
-let level="easy";
-let current=null;
+const BANK = [
+  { t:"I ____ tired yesterday.", a:"was" },
+  { t:"She ____ at home last night.", a:"was" },
+  { t:"They ____ late to school.", a:"were" },
+  { t:"We ____ happy.", a:"were" },
 
-/* ================= BANK ================= */
-const BANK=[
-/* WAS / WERE (45) */
-...[
-"I was tired yesterday.","She was at home last night.","They were late to school.","We were happy.","He was nervous.",
-"I wasn't ready.","She wasn't at the party.","They weren't in class.","We weren't interested.","He wasn't angry.",
-"Were you tired yesterday?","Was she at home last night?","Were they late?","Were we ready?","Was he nervous?"
-].flatMap(t=>[{t,f:"be"}]),
+  { t:"I ____ ready.", a:"wasn't" },
+  { t:"They ____ in class.", a:"weren't" },
 
-/* THERE WAS / WERE (45) */
-...[
-"There was a test last Friday.","There were many students.","There was a problem.","There were two exams.","There was a teacher.",
-"There wasn't any homework.","There weren't many people.","There wasn't a bus.","There weren't enough chairs.","There wasn't a test.",
-"Was there a test?","Were there many students?","Was there a problem?","Were there two exams?","Was there a teacher?"
-].flatMap(t=>[{t,f:"tw"}])
+  { t:"____ there a test last Friday?", a:"Was" },
+  { t:"____ there many students?", a:"Were" },
+
+  { t:"There ____ a problem.", a:"was" },
+  { t:"There ____ two exams.", a:"were" },
+
+  { t:"There ____ any homework.", a:"wasn't" },
+  { t:"There ____ many people.", a:"weren't" },
+
+  { t:"Right now, there ____ two teachers here.", a:"are" },
+  { t:"There ____ a bus now.", a:"is" }
 ];
 
-/* ================= LOGIC ================= */
-const $=id=>document.getElementById(id);
+const ALL_CHOICES = ["was","were","wasn't","weren't","is","are","Was","Were"];
 
 function toggleMusic(){
-  bgm.volume=.25;
-  musicOn?bgm.pause():bgm.play().catch(()=>{});
-  musicOn=!musicOn;
-}
-
-function toggleLevel(){
-  level=level==="easy"?"hard":"easy";
-  $("levelBtn").textContent=level==="easy"?"Easy":"Hard";
-  $("levelShow").textContent=level;
+  bgm.volume = 0.25;
+  musicOn ? bgm.pause() : bgm.play().catch(()=>{});
+  musicOn = !musicOn;
 }
 
 function next(){
-  const pool = level==="easy"
-    ? BANK.filter(x=>!x.t.includes("?"))
-    : BANK;
-  current = pool[Math.floor(Math.random()*pool.length)];
-  $("sentence").textContent=current.t;
-  $("feedback").textContent="";
+  current = BANK[Math.floor(Math.random()*BANK.length)];
+  document.getElementById("sentence").textContent = current.t;
+  document.getElementById("feedback").textContent = "";
+
+  const options = shuffle([
+    current.a,
+    ...shuffle(ALL_CHOICES.filter(x=>x!==current.a)).slice(0,2)
+  ]);
+
+  const box = document.getElementById("choices");
+  box.innerHTML = "";
+  options.forEach(o=>{
+    const b = document.createElement("div");
+    b.className = "choice green";
+    b.textContent = o;
+    b.onclick = ()=>answer(o);
+    box.appendChild(b);
+  });
 }
 
-function answer(a){
-  if(a===current.f){
-    streak++; best=Math.max(best,streak);
-    $("feedback").textContent="Correct!";
-    $("feedback").className="feedback ok";
+function answer(choice){
+  if(choice === current.a){
+    streak++;
+    best = Math.max(best, streak);
+    document.getElementById("feedback").textContent = "Correct!";
+    document.getElementById("feedback").className = "feedback ok";
   }else{
-    streak=0; mistakes++;
-    $("feedback").textContent="Wrong!";
-    $("feedback").className="feedback no";
+    streak = 0;
+    mistakes++;
+    document.getElementById("feedback").textContent = "Try again!";
+    document.getElementById("feedback").className = "feedback no";
   }
-  $("streak").textContent=streak;
-  $("mistakes").textContent=mistakes;
-  $("best").textContent=best;
 
-  if(best>=GOAL) win();
-  else setTimeout(next,800);
-}
+  document.getElementById("streak").textContent = streak;
+  document.getElementById("mistakes").textContent = mistakes;
+  document.getElementById("best").textContent = best;
 
-function win(){
-  winSound.play().catch(()=>{});
-  bgm.pause();
+  if(best >= GOAL){
+    winSound.play().catch(()=>{});
+    bgm.pause();
+  }else{
+    setTimeout(next,800);
+  }
 }
 
 function updateTime(){
-  const s=Math.floor((Date.now()-start)/1000);
-  $("time").textContent=
+  const s = Math.floor((Date.now()-start)/1000);
+  document.getElementById("time").textContent =
     String(Math.floor(s/60)).padStart(2,"0")+":"+
     String(s%60).padStart(2,"0");
 }
 
-function openTeacher(){
-  const pin=prompt("Teacher PIN:");
-  if(pin!==TEACHER_PIN) return;
-  alert("Teacher mode enabled\n\n- Reset leaderboard\n- Stop music\n- Reset game");
-  streak=mistakes=best=0;
+function shuffle(a){
+  return [...a].sort(()=>Math.random()-0.5);
 }
 
 setInterval(updateTime,1000);
