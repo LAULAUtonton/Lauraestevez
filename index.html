@@ -19,6 +19,7 @@
   --white:#ffffff;
 }
 
+/* RESET */
 *{box-sizing:border-box;margin:0;padding:0}
 
 body{
@@ -32,8 +33,8 @@ body{
 .screen{
   min-height:100svh;
   display:flex;
-  justify-content:center;
   align-items:center;
+  justify-content:center;
   padding:16px;
 }
 .hidden{display:none}
@@ -47,7 +48,7 @@ body{
   border-radius:24px;
   display:flex;
   flex-direction:column;
-  gap:20px;
+  gap:clamp(14px,3vw,22px);
 }
 
 .start-title{
@@ -62,6 +63,7 @@ body{
   border-radius:18px;
   padding:18px;
   font-weight:700;
+  line-height:1.4;
 }
 
 .instructions ul{
@@ -77,24 +79,6 @@ body{
   font-size:1.05rem;
   font-weight:800;
 }
-
-.activity-select{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-
-.activity{
-  padding:16px;
-  border-radius:16px;
-  font-weight:900;
-  text-align:center;
-  cursor:pointer;
-  color:white;
-}
-.choose-btn{background:var(--blue)}
-.order-btn{background:var(--teal)}
-.activity.active{outline:4px solid var(--orange)}
 
 .start-btn{
   width:100%;
@@ -161,12 +145,14 @@ body{
   text-align:center;
 }
 
-.mode-label{
+/* activity label (informative, not selectable) */
+.activity-label{
   align-self:center;
   padding:6px 14px;
   border-radius:14px;
   color:white;
   font-weight:900;
+  font-size:0.9rem;
 }
 .choose{background:var(--blue)}
 .order{background:var(--teal)}
@@ -249,17 +235,12 @@ body{
       <b>How to play:</b>
       <ul>
         <li>Complete the sentence correctly.</li>
-        <li>You will use <b>one activity type only</b>.</li>
-        <li>No mixed tasks.</li>
+        <li>The activity type changes automatically.</li>
+        <li>Focus and read carefully.</li>
       </ul>
     </div>
 
     <input id="playerName" class="name-input" placeholder="Enter your name">
-
-    <div class="activity-select">
-      <div class="activity choose-btn active" onclick="selectMode('choose')">CHOOSE</div>
-      <div class="activity order-btn" onclick="selectMode('order')">ORDER</div>
-    </div>
 
     <div class="start-btn" onclick="startGame()">START GAME</div>
   </div>
@@ -280,12 +261,11 @@ body{
       <div class="stat">Mistakes<br><span id="mistakes">0</span></div>
       <div class="stat">Best<br><span id="best">0</span></div>
       <div class="stat">Time<br><span id="time">00:00</span></div>
-      <div class="stat">Activity<br><span id="activityLabel">Choose</span></div>
     </div>
 
     <div class="game">
       <div class="sentence" id="sentence"></div>
-      <div class="mode-label choose" id="modeTag">CHOOSE</div>
+      <div class="activity-label choose" id="activityLabel">CHOOSE</div>
 
       <div class="choices hidden" id="choices"></div>
       <div class="answer hidden" id="answer"></div>
@@ -299,7 +279,7 @@ body{
 </div>
 
 <script>
-/* DATA */
+/* ---------------- DATA ---------------- */
 const BANK=[
   {t:"Yesterday, ____ a test.",a:"there was"},
   {t:"Last night, ____ two exams.",a:"there were"},
@@ -307,42 +287,73 @@ const BANK=[
   {t:"We ____ interested.",a:"were"}
 ];
 
-let activityMode="choose";
+/* ---------------- STATE ---------------- */
 let score=0,streak=0,best=0,mistakes=0;
 let startTime=null;
 let current=null;
 
-function selectMode(m){
-  activityMode=m;
-  document.querySelectorAll(".activity").forEach(b=>b.classList.remove("active"));
-  document.querySelector(m==="choose"?".choose-btn":".order-btn").classList.add("active");
+/* shuffle bank + index */
+let bank=[], bankIndex=0;
+
+/* activity shuffle */
+let activitySequence=[], activityIndex=0;
+
+/* ---------------- UTILS ---------------- */
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
 }
 
+/* ---------------- INIT ---------------- */
+function initGame(){
+  bank = shuffle([...BANK]);
+  bankIndex = 0;
+
+  activitySequence = shuffle(["choose","order","choose","order"]);
+  activityIndex = 0;
+}
+
+/* ---------------- START ---------------- */
 function startGame(){
-  const name=document.getElementById("playerName").value.trim();
+  const name=playerName.value.trim();
   if(!name) return alert("Please enter your name");
 
   playerLabel.textContent=name;
-  activityLabel.textContent=activityMode.toUpperCase();
-  modeTag.textContent=activityMode.toUpperCase();
-  modeTag.className="mode-label "+activityMode;
-
   startScreen.classList.add("hidden");
   gameScreen.classList.remove("hidden");
 
   startTime=Date.now();
+  initGame();
   next();
 }
 
+/* ---------------- GAME FLOW ---------------- */
 function next(){
-  current=BANK[Math.floor(Math.random()*BANK.length)];
+  if(bankIndex >= bank.length){
+    bank = shuffle([...BANK]);
+    bankIndex = 0;
+  }
+  current = bank[bankIndex++];
+
+  if(activityIndex >= activitySequence.length){
+    activitySequence = shuffle(["choose","order","choose","order"]);
+    activityIndex = 0;
+  }
+  const activity = activitySequence[activityIndex++];
+
   sentence.textContent=current.t;
   feedback.classList.add("hidden");
   answer.textContent="";
   choices.innerHTML="";
   wordbank.innerHTML="";
 
-  activityMode==="choose"?renderChoose():renderOrder();
+  activityLabel.textContent = activity.toUpperCase();
+  activityLabel.className = "activity-label " + activity;
+
+  activity==="choose" ? renderChoose() : renderOrder();
 }
 
 function renderChoose(){
@@ -389,7 +400,7 @@ function check(val){
     feedback.className="feedback no";
   }
   updateStats();
-  setTimeout(next,1100);
+  setTimeout(next,1000);
 }
 
 function updateStats(){
@@ -399,6 +410,15 @@ function updateStats(){
   mistakes.textContent=mistakes;
 }
 
+/* ---------------- TIME ---------------- */
 setInterval(()=>{
   if(!startTime) return;
   const s=Math.floor((Date.now()-startTime)/1000);
+  time.textContent=
+    String(Math.floor(s/60)).padStart(2,"0")+":"+
+    String(s%60).padStart(2,"0");
+},1000);
+</script>
+
+</body>
+</html>
