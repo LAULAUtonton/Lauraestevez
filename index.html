@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Grammar Arena · Fixed</title>
+<title>Grammar Arena</title>
 
 <style>
 :root{
@@ -22,14 +22,14 @@
 *{box-sizing:border-box;margin:0;padding:0}
 
 body{
-  font-family:'Nunito',system-ui;
+  font-family:system-ui;
   background:var(--bg);
-  color:var(--dark);
   font-size:20px;
+  color:var(--dark);
 }
 
 .app{
-  max-width:1100px;
+  max-width:1000px;
   margin:auto;
   padding:18px;
   display:flex;
@@ -40,73 +40,70 @@ body{
 .header{
   background:var(--purple);
   color:white;
-  padding:22px;
-  border-radius:18px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+  padding:20px;
+  border-radius:16px;
+  font-weight:900;
+  font-size:2rem;
+  text-align:center;
 }
-
-.title{font-size:2rem;font-weight:900}
 
 .stats{
   display:grid;
   grid-template-columns:repeat(6,1fr);
-  gap:14px;
+  gap:12px;
 }
 
 .stat{
-  background:var(--white);
+  background:white;
   padding:14px;
-  border-radius:16px;
+  border-radius:14px;
   text-align:center;
   font-weight:900;
 }
 
 .game{
   background:#e0f2fe;
-  border-radius:22px;
-  padding:26px;
+  padding:22px;
+  border-radius:20px;
   display:flex;
   flex-direction:column;
-  gap:22px;
+  gap:18px;
 }
 
 .sentence{
-  background:var(--white);
+  background:white;
+  padding:26px;
+  border-radius:18px;
   border:4px solid var(--yellow);
-  border-radius:22px;
-  padding:30px;
-  font-size:2rem;
+  font-size:1.8rem;
   font-weight:900;
   text-align:center;
 }
 
-.mode-tag{
+.mode{
   text-align:center;
   font-weight:900;
-  font-size:1.1rem;
   color:white;
-  padding:6px 12px;
+  padding:6px 14px;
   border-radius:12px;
   width:fit-content;
   margin:auto;
 }
-.mode-choose{background:var(--blue)}
-.mode-order{background:var(--teal)}
+
+.choose{background:var(--blue)}
+.order{background:var(--teal)}
 
 .choices{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:16px;
+  gap:14px;
 }
 
 .choice{
-  padding:22px;
-  border-radius:18px;
-  font-size:1.3rem;
-  font-weight:900;
+  padding:20px;
+  border-radius:16px;
   color:white;
+  font-weight:900;
   text-align:center;
   cursor:pointer;
 }
@@ -117,7 +114,7 @@ body{
 
 .wordbank{
   display:flex;
-  gap:12px;
+  gap:10px;
   justify-content:center;
   flex-wrap:wrap;
 }
@@ -125,29 +122,27 @@ body{
 .word{
   background:var(--purple);
   color:white;
-  padding:14px 18px;
-  border-radius:16px;
+  padding:12px 18px;
+  border-radius:14px;
   font-weight:900;
   cursor:pointer;
 }
 
-.answer-box{
-  min-height:60px;
-  background:var(--white);
+.answer{
+  min-height:56px;
+  background:white;
   border:3px dashed var(--teal);
-  border-radius:16px;
+  border-radius:14px;
   display:flex;
   justify-content:center;
   align-items:center;
-  gap:10px;
   font-weight:900;
-  font-size:1.3rem;
 }
 
-.check-btn{
+.check{
   background:var(--teal);
   color:white;
-  padding:12px;
+  padding:14px;
   border-radius:14px;
   font-weight:900;
   text-align:center;
@@ -156,8 +151,8 @@ body{
 
 .feedback{
   text-align:center;
-  font-size:1.5rem;
   font-weight:900;
+  font-size:1.4rem;
   padding:10px;
   border-radius:14px;
 }
@@ -173,9 +168,7 @@ body{
 
 <div class="app">
 
-<div class="header">
-  <div class="title">Grammar Arena</div>
-</div>
+<div class="header">Grammar Arena</div>
 
 <div class="stats">
   <div class="stat">Score<br><span id="score">0</span></div>
@@ -183,18 +176,18 @@ body{
   <div class="stat">Mistakes<br><span id="mistakes">0</span></div>
   <div class="stat">Best<br><span id="best">0</span></div>
   <div class="stat">Time<br><span id="time">00:00</span></div>
-  <div class="stat">Mode<br><span id="modeShow">Choose</span></div>
+  <div class="stat">Mode<br><span id="modeTxt">Choose</span></div>
 </div>
 
 <div class="game">
   <div class="sentence" id="sentence"></div>
-  <div class="mode-tag" id="modeTag"></div>
+  <div class="mode choose" id="modeTag">CHOOSE</div>
 
-  <div class="choices hidden" id="choices"></div>
+  <div class="choices" id="choices"></div>
 
-  <div class="answer-box hidden" id="answerBox"></div>
+  <div class="answer hidden" id="answer"></div>
   <div class="wordbank hidden" id="wordbank"></div>
-  <div class="check-btn hidden" id="checkBtn">CHECK</div>
+  <div class="check hidden" id="checkBtn">CHECK</div>
 
   <div class="feedback hidden" id="feedback"></div>
 </div>
@@ -202,4 +195,122 @@ body{
 </div>
 
 <script>
-let score=0,streak=0,best=0,mistake
+/* ========= DATA ========= */
+const BANK=[
+  {t:"Yesterday, ____ a test.",a:"there was"},
+  {t:"Last night, ____ two exams.",a:"there were"},
+  {t:"I ____ tired yesterday.",a:"was"},
+  {t:"We ____ interested.",a:"were"}
+];
+
+/* ========= STATE ========= */
+let score=0,streak=0,best=0,mistakes=0;
+let start=Date.now();
+let current=null;
+let mode="choose";
+
+/* ========= ELEMENTS ========= */
+const scoreEl=document.getElementById("score");
+const streakEl=document.getElementById("streak");
+const bestEl=document.getElementById("best");
+const mistakesEl=document.getElementById("mistakes");
+const timeEl=document.getElementById("time");
+const sentenceEl=document.getElementById("sentence");
+const modeTag=document.getElementById("modeTag");
+const modeTxt=document.getElementById("modeTxt");
+const choices=document.getElementById("choices");
+const wordbank=document.getElementById("wordbank");
+const answer=document.getElementById("answer");
+const checkBtn=document.getElementById("checkBtn");
+const feedback=document.getElementById("feedback");
+
+/* ========= GAME ========= */
+function next(){
+  current=BANK[Math.floor(Math.random()*BANK.length)];
+  sentenceEl.textContent=current.t;
+  feedback.classList.add("hidden");
+  answer.textContent="";
+  choices.innerHTML="";
+  wordbank.innerHTML="";
+
+  mode = mode==="choose" ? "order" : "choose";
+  modeTxt.textContent=mode;
+  modeTag.textContent=mode.toUpperCase();
+  modeTag.className="mode "+mode;
+
+  if(mode==="choose") renderChoose();
+  else renderOrder();
+}
+
+function renderChoose(){
+  choices.classList.remove("hidden");
+  wordbank.classList.add("hidden");
+  answer.classList.add("hidden");
+  checkBtn.classList.add("hidden");
+
+  const opts=shuffle([current.a,"was","were"]);
+  opts.forEach((o,i)=>{
+    const d=document.createElement("div");
+    d.className="choice c"+(i+1);
+    d.textContent=o;
+    d.onclick=()=>check(o);
+    choices.appendChild(d);
+  });
+}
+
+function renderOrder(){
+  choices.classList.add("hidden");
+  wordbank.classList.remove("hidden");
+  answer.classList.remove("hidden");
+  checkBtn.classList.remove("hidden");
+
+  shuffle(current.a.split(" ")).forEach(w=>{
+    const s=document.createElement("div");
+    s.className="word";
+    s.textContent=w;
+    s.onclick=()=>answer.textContent+=(answer.textContent?" ":"")+w;
+    wordbank.appendChild(s);
+  });
+}
+
+checkBtn.onclick=()=>check(answer.textContent);
+
+function check(val){
+  feedback.classList.remove("hidden");
+  if(val===current.a){
+    score+=10; streak++; best=Math.max(best,streak);
+    feedback.textContent="✔ Correct";
+    feedback.className="feedback ok";
+  }else{
+    streak=0; mistakes++;
+    feedback.textContent="✘ Try again";
+    feedback.className="feedback no";
+  }
+  updateStats();
+  setTimeout(next,1200);
+}
+
+function updateStats(){
+  scoreEl.textContent=score;
+  streakEl.textContent=streak;
+  bestEl.textContent=best;
+  mistakesEl.textContent=mistakes;
+}
+
+/* ========= TIME ========= */
+setInterval(()=>{
+  const s=Math.floor((Date.now()-start)/1000);
+  timeEl.textContent=
+    String(Math.floor(s/60)).padStart(2,"0")+":"+
+    String(s%60).padStart(2,"0");
+},1000);
+
+/* ========= UTILS ========= */
+function shuffle(a){return [...a].sort(()=>Math.random()-0.5);}
+
+/* ========= START ========= */
+next();
+</script>
+
+</body>
+</html>
