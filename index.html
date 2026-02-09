@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Be & There Be – A2 Mastery</title>
+<title>Was / Were & There Be – Mastery</title>
 
 <style>
 :root{
@@ -27,7 +27,7 @@ body{
 }
 
 .app{
-  max-width:1000px;
+  max-width:1100px;
   margin:auto;
   padding:18px;
   display:flex;
@@ -40,14 +40,46 @@ body{
   color:white;
   padding:22px;
   border-radius:18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
 .title{font-size:2rem;font-weight:900}
 .subtitle{font-size:1.2rem;opacity:.9}
 
+.controls-top{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+input{
+  padding:10px 14px;
+  border-radius:12px;
+  border:none;
+  font-size:1.1rem;
+  font-weight:800;
+}
+
+button{
+  padding:10px 16px;
+  border-radius:12px;
+  border:none;
+  font-size:1.1rem;
+  font-weight:900;
+  cursor:pointer;
+}
+
+button.blue{background:var(--blue);color:white}
+button.green{background:var(--green);color:white}
+button.coral{background:var(--coral);color:white}
+button.yellow{background:var(--yellow);color:var(--dark)}
+button.gray{background:#e5e7eb}
+
 .stats{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(5,1fr);
   gap:14px;
 }
 
@@ -74,8 +106,8 @@ body{
   background:var(--white);
   border:5px solid var(--yellow);
   border-radius:22px;
-  padding:30px;
-  font-size:2rem;
+  padding:28px;
+  font-size:1.8rem;
   font-weight:900;
   text-align:center;
 }
@@ -87,18 +119,17 @@ body{
 }
 
 .choice{
-  padding:20px;
+  padding:22px;
   border-radius:18px;
-  font-size:1.4rem;
+  font-size:1.3rem;
   font-weight:900;
   color:white;
   text-align:center;
   cursor:pointer;
 }
 
-.choice.green{background:var(--green)}
-.choice.coral{background:var(--coral)}
-.choice.blue{background:var(--blue)}
+.choice.be{background:var(--green)}
+.choice.tw{background:var(--coral)}
 
 .feedback{
   text-align:center;
@@ -116,8 +147,15 @@ body{
 <div class="app">
 
 <div class="header">
-  <div class="title">Be & There Be</div>
-  <div class="subtitle">A2 · Choose the correct form</div>
+  <div>
+    <div class="title">Was / Were & There Be</div>
+    <div class="subtitle">A2 · Grammar Game</div>
+  </div>
+  <div class="controls-top">
+    <input id="nameInput" placeholder="Name">
+    <button class="gray" onclick="toggleMusic()">🎵</button>
+    <button class="yellow" onclick="toggleLevel()" id="levelBtn">Easy</button>
+  </div>
 </div>
 
 <div class="stats">
@@ -125,6 +163,7 @@ body{
   <div class="stat"><small>Mistakes</small><span id="mistakes">0</span></div>
   <div class="stat"><small>Best</small><span id="best">0</span></div>
   <div class="stat"><small>Time</small><span id="time">00:00</span></div>
+  <div class="stat"><small>Level</small><span id="levelShow">Easy</span></div>
 </div>
 
 <div class="game">
@@ -135,47 +174,62 @@ body{
 
 </div>
 
+<audio id="bgm" loop src="audio/koala3.mp3"></audio>
+<audio id="winSound" src="audio/tadaa.mp3"></audio>
+
 <script>
+/* ================= AUDIO ================= */
+const bgm=document.getElementById("bgm");
+const winSound=document.getElementById("winSound");
+let musicOn=false;
+
 /* ================= STATE ================= */
-let streak=0, best=0, mistakes=0;
-let start = Date.now();
-let current = null;
+let streak=0,best=0,mistakes=0,start=Date.now();
+let level="easy";
+let current=null;
 
-/* ================= QUESTION BANK ================= */
-/* IMPORTANT: NO VERB APPEARS – ONLY ____ */
-
+/* ================= BANK ================= */
 const BANK = [
-  { t:"Yesterday, ____ a test at school.", a:"there was" },
-  { t:"Last night, ____ two exams.", a:"there were" },
-  { t:"In the classroom, ____ many students yesterday.", a:"there were" },
-  { t:"At the party, ____ a lot of people.", a:"there were" },
+  { t:"Yesterday, ____ a test at school.", a:"there was", lvl:"easy" },
+  { t:"Last night, ____ two exams.", a:"there were", lvl:"easy" },
+  { t:"Right now, ____ two teachers in the room.", a:"there are", lvl:"easy" },
+  { t:"At the moment, ____ a bus outside.", a:"there is", lvl:"easy" },
+  { t:"I ____ very tired yesterday.", a:"was", lvl:"easy" },
+  { t:"They ____ late to school.", a:"were", lvl:"easy" },
 
-  { t:"Yesterday, ____ any homework.", a:"there wasn't" },
-  { t:"Last week, ____ enough chairs.", a:"there weren't" },
-
-  { t:"Right now, ____ two teachers in the room.", a:"there are" },
-  { t:"At the moment, ____ a bus outside.", a:"there is" },
-
-  { t:"I ____ very tired yesterday.", a:"was" },
-  { t:"She ____ at home last night.", a:"was" },
-  { t:"They ____ late to school.", a:"were" },
-
-  { t:"I ____ ready yesterday.", a:"wasn't" },
-  { t:"We ____ interested in the film.", a:"weren't" }
+  { t:"Yesterday, ____ any homework.", a:"there wasn't", lvl:"hard" },
+  { t:"Last week, ____ enough chairs.", a:"there weren't", lvl:"hard" },
+  { t:"____ there a test yesterday?", a:"Was", lvl:"hard" },
+  { t:"____ there many students in class?", a:"Were", lvl:"hard" },
+  { t:"I ____ ready for the exam.", a:"wasn't", lvl:"hard" },
+  { t:"We ____ interested in the film.", a:"weren't", lvl:"hard" }
 ];
 
-/* ================= OPTIONS ================= */
 const ALL_CHOICES = [
   "there is","there are","there was","there were",
   "there isn't","there aren't","there wasn't","there weren't",
-  "was","were","wasn't","weren't"
+  "was","were","wasn't","weren't","Was","Were"
 ];
 
 /* ================= LOGIC ================= */
+function toggleMusic(){
+  bgm.volume=.25;
+  musicOn?bgm.pause():bgm.play().catch(()=>{});
+  musicOn=!musicOn;
+}
+
+function toggleLevel(){
+  level=level==="easy"?"hard":"easy";
+  document.getElementById("levelBtn").textContent =
+    level==="easy"?"Easy":"Hard";
+  document.getElementById("levelShow").textContent =
+    level.charAt(0).toUpperCase()+level.slice(1);
+}
+
 function next(){
-  current = BANK[Math.floor(Math.random()*BANK.length)];
-  document.getElementById("sentence").textContent =
-    current.t.replace("____","_____");
+  const pool = BANK.filter(q => q.lvl === level);
+  current = pool[Math.floor(Math.random()*pool.length)];
+  document.getElementById("sentence").textContent = current.t;
   document.getElementById("feedback").textContent = "";
 
   const options = shuffle([
@@ -184,40 +238,38 @@ function next(){
   ]);
 
   const box = document.getElementById("choices");
-  box.innerHTML = "";
+  box.innerHTML="";
 
   options.forEach(o=>{
-    const b = document.createElement("div");
-    b.className = "choice blue";
-    b.textContent = o;
-    b.onclick = ()=>answer(o);
+    const b=document.createElement("div");
+    b.className="choice be";
+    b.textContent=o;
+    b.onclick=()=>answer(o);
     box.appendChild(b);
   });
 }
 
 function answer(choice){
-  if(choice === current.a){
-    streak++;
-    best = Math.max(best, streak);
-    document.getElementById("feedback").textContent = "Correct!";
-    document.getElementById("feedback").className = "feedback ok";
+  if(choice===current.a){
+    streak++; best=Math.max(best,streak);
+    document.getElementById("feedback").textContent="Correct!";
+    document.getElementById("feedback").className="feedback ok";
   }else{
-    streak = 0;
-    mistakes++;
-    document.getElementById("feedback").textContent = "Wrong – think again";
-    document.getElementById("feedback").className = "feedback no";
+    streak=0; mistakes++;
+    document.getElementById("feedback").textContent="Wrong!";
+    document.getElementById("feedback").className="feedback no";
   }
 
-  document.getElementById("streak").textContent = streak;
-  document.getElementById("mistakes").textContent = mistakes;
-  document.getElementById("best").textContent = best;
+  document.getElementById("streak").textContent=streak;
+  document.getElementById("mistakes").textContent=mistakes;
+  document.getElementById("best").textContent=best;
 
-  setTimeout(next,900);
+  setTimeout(next,800);
 }
 
 function updateTime(){
-  const s = Math.floor((Date.now()-start)/1000);
-  document.getElementById("time").textContent =
+  const s=Math.floor((Date.now()-start)/1000);
+  document.getElementById("time").textContent=
     String(Math.floor(s/60)).padStart(2,"0")+":"+
     String(s%60).padStart(2,"0");
 }
