@@ -7,91 +7,47 @@
 
 <style>
 :root{
-  --green:#22c55e;
-  --yellow:#facc15;
-  --teal:#14b8a6;
-  --purple:#a855f7;
-  --pink:#ec4899;
-  --orange:#fb923c;
-  --red:#ef4444;
-  --gray:#9ca3af;
-  --dark:#0f172a;
-  --white:#ffffff;
+  --bg:#f0fdf4;
+  --card:#ffffff;
+  --primary:#7c3aed;     /* purple */
+  --secondary:#0ea5e9;   /* blue */
+  --accent:#22c55e;      /* green */
+  --warn:#f97316;        /* orange */
+  --danger:#ef4444;
+  --muted:#e5e7eb;
+  --text:#0f172a;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
-
 body{
-  font-family:system-ui, sans-serif;
+  font-family:system-ui,sans-serif;
   background:linear-gradient(135deg,#dcfce7,#fef9c3);
-  color:var(--dark);
+  color:var(--text);
 }
 
-/* ---------- SCREENS ---------- */
+/* ---------- LAYOUT ---------- */
 .screen{
   min-height:100svh;
   display:flex;
   justify-content:center;
   align-items:center;
-  padding:16px;
+  padding:20px;
 }
 .hidden{display:none}
 
-/* ---------- START ---------- */
-.start-card{
-  background:white;
-  max-width:640px;
-  width:100%;
-  padding:32px;
-  border-radius:28px;
-  display:flex;
-  flex-direction:column;
-  gap:20px;
-  box-shadow:0 20px 40px rgba(0,0,0,.15);
-}
-.start-title{
-  text-align:center;
-  font-size:2.6rem;
-  font-weight:900;
-  color:var(--purple);
-}
-.instructions{
-  background:var(--yellow);
-  border-radius:18px;
-  padding:18px;
-  font-weight:800;
-}
-.name-input{
-  padding:16px;
-  border-radius:18px;
-  border:4px solid var(--purple);
-  font-size:1.1rem;
-  font-weight:800;
-}
-.start-btn{
-  padding:18px;
-  border-radius:20px;
-  background:var(--purple);
-  color:white;
-  font-weight:900;
-  font-size:1.4rem;
-  text-align:center;
-  cursor:pointer;
-}
-
-/* ---------- GAME ---------- */
 .app{
   max-width:1100px;
   width:100%;
-  display:flex;
-  flex-direction:column;
+  display:grid;
+  grid-template-columns:1fr;
   gap:16px;
 }
 
+/* ---------- HEADER ---------- */
 .header{
-  background:var(--purple);
+  background:var(--primary);
   color:white;
-  padding:18px;
+  padding:18px 22px;
   border-radius:20px;
   display:flex;
   justify-content:space-between;
@@ -100,198 +56,180 @@ body{
   font-size:1.1rem;
 }
 
-.pause-btn{
-  background:var(--yellow);
-  color:black;
-  padding:10px 16px;
+/* ---------- INFO PANEL ---------- */
+.info{
+  background:#fffbeb;
+  border-left:8px solid #facc15;
+  padding:14px 18px;
   border-radius:14px;
-  cursor:pointer;
-  font-weight:900;
+  font-weight:700;
+  font-size:0.95rem;
 }
 
 /* ---------- PROGRESS ---------- */
-.progress-wrap{
-  background:#e5e7eb;
-  border-radius:16px;
-  overflow:hidden;
-}
-.progress-bar{
-  height:20px;
-  background:linear-gradient(90deg,var(--green),var(--teal));
-  width:0%;
-  transition:.3s;
+.progress-box{
+  background:var(--card);
+  border-radius:18px;
+  padding:12px;
+  box-shadow:0 4px 10px rgba(0,0,0,.1);
 }
 
-/* ---------- STATS ---------- */
-.stats{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-}
-.stat{
-  background:white;
-  padding:14px;
-  border-radius:16px;
-  text-align:center;
+.progress-label{
   font-weight:900;
+  margin-bottom:6px;
+  text-align:center;
+}
+
+.progress-track{
+  height:28px;
+  background:var(--muted);
+  border-radius:14px;
+  overflow:hidden;
+  position:relative;
+}
+
+.progress-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--accent),#16a34a);
+  width:0%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-weight:900;
+  transition:.3s;
 }
 
 /* ---------- GAME CARD ---------- */
 .game{
-  background:#ecfeff;
+  background:var(--card);
+  border-radius:24px;
   padding:24px;
-  border-radius:26px;
   display:flex;
   flex-direction:column;
   gap:18px;
 }
 
 .sentence{
-  background:white;
-  border:5px solid var(--yellow);
-  border-radius:20px;
-  padding:26px;
-  font-size:1.7rem;
-  font-weight:900;
-  text-align:center;
-}
-
-.activity-label{
-  align-self:center;
-  padding:8px 20px;
+  border:4px solid #fde047;
   border-radius:18px;
-  color:white;
+  padding:22px;
+  font-size:1.6rem;
   font-weight:900;
-  font-size:1.1rem;
-}
-.choose{background:var(--green)}
-.order{background:var(--teal)}
-
-/* ---------- CHOICES ---------- */
-.choices{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-  gap:16px;
-}
-.choice{
-  padding:20px;
-  border-radius:20px;
-  font-weight:900;
-  color:white;
   text-align:center;
-  cursor:pointer;
-  font-size:1.1rem;
 }
-.c1{background:var(--green)}
-.c2{background:var(--purple)}
-.c3{background:var(--pink)}
-.c4{background:var(--yellow);color:black}
 
-/* ---------- WORD BANK ---------- */
+.mode{
+  align-self:center;
+  padding:6px 18px;
+  border-radius:999px;
+  font-weight:900;
+  color:white;
+}
+.choose{background:var(--accent)}
+.order{background:var(--secondary)}
+
+/* ---------- WORD CHIPS ---------- */
 .wordbank{
   display:flex;
   gap:14px;
-  justify-content:center;
   flex-wrap:wrap;
+  justify-content:center;
 }
 
-/* BIG COLORFUL CHIPS */
 .word{
-  padding:16px 22px;
+  background:#e0f2fe;
+  color:#0369a1;
+  padding:14px 22px;
   border-radius:999px;
   font-weight:900;
-  font-size:1.1rem;
+  font-size:1.05rem;
   cursor:pointer;
-  color:white;
-  background:linear-gradient(135deg,var(--teal),var(--purple));
-  box-shadow:0 4px 8px rgba(0,0,0,.15);
-  transition:.2s;
+  border:3px solid #7dd3fc;
+  transition:.15s;
 }
+
 .word:hover{transform:scale(1.05)}
 
-/* USED CHIPS */
 .word.used{
-  background:#e5e7eb;
-  color:#6b7280;
-  box-shadow:none;
-  transform:none;
+  background:#f1f5f9;
+  color:#94a3b8;
+  border:3px dashed #cbd5f5;
   cursor:not-allowed;
-  opacity:.6;
 }
 
 /* ---------- ANSWER ---------- */
 .answer{
   min-height:64px;
-  background:white;
-  border:4px dashed var(--teal);
+  border:4px dashed var(--secondary);
   border-radius:18px;
   display:flex;
-  justify-content:center;
   align-items:center;
+  justify-content:center;
   font-weight:900;
   font-size:1.2rem;
+  background:#f8fafc;
 }
 
-/* ---------- BUTTON ROW ---------- */
-.controls{
+/* ---------- ACTION BUTTONS ---------- */
+.actions{
   display:flex;
-  gap:14px;
+  gap:16px;
   justify-content:center;
 }
 
-/* CHECK BUTTON */
-.check{
-  background:var(--green);
-  color:white;
+.btn{
   padding:16px 26px;
   border-radius:18px;
   font-weight:900;
-  font-size:1.1rem;
   cursor:pointer;
+  font-size:1.05rem;
 }
 
-/* RESET BUTTON */
-.reset{
-  background:var(--orange);
-  color:white;
-  padding:16px 26px;
-  border-radius:18px;
-  font-weight:900;
-  font-size:1.1rem;
-  cursor:pointer;
-}
+.check{background:var(--accent);color:white}
+.reset{background:var(--warn);color:white}
 
 /* ---------- FEEDBACK ---------- */
 .feedback{
   text-align:center;
-  font-weight:900;
   font-size:1.4rem;
-  padding:14px;
-  border-radius:16px;
+  font-weight:900;
+  padding:12px;
+  border-radius:14px;
 }
 .ok{background:#dcfce7;color:#166534}
 .no{background:#fee2e2;color:#991b1b}
 
-/* ---------- WIN ---------- */
-.win{
-  background:linear-gradient(135deg,var(--yellow),var(--green));
-  font-size:2.4rem;
-  text-align:center;
-  padding:44px;
+/* ---------- START ---------- */
+.start{
+  background:var(--card);
+  padding:36px;
   border-radius:28px;
-  font-weight:900;
+  max-width:520px;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
 }
+.start h1{text-align:center;color:var(--primary)}
+.start input{
+  padding:14px;
+  border-radius:14px;
+  border:3px solid var(--primary);
+  font-weight:800;
+}
+.start .btn{background:var(--primary);color:white;text-align:center}
 </style>
 </head>
 
 <body>
 
 <div class="screen" id="startScreen">
-  <div class="start-card">
-    <div class="start-title">Be & There Be</div>
-    <div class="instructions">🎯 25 correct in a row<br>❌ One mistake = restart</div>
-    <input id="playerName" class="name-input" placeholder="Your name">
-    <div class="start-btn" id="startBtn">▶ START</div>
+  <div class="start">
+    <h1>Be & There Be</h1>
+    <p><b>Goal:</b> get <b>25 correct answers in a row</b>.</p>
+    <input id="playerName" placeholder="Your name">
+    <div class="btn" onclick="start()">▶ START</div>
   </div>
 </div>
 
@@ -299,29 +237,33 @@ body{
   <div class="app">
 
     <div class="header">
-      <div id="playerLabel"></div>
-      <div class="pause-btn" id="pauseBtn">⏸ Pause</div>
+      <div id="player"></div>
+      <div>⏸ Pause</div>
     </div>
 
-    <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
-
-    <div class="stats">
-      <div class="stat">🔥 Streak<br><span id="streak">0</span>/25</div>
-      <div class="stat">❌ Mistakes<br><span id="mistakes">0</span></div>
+    <div class="info">
+      👉 Read the sentence. <br>
+      👉 Order the blue words to build it. <br>
+      👉 Click <b>CHECK</b>. Reach <b>25 in a row</b> ⭐
     </div>
 
-    <div class="game" id="gameCard">
+    <div class="progress-box">
+      <div class="progress-label">Progress to 25</div>
+      <div class="progress-track">
+        <div class="progress-fill" id="bar">0 / 25</div>
+      </div>
+    </div>
+
+    <div class="game">
       <div class="sentence" id="sentence"></div>
-      <div class="activity-label" id="activityLabel"></div>
+      <div class="mode order">ORDER</div>
 
-      <div class="choices hidden" id="choices"></div>
+      <div class="wordbank" id="bank"></div>
+      <div class="answer" id="answer"></div>
 
-      <div class="wordbank hidden" id="wordbank"></div>
-      <div class="answer hidden" id="answer"></div>
-
-      <div class="controls hidden" id="controls">
-        <div class="check" id="checkBtn">✔ CHECK</div>
-        <div class="reset" id="resetBtn">↺ RESET</div>
+      <div class="actions">
+        <div class="btn check" onclick="check()">✔ CHECK</div>
+        <div class="btn reset" onclick="reset()">↺ RESET</div>
       </div>
 
       <div class="feedback hidden" id="feedback"></div>
@@ -331,98 +273,54 @@ body{
 </div>
 
 <script>
-const $=id=>document.getElementById(id);
-const shuffle=a=>[...a].sort(()=>Math.random()-.5);
+const bank=["there","are","students","in","the","classroom"];
+let used=[],streak=0;
 
-/* SENTENCES */
-function generateBank(){
-  const b=[],p=["classroom","park","library","school"],o=["students","chairs","books","teachers"];
-  p.forEach(x=>o.forEach(y=>{
-    b.push({type:"choose",t:`____ ${y} in the ${x}.`,a:"there are",opts:["there is","there are","there was","there were"]});
-    b.push({type:"order",t:"Order the sentence:",a:`there are ${y} in the ${x}`});
-  }));
-  return b;
-}
-const BANK=generateBank();
-
-let streak=0,mistakes=0,paused=false,current=null;
-
-$("startBtn").onclick=()=>{
-  if(!$("playerName").value.trim())return;
-  $("playerLabel").textContent="👤 "+$("playerName").value;
-  $("startScreen").classList.add("hidden");
-  $("gameScreen").classList.remove("hidden");
-  next();
-};
-
-$("pauseBtn").onclick=()=>paused=!paused;
-$("checkBtn").onclick=()=>check($("answer").textContent);
-$("resetBtn").onclick=resetOrder;
-
-function next(){
-  if(paused)return;
-  current=BANK[Math.floor(Math.random()*BANK.length)];
-  $("sentence").textContent=current.t;
-  $("activityLabel").textContent=current.type.toUpperCase();
-  $("activityLabel").className="activity-label "+current.type;
-  $("feedback").classList.add("hidden");
-  $("choices").innerHTML="";
-  $("wordbank").innerHTML="";
-  $("answer").textContent="";
-  current.type==="choose"?renderChoose():renderOrder();
+function start(){
+  player.textContent="👤 "+playerName.value;
+  startScreen.classList.add("hidden");
+  gameScreen.classList.remove("hidden");
+  load();
 }
 
-function renderChoose(){
-  show("choices"); hide("wordbank","answer","controls");
-  shuffle(current.opts).forEach(o=>{
-    const d=document.createElement("div");
-    d.className="choice";
-    d.textContent=o;
-    d.onclick=()=>check(o);
-    $("choices").appendChild(d);
-  });
-}
-
-function renderOrder(){
-  hide("choices"); show("wordbank","answer","controls");
-  shuffle(current.a.split(" ")).forEach(w=>{
+function load(){
+  bankDiv.innerHTML="";
+  answer.textContent="";
+  used=[];
+  shuffle(bank).forEach(w=>{
     const d=document.createElement("div");
     d.className="word";
     d.textContent=w;
     d.onclick=()=>{
-      if(d.classList.contains("used"))return;
+      if(used.includes(w))return;
+      used.push(w);
       d.classList.add("used");
-      $("answer").textContent+=($("answer").textContent?" ":"")+w;
+      answer.textContent+=(answer.textContent?" ":"")+w;
     };
-    $("wordbank").appendChild(d);
+    bankDiv.appendChild(d);
   });
 }
 
-function resetOrder(){
-  $("answer").textContent="";
-  document.querySelectorAll(".word").forEach(w=>w.classList.remove("used"));
-}
-
-function check(v){
-  $("feedback").classList.remove("hidden");
-  if(v===current.a){
+function check(){
+  feedback.classList.remove("hidden");
+  if(answer.textContent==="there are students in the classroom"){
     streak++;
-    $("feedback").textContent="✅ Correct!";
-    $("feedback").className="feedback ok";
-    $("progressBar").style.width=(streak/25*100)+"%";
-    setTimeout(next,900);
+    feedback.textContent="✅ Correct!";
+    feedback.className="feedback ok";
   }else{
-    streak=0;mistakes++;
-    $("feedback").textContent="❌ Try again!";
-    $("feedback").className="feedback no";
-    $("progressBar").style.width="0%";
+    streak=0;
+    feedback.textContent="❌ Try again";
+    feedback.className="feedback no";
   }
-  $("streak").textContent=streak;
-  $("mistakes").textContent=mistakes;
+  bar.style.width=(streak/25*100)+"%";
+  bar.textContent=streak+" / 25";
 }
 
-function show(...i){i.forEach(x=>$(`${x}`).classList.remove("hidden"))}
-function hide(...i){i.forEach(x=>$(`${x}`).classList.add("hidden"))}
+function reset(){
+  load();
+}
+
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
 </script>
 
 </body>
