@@ -7,18 +7,18 @@
 
 <style>
 :root{
-  --bg:#f0fdf4;
-  --card:#ffffff;
   --primary:#7c3aed;
   --choose:#22c55e;
   --order:#0ea5e9;
+  --warn:#f97316;
+  --bg:#f0fdf4;
+  --card:#ffffff;
   --chip:#e0f2fe;
   --chipBorder:#7dd3fc;
   --used:#e5e7eb;
-  --warn:#f97316;
-  --danger:#ef4444;
   --text:#0f172a;
 }
+
 *{box-sizing:border-box;margin:0;padding:0}
 body{
   font-family:system-ui,sans-serif;
@@ -224,32 +224,33 @@ body{
 
 <body>
 
+<!-- START SCREEN -->
 <div class="screen" id="startScreen">
   <div class="start">
     <h1>There Be – Grammar Practice</h1>
-    <p><b>Goal:</b> 25 correct answers in a row.</p>
-    <input id="name" placeholder="Student name">
-    <div class="btn" onclick="start()">▶ START</div>
+    <p><b>Goal:</b> 25 correct answers in a row</p>
+    <input id="nameInput" placeholder="Student name">
+    <div class="btn" id="startBtn">▶ START</div>
   </div>
 </div>
 
+<!-- GAME SCREEN -->
 <div class="screen hidden" id="gameScreen">
   <div class="app">
 
     <div class="header">
-      <div id="player"></div>
+      <div id="playerLabel"></div>
       <div>⏸ Pause</div>
     </div>
 
     <div class="info">
-      🔹 Choose the correct form OR order the sentence.<br>
-      🔹 Includes <b>WH-questions</b> (how many / where / when / why).<br>
-      🔹 Reach <b>25 in a row</b> ⭐
+      Choose the correct form OR order the sentence.<br>
+      Includes <b>WH-questions</b>.
     </div>
 
     <div class="progressBox">
       <div class="progressTrack">
-        <div class="progressFill" id="bar">0 / 25</div>
+        <div class="progressFill" id="progressFill">0 / 25</div>
       </div>
     </div>
 
@@ -259,12 +260,12 @@ body{
 
       <div class="choices hidden" id="choices"></div>
 
-      <div class="wordbank hidden" id="bank"></div>
+      <div class="wordbank hidden" id="wordbank"></div>
       <div class="answer hidden" id="answer"></div>
 
       <div class="actions hidden" id="actions">
-        <div class="btn check" onclick="check()">✔ CHECK</div>
-        <div class="btn reset" onclick="reset()">↺ RESET</div>
+        <div class="btn check" id="checkBtn">✔ CHECK</div>
+        <div class="btn reset" id="resetBtn">↺ RESET</div>
       </div>
 
       <div class="feedback hidden" id="feedback"></div>
@@ -274,8 +275,24 @@ body{
 </div>
 
 <script>
-const $=id=>document.getElementById(id);
-const shuffle=a=>[...a].sort(()=>Math.random()-.5);
+/* ---------- DOM ---------- */
+const $ = id => document.getElementById(id);
+
+const startBtn = $("startBtn");
+const nameInput = $("nameInput");
+const startScreen = $("startScreen");
+const gameScreen = $("gameScreen");
+const playerLabel = $("playerLabel");
+const sentenceBox = $("sentence");
+const modeBox = $("mode");
+const choicesBox = $("choices");
+const wordbankBox = $("wordbank");
+const answerBox = $("answer");
+const actionsBox = $("actions");
+const feedbackBox = $("feedback");
+const progressFill = $("progressFill");
+const checkBtn = $("checkBtn");
+const resetBtn = $("resetBtn");
 
 /* ---------- SENTENCE BANK (600+) ---------- */
 const places=["classroom","hall","school","park","office","kitchen","garden","library","bathroom","playground","street","cinema"];
@@ -283,7 +300,6 @@ const nouns=["students","chairs","tables","books","windows","doors","computers",
 const wh=["how many","where","when","why"];
 
 const BANK=[];
-
 places.forEach(p=>{
   nouns.forEach(n=>{
     BANK.push({type:"choose",t:`____ ${n} in the ${p}.`,a:"there are",
@@ -294,60 +310,68 @@ places.forEach(p=>{
     BANK.push({type:"order",t:"Order the question:",a:`were there ${n} in the ${p}`});
   });
 });
-
 wh.forEach(w=>{
   places.forEach(p=>{
     BANK.push({type:"order",t:"Order the WH-question:",a:`${w} students were there in the ${p}`});
   });
 });
 
-/* ---------- GAME STATE ---------- */
-let streak=0,current=null;
+/* ---------- STATE ---------- */
+let streak = 0;
+let current = null;
 
-function start(){
-  player.textContent="👤 "+name.value;
+/* ---------- HELPERS ---------- */
+const shuffle = a => [...a].sort(()=>Math.random()-.5);
+
+/* ---------- START ---------- */
+startBtn.onclick = () => {
+  if(!nameInput.value.trim()) return;
+  playerLabel.textContent = "👤 " + nameInput.value;
   startScreen.classList.add("hidden");
   gameScreen.classList.remove("hidden");
   next();
-}
+};
 
+/* ---------- GAME FLOW ---------- */
 function next(){
-  current=BANK[Math.floor(Math.random()*BANK.length)];
-  sentence.textContent=current.t;
-  feedback.classList.add("hidden");
-  bar.textContent=streak+" / 25";
-  bar.style.width=(streak/25*100)+"%";
+  current = BANK[Math.floor(Math.random()*BANK.length)];
+  sentenceBox.textContent = current.t;
+  feedbackBox.classList.add("hidden");
 
-  current.type==="choose"?renderChoose():renderOrder();
+  progressFill.textContent = streak + " / 25";
+  progressFill.style.width = (streak/25*100) + "%";
+
+  current.type === "choose" ? renderChoose() : renderOrder();
 }
 
 function renderChoose(){
-  mode.textContent="CHOOSE";
-  mode.className="mode choose";
-  choices.innerHTML="";
-  choices.classList.remove("hidden");
-  bank.classList.add("hidden");
-  answer.classList.add("hidden");
-  actions.classList.add("hidden");
+  modeBox.textContent = "CHOOSE";
+  modeBox.className = "mode choose";
+  choicesBox.innerHTML="";
+  choicesBox.classList.remove("hidden");
+  wordbankBox.classList.add("hidden");
+  answerBox.classList.add("hidden");
+  actionsBox.classList.add("hidden");
 
   shuffle(current.opts).forEach((o,i)=>{
     const d=document.createElement("div");
     d.className="choice c"+(i+1);
     d.textContent=o;
     d.onclick=()=>check(o);
-    choices.appendChild(d);
+    choicesBox.appendChild(d);
   });
 }
 
 function renderOrder(){
-  mode.textContent="ORDER";
-  mode.className="mode order";
-  choices.classList.add("hidden");
-  bank.classList.remove("hidden");
-  answer.classList.remove("hidden");
-  actions.classList.remove("hidden");
-  bank.innerHTML="";
-  answer.textContent="";
+  modeBox.textContent = "ORDER";
+  modeBox.className = "mode order";
+  choicesBox.classList.add("hidden");
+  wordbankBox.classList.remove("hidden");
+  answerBox.classList.remove("hidden");
+  actionsBox.classList.remove("hidden");
+
+  wordbankBox.innerHTML="";
+  answerBox.textContent="";
 
   shuffle(current.a.split(" ")).forEach(w=>{
     const d=document.createElement("div");
@@ -356,25 +380,27 @@ function renderOrder(){
     d.onclick=()=>{
       if(d.classList.contains("used"))return;
       d.classList.add("used");
-      answer.textContent+=(answer.textContent?" ":"")+w;
+      answerBox.textContent+=(answerBox.textContent?" ":"")+w;
     };
-    bank.appendChild(d);
+    wordbankBox.appendChild(d);
   });
 }
 
-function reset(){ renderOrder(); }
+resetBtn.onclick = renderOrder;
+checkBtn.onclick = () => check(answerBox.textContent);
 
-function check(v=answer.textContent){
-  feedback.classList.remove("hidden");
-  if(v===current.a){
+/* ---------- CHECK ---------- */
+function check(val){
+  feedbackBox.classList.remove("hidden");
+  if(val === current.a){
     streak++;
-    feedback.textContent="✅ Correct!";
-    feedback.className="feedback ok";
-    setTimeout(next,900);
+    feedbackBox.textContent="✅ Correct!";
+    feedbackBox.className="feedback ok";
+    setTimeout(next,800);
   }else{
     streak=0;
-    feedback.textContent="❌ Try again";
-    feedback.className="feedback no";
+    feedbackBox.textContent="❌ Try again";
+    feedbackBox.className="feedback no";
   }
 }
 </script>
