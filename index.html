@@ -22,8 +22,6 @@ body{
   background:linear-gradient(135deg,#dcfce7,#fef9c3);
   color:var(--dark);
 }
-
-/* ---------- SCREENS ---------- */
 .screen{
   min-height:100svh;
   display:flex;
@@ -33,7 +31,7 @@ body{
 }
 .hidden{display:none}
 
-/* ---------- START ---------- */
+/* START */
 .start-card{
   background:var(--white);
   max-width:640px;
@@ -43,7 +41,6 @@ body{
   display:flex;
   flex-direction:column;
   gap:20px;
-  box-shadow:0 20px 40px rgba(0,0,0,.15);
 }
 .start-title{
   text-align:center;
@@ -74,7 +71,7 @@ body{
   cursor:pointer;
 }
 
-/* ---------- GAME ---------- */
+/* GAME */
 .app{
   max-width:1100px;
   width:100%;
@@ -89,11 +86,8 @@ body{
   border-radius:18px;
   display:flex;
   justify-content:space-between;
-  align-items:center;
   font-weight:900;
 }
-
-/* ---------- PROGRESS ---------- */
 .progress-wrap{
   background:#e5e7eb;
   border-radius:14px;
@@ -103,10 +97,7 @@ body{
   height:20px;
   background:linear-gradient(90deg,var(--green),var(--teal));
   width:0%;
-  transition:.3s;
 }
-
-/* ---------- STATS ---------- */
 .stats{
   display:grid;
   grid-template-columns:repeat(2,1fr);
@@ -119,8 +110,6 @@ body{
   text-align:center;
   font-weight:900;
 }
-
-/* ---------- GAME CARD ---------- */
 .game{
   background:#ecfeff;
   padding:22px;
@@ -166,15 +155,12 @@ body{
 .c3{background:var(--pink)}
 .c4{background:var(--yellow);color:black}
 
-/* ---------- WORD BANK (IMPROVED VISUALS) ---------- */
 .wordbank{
   display:flex;
   gap:12px;
   justify-content:center;
   flex-wrap:wrap;
 }
-
-/* AVAILABLE WORDS */
 .word{
   background:linear-gradient(135deg,#38bdf8,#14b8a6);
   color:#0f172a;
@@ -183,23 +169,14 @@ body{
   font-weight:900;
   font-size:1.3rem;
   cursor:pointer;
-  box-shadow:0 4px 10px rgba(0,0,0,.25);
-  transition:.15s;
 }
-.word:hover{transform:scale(1.05)}
-
-/* USED WORDS */
 .word.used{
   background:#e5e7eb;
   color:#6b7280;
   border:3px dashed #9ca3af;
-  box-shadow:none;
-  transform:none;
   cursor:not-allowed;
   opacity:.6;
 }
-
-/* ---------- ANSWER ---------- */
 .answer{
   min-height:64px;
   background:white;
@@ -219,8 +196,6 @@ body{
   font-weight:900;
   cursor:pointer;
 }
-
-/* ---------- FEEDBACK ---------- */
 .feedback{
   text-align:center;
   font-weight:900;
@@ -244,7 +219,7 @@ body{
       ❌ Any mistake resets the streak
     </div>
     <input id="playerName" class="name-input" placeholder="Enter your name">
-    <div class="start-btn" onclick="startGame()">START</div>
+    <div class="start-btn" id="startBtn">START</div>
   </div>
 </div>
 
@@ -281,9 +256,25 @@ body{
 </div>
 
 <script>
-/* ===============================
-   SENTENCE BANK (≈600)
-   =============================== */
+/* ===== REAL DOM REFERENCES (FIX) ===== */
+const startScreen = document.getElementById("startScreen");
+const gameScreen = document.getElementById("gameScreen");
+const playerName = document.getElementById("playerName");
+const playerLabel = document.getElementById("playerLabel");
+const startBtn = document.getElementById("startBtn");
+
+const sentence = document.getElementById("sentence");
+const activityLabel = document.getElementById("activityLabel");
+const choices = document.getElementById("choices");
+const wordbank = document.getElementById("wordbank");
+const answer = document.getElementById("answer");
+const checkBtn = document.getElementById("checkBtn");
+const feedback = document.getElementById("feedback");
+const progressBar = document.getElementById("progressBar");
+const streakSpan = document.getElementById("streak");
+const mistakesSpan = document.getElementById("mistakes");
+
+/* ===== SENTENCE BANK ===== */
 function generateBank(){
   const bank=[];
   const places=["classroom","hall","school","park","office","kitchen","garden","library","bathroom","playground"];
@@ -309,13 +300,13 @@ function generateBank(){
 
   return bank;
 }
-
 const BANK = generateBank();
 
-/* ---------- GAME LOGIC (ORIGINAL, STABLE) ---------- */
+/* ===== GAME LOGIC (UNCHANGED) ===== */
 let streak=0, mistakes=0, current;
+const shuffle=a=>a.sort(()=>Math.random()-.5);
 
-function shuffle(a){return a.sort(()=>Math.random()-.5);}
+startBtn.onclick = startGame;
 
 function startGame(){
   if(!playerName.value.trim()) return;
@@ -392,9 +383,6 @@ function check(v){
   progressBar.style.width=(streak/25*100)+"%";
   setTimeout(next,1200);
 }
-
-const streakSpan=document.getElementById("streak");
-const mistakesSpan=document.getElementById("mistakes");
 </script>
 
 </body>
