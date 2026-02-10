@@ -6,6 +6,7 @@
 <title>Be & There Be – Streak to 25</title>
 
 <style>
+/* --- YOUR CSS (unchanged, cleaned) --- */
 :root{
   --green:#22c55e;
   --yellow:#facc15;
@@ -256,25 +257,24 @@ body{
 </div>
 
 <script>
-/* ===== REAL DOM REFERENCES (FIX) ===== */
-const startScreen = document.getElementById("startScreen");
-const gameScreen = document.getElementById("gameScreen");
-const playerName = document.getElementById("playerName");
-const playerLabel = document.getElementById("playerLabel");
-const startBtn = document.getElementById("startBtn");
+/* CLEANED JS — identical logic, no broken characters */
+const startScreen=document.getElementById("startScreen");
+const gameScreen=document.getElementById("gameScreen");
+const playerName=document.getElementById("playerName");
+const playerLabel=document.getElementById("playerLabel");
+const startBtn=document.getElementById("startBtn");
 
-const sentence = document.getElementById("sentence");
-const activityLabel = document.getElementById("activityLabel");
-const choices = document.getElementById("choices");
-const wordbank = document.getElementById("wordbank");
-const answer = document.getElementById("answer");
-const checkBtn = document.getElementById("checkBtn");
-const feedback = document.getElementById("feedback");
-const progressBar = document.getElementById("progressBar");
-const streakSpan = document.getElementById("streak");
-const mistakesSpan = document.getElementById("mistakes");
+const sentence=document.getElementById("sentence");
+const activityLabel=document.getElementById("activityLabel");
+const choices=document.getElementById("choices");
+const wordbank=document.getElementById("wordbank");
+const answer=document.getElementById("answer");
+const checkBtn=document.getElementById("checkBtn");
+const feedback=document.getElementById("feedback");
+const progressBar=document.getElementById("progressBar");
+const streakSpan=document.getElementById("streak");
+const mistakesSpan=document.getElementById("mistakes");
 
-/* ===== SENTENCE BANK ===== */
 function generateBank(){
   const bank=[];
   const places=["classroom","hall","school","park","office","kitchen","garden","library","bathroom","playground"];
@@ -300,13 +300,12 @@ function generateBank(){
 
   return bank;
 }
-const BANK = generateBank();
+const BANK=generateBank();
 
-/* ===== GAME LOGIC (UNCHANGED) ===== */
 let streak=0, mistakes=0, current;
 const shuffle=a=>a.sort(()=>Math.random()-.5);
 
-startBtn.onclick = startGame;
+startBtn.onclick=startGame;
 
 function startGame(){
   if(!playerName.value.trim()) return;
@@ -322,7 +321,7 @@ function next(){
       `<div class="feedback ok">⭐ YOU WON! ⭐<br>25 IN A ROW!</div>`;
     return;
   }
-  current = shuffle(BANK)[0];
+  current=shuffle(BANK)[0];
   sentence.textContent=current.t;
   activityLabel.textContent=current.type.toUpperCase();
   activityLabel.className="activity-label "+current.type;
