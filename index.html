@@ -5,40 +5,49 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Be & There Be – Streak to 25</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
 <style>
 :root{
-  --green:#22c55e;
-  --yellow:#facc15;
-  --teal:#14b8a6;
-  --purple:#7c3aed;
-  --pink:#ec4899;
+  --primary:#6366f1;
+  --secondary:#0f172a;
+  --accent:#22c55e;
+  --danger:#ef4444;
   --bg:#f8fafc;
-  --dark:#0f172a;
   --white:#ffffff;
+  --card:#ffffff;
+  --chip:#e0f2fe;
+  --chip-text:#0c4a6e;
 }
+
 *{box-sizing:border-box;margin:0;padding:0}
 body{
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  background:linear-gradient(135deg,#dcfce7,#fef9c3);
-  color:var(--dark);
+  font-family:"Poppins",sans-serif;
+  background:linear-gradient(135deg,#eef2ff,#fef9c3);
+  color:var(--secondary);
+  padding:0;
+  margin:0;
 }
+
+/* Screens */
 .screen{
-  min-height:100svh;
+  min-height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  padding:16px;
+  padding:20px;
 }
 .hidden{display:none}
 
-/* START */
+/* Start Screen */
 .start-card{
   background:var(--white);
-  max-width:640px;
+  max-width:600px;
   width:100%;
   padding:32px;
-  border-radius:26px;
-  box-shadow:0 18px 40px rgba(15,23,42,.18);
+  border-radius:24px;
+  box-shadow:0 10px 40px rgba(0,0,0,.15);
   display:flex;
   flex-direction:column;
   gap:20px;
@@ -46,38 +55,40 @@ body{
 .start-title{
   text-align:center;
   font-size:2.4rem;
-  font-weight:900;
-  color:var(--purple);
+  font-weight:800;
+  color:var(--primary);
 }
 .subtitle{
   text-align:center;
   font-weight:600;
-  color:#4b5563;
+  color:#475569;
 }
 .instructions{
   background:#fef3c7;
-  border-radius:18px;
+  border-radius:16px;
   padding:18px;
-  font-weight:700;
+  font-weight:600;
   border:2px dashed #f59e0b;
-  font-size:.95rem;
+  font-size:1rem;
 }
 .name-input{
   padding:14px;
-  border-radius:16px;
-  border:2px solid var(--purple);
-  font-weight:700;
+  border-radius:14px;
+  border:2px solid var(--primary);
+  font-weight:600;
   outline:none;
 }
 .name-input:focus{
-  box-shadow:0 0 0 3px rgba(124,58,237,.25);
+  box-shadow:0 0 0 3px rgba(99,102,241,.25);
 }
+
+/* Buttons */
 .btn{
   padding:14px 18px;
-  border-radius:18px;
-  background:var(--purple);
+  border-radius:14px;
+  background:var(--primary);
   color:white;
-  font-weight:800;
+  font-weight:700;
   font-size:1.1rem;
   text-align:center;
   cursor:pointer;
@@ -86,57 +97,53 @@ body{
   align-items:center;
   justify-content:center;
   gap:8px;
-  transition:transform .08s ease,box-shadow .08s ease,background .15s ease;
+  transition:transform .08s ease,box-shadow .08s ease;
 }
 .btn:hover{
-  transform:translateY(-1px);
-  box-shadow:0 10px 20px rgba(124,58,237,.35);
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(99,102,241,.35);
 }
-.btn:active{
-  transform:translateY(0);
-  box-shadow:none;
-}
-.btn-secondary{
-  background:#0f172a;
-}
-.btn-danger{
-  background:var(--pink);
-}
+.btn-secondary{background:var(--secondary)}
+.btn-danger{background:var(--danger)}
+.btn-music{background:#10b981}
 
-/* GAME */
+/* Game Layout */
 .app{
-  max-width:1100px;
+  max-width:900px;
   width:100%;
   display:flex;
   flex-direction:column;
   gap:18px;
 }
 .header{
-  background:var(--purple);
+  background:var(--primary);
   color:white;
-  padding:18px;
-  border-radius:18px;
+  padding:16px;
+  border-radius:16px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  font-weight:800;
-  box-shadow:0 14px 30px rgba(88,28,135,.35);
+  font-weight:700;
 }
 .header-right{
   display:flex;
   gap:10px;
 }
+
+/* Progress */
 .progress-wrap{
-  background:#e5e7eb;
-  border-radius:14px;
+  background:#e2e8f0;
+  border-radius:12px;
   overflow:hidden;
 }
 .progress-bar{
-  height:20px;
-  background:linear-gradient(90deg,var(--green),var(--teal));
+  height:18px;
+  background:linear-gradient(90deg,var(--accent),#14b8a6);
   width:0%;
   transition:width .3s ease;
 }
+
+/* Stats */
 .stats{
   display:grid;
   grid-template-columns:repeat(2,1fr);
@@ -145,27 +152,29 @@ body{
 .stat{
   background:var(--white);
   padding:12px;
-  border-radius:14px;
+  border-radius:12px;
   text-align:center;
-  font-weight:800;
-  box-shadow:0 6px 14px rgba(15,23,42,.08);
+  font-weight:700;
+  box-shadow:0 4px 12px rgba(0,0,0,.08);
 }
+
+/* Game Card */
 .game{
-  background:#ecfeff;
+  background:var(--card);
   padding:22px;
-  border-radius:22px;
+  border-radius:20px;
   display:flex;
   flex-direction:column;
   gap:16px;
-  box-shadow:0 18px 40px rgba(8,47,73,.18);
+  box-shadow:0 10px 30px rgba(0,0,0,.15);
 }
 .sentence{
   background:white;
-  border:4px solid var(--yellow);
-  border-radius:18px;
-  padding:24px;
-  font-size:1.5rem;
-  font-weight:900;
+  border:3px solid var(--primary);
+  border-radius:16px;
+  padding:20px;
+  font-size:1.4rem;
+  font-weight:700;
   text-align:center;
 }
 .activity-label{
@@ -173,113 +182,100 @@ body{
   padding:6px 16px;
   border-radius:999px;
   color:white;
-  font-weight:900;
+  font-weight:700;
   font-size:.9rem;
-  letter-spacing:.06em;
 }
-.choose{background:var(--green)}
-.order{background:var(--teal)}
+.choose{background:var(--accent)}
+.order{background:#14b8a6}
 
 .game-instructions{
   background:#e0f2fe;
-  border-radius:16px;
-  padding:12px 16px;
-  font-size:.9rem;
+  border-radius:12px;
+  padding:12px;
+  font-size:.95rem;
   font-weight:600;
   color:#0f172a;
   border:1px dashed #38bdf8;
 }
-.game-instructions b{
-  color:#0369a1;
-}
 
+/* Choices */
 .choices{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
   gap:14px;
 }
 .choice{
-  padding:18px;
-  border-radius:16px;
-  font-weight:900;
+  padding:16px;
+  border-radius:14px;
+  font-weight:700;
   color:white;
   text-align:center;
   cursor:pointer;
-  box-shadow:0 10px 20px rgba(15,23,42,.18);
-  transition:transform .08s ease,box-shadow .08s ease,filter .08s ease;
+  box-shadow:0 6px 16px rgba(0,0,0,.15);
+  transition:transform .08s ease;
 }
 .choice:hover{
   transform:translateY(-2px);
-  box-shadow:0 14px 26px rgba(15,23,42,.25);
-  filter:brightness(1.05);
 }
-.c1{background:var(--green)}
-.c2{background:var(--purple)}
-.c3{background:var(--pink)}
-.c4{background:var(--yellow);color:black}
+.c1{background:#6366f1}
+.c2{background:#7c3aed}
+.c3{background:#ec4899}
+.c4{background:#facc15;color:black}
 
+/* Wordbank */
 .wordbank{
   display:flex;
-  gap:12px;
+  gap:10px;
   justify-content:center;
   flex-wrap:wrap;
 }
 .word{
-  background:linear-gradient(135deg,#38bdf8,#14b8a6);
-  color:#0f172a;
-  padding:12px 22px;
+  background:var(--chip);
+  color:var(--chip-text);
+  padding:10px 18px;
   border-radius:999px;
-  font-weight:800;
-  font-size:1.1rem;
+  font-weight:700;
+  font-size:1rem;
   cursor:pointer;
-  box-shadow:0 10px 20px rgba(15,23,42,.18);
-  transition:transform .08s ease,box-shadow .08s ease,filter .08s ease;
-}
-.word:hover{
-  transform:translateY(-2px);
-  box-shadow:0 14px 26px rgba(15,23,42,.25);
-  filter:brightness(1.05);
+  border:2px solid #bae6fd;
 }
 .word.used{
-  background:#e5e7eb;
-  color:#6b7280;
-  border:3px dashed #9ca3af;
+  background:#e2e8f0;
+  color:#64748b;
+  border:2px dashed #94a3b8;
   cursor:not-allowed;
-  opacity:.6;
-  box-shadow:none;
 }
+
+/* Answer */
 .answer{
-  min-height:64px;
+  min-height:60px;
   background:white;
-  border:4px dashed var(--teal);
-  border-radius:16px;
+  border:3px dashed #14b8a6;
+  border-radius:14px;
   display:flex;
   justify-content:center;
   align-items:center;
-  font-weight:900;
-  font-size:1.3rem;
-  padding:8px 14px;
+  font-weight:700;
+  font-size:1.2rem;
+  padding:8px;
 }
-.actions-row{
-  display:flex;
-  gap:10px;
-  justify-content:center;
-}
+
+/* Feedback */
 .feedback{
   text-align:center;
-  font-weight:900;
+  font-weight:800;
   font-size:1.2rem;
   padding:12px;
-  border-radius:14px;
+  border-radius:12px;
 }
 .ok{background:#dcfce7;color:#166534}
 .no{background:#fee2e2;color:#991b1b}
 
-/* PAUSE OVERLAY */
+/* Pause Overlay */
 .pause-overlay{
   position:fixed;
   inset:0;
-  background:rgba(15,23,42,.55);
+  background:rgba(0,0,0,.45);
   display:flex;
   justify-content:center;
   align-items:center;
@@ -287,11 +283,11 @@ body{
 }
 .pause-box{
   background:white;
-  padding:24px 28px;
-  border-radius:20px;
-  max-width:320px;
+  padding:24px;
+  border-radius:16px;
+  max-width:300px;
   text-align:center;
-  box-shadow:0 18px 40px rgba(15,23,42,.45);
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
   display:flex;
   flex-direction:column;
   gap:14px;
@@ -301,31 +297,33 @@ body{
 
 <body>
 
-<!-- START -->
+<!-- START SCREEN -->
 <div class="screen" id="startScreen">
   <div class="start-card">
     <div class="start-title">Be & There Be</div>
     <div class="subtitle">Build a perfect streak of 25 correct answers</div>
+
     <div class="instructions">
       🎯 <b>Goal:</b> Get <b>25 correct answers in a row</b>.<br>
-      ✅ If your answer is correct, your streak goes up.<br>
-      ❌ If your answer is wrong, your streak goes back to <b>0</b>.<br>
-      💡 You will practise <b>there is / there are / there was / there were</b>, affirmative, negative and WH‑questions.
+      💡 Practise <b>there is / there are / there was / there were</b>.<br>
+      🧠 Affirmative, negative & WH‑questions.
     </div>
+
     <input id="playerName" class="name-input" placeholder="Write your name here">
     <button class="btn" id="startBtn">🚀 Start game</button>
   </div>
 </div>
 
-<!-- GAME -->
+<!-- GAME SCREEN -->
 <div class="screen hidden" id="gameScreen">
   <div class="app">
 
     <div class="header">
       <div id="playerLabel"></div>
       <div class="header-right">
-        <button class="btn btn-secondary" id="pauseBtn">⏸ Pause</button>
-        <button class="btn btn-danger" id="resetBtn">🔁 Reset</button>
+        <button class="btn-music" id="musicBtn">🎵</button>
+        <button class="btn-secondary" id="pauseBtn">⏸</button>
+        <button class="btn-danger" id="resetBtn">🔁</button>
       </div>
     </div>
 
@@ -342,17 +340,15 @@ body{
       <div class="sentence" id="sentence"></div>
       <div class="activity-label choose" id="activityLabel"></div>
 
-      <div class="game-instructions" id="modeInstructions">
-        <b>CHOOSE:</b> Click the correct option to complete the sentence.
-      </div>
+      <div class="game-instructions" id="modeInstructions"></div>
 
       <div class="choices hidden" id="choices"></div>
       <div class="wordbank hidden" id="wordbank"></div>
       <div class="answer hidden" id="answer"></div>
 
       <div class="actions-row">
-        <button class="btn hidden" id="checkBtn">✅ Check</button>
-        <button class="btn btn-danger hidden" id="undoBtn">↩ Undo</button>
+        <button class="btn hidden" id="checkBtn">Check</button>
+        <button class="btn-secondary hidden" id="undoBtn">Undo</button>
       </div>
 
       <div class="feedback hidden" id="feedback"></div>
@@ -366,13 +362,17 @@ body{
   <div class="pause-box">
     <div style="font-size:1.3rem;font-weight:800;">Game paused</div>
     <div style="font-size:.95rem;color:#4b5563;">
-      Take a breath. When you are ready, click “Continue” to keep playing.
+      Take a breath. When you are ready, click “Continue”.
     </div>
     <button class="btn" id="continueBtn">▶ Continue</button>
   </div>
 </div>
 
+<script src="sentences.js"></script>
+
 <script>
+/* --- GAME LOGIC (igual que tu versión, pero más limpia) --- */
+
 const startScreen=document.getElementById("startScreen");
 const gameScreen=document.getElementById("gameScreen");
 const playerName=document.getElementById("playerName");
@@ -396,130 +396,19 @@ const pauseBtn=document.getElementById("pauseBtn");
 const resetBtn=document.getElementById("resetBtn");
 const pauseOverlay=document.getElementById("pauseOverlay");
 const continueBtn=document.getElementById("continueBtn");
-
-function generateBank(){
-  const bank=[];
-  const places=[
-    "in the classroom",
-    "in the hall",
-    "in the school",
-    "in the park",
-    "in the office",
-    "in the kitchen",
-    "in the garden",
-    "in the library",
-    "in the bathroom",
-    "in the playground"
-  ];
-  const nouns=[
-    {phrase:"some students", base:"students"},
-    {phrase:"any students", base:"students"},
-    {phrase:"some children", base:"children"},
-    {phrase:"any children", base:"children"},
-    {phrase:"some teachers", base:"teachers"},
-    {phrase:"any teachers", base:"teachers"},
-    {phrase:"some books", base:"books"},
-    {phrase:"any books", base:"books"},
-    {phrase:"many chairs", base:"chairs"},
-    {phrase:"many tables", base:"tables"},
-    {phrase:"some windows", base:"windows"},
-    {phrase:"any windows", base:"windows"},
-    {phrase:"some computers", base:"computers"},
-    {phrase:"any computers", base:"computers"},
-    {phrase:"some bags", base:"bags"}
-  ];
-  const whWords=["How many","Where","When","Why"];
-
-  // PRESENT: affirmative / negative / yes-no questions
-  places.forEach(p=>{
-    nouns.forEach(n=>{
-      // Affirmative choose
-      bank.push({
-        type:"choose",
-        t:`____ ${n.phrase} ${p}.`,
-        a:"There are",
-        opts:["There is","There are","There was","There were"]
-      });
-      // Negative choose
-      bank.push({
-        type:"choose",
-        t:`____ any ${n.base} ${p}.`,
-        a:"There aren't",
-        opts:["There isn't","There aren't","There wasn't","There weren't"]
-      });
-      // Yes/No question order
-      bank.push({
-        type:"order",
-        t:"Order the question:",
-        a:`Are there any ${n.base} ${p}?`
-      });
-      // Affirmative order
-      bank.push({
-        type:"order",
-        t:"Order the sentence:",
-        a:`There are some ${n.base} ${p}.`
-      });
-    });
-  });
-
-  // PAST: affirmative / negative / yes-no questions
-  places.forEach(p=>{
-    nouns.forEach(n=>{
-      bank.push({
-        type:"choose",
-        t:`Yesterday, ____ many ${n.base} ${p}.`,
-        a:"there were",
-        opts:["there was","there were","there is","there are"]
-      });
-      bank.push({
-        type:"choose",
-        t:`Last week, ____ any ${n.base} ${p}.`,
-        a:"there weren't",
-        opts:["there wasn't","there weren't","there isn't","there aren't"]
-      });
-      bank.push({
-        type:"order",
-        t:"Order the question:",
-        a:`Were there any ${n.base} ${p}?`
-      });
-      bank.push({
-        type:"order",
-        t:"Order the sentence:",
-        a:`There were some ${n.base} ${p}.`
-      });
-    });
-  });
-
-  // WH-questions with be / there be (past)
-  whWords.forEach(w=>{
-    places.forEach(p=>{
-      bank.push({
-        type:"order",
-        t:"Order the WH-question:",
-        a:`${w} students were there ${p}?`
-      });
-    });
-  });
-
-  // WH-questions with be / there be (present)
-  whWords.forEach(w=>{
-    places.forEach(p=>{
-      bank.push({
-        type:"order",
-        t:"Order the WH-question:",
-        a:`${w} students are there ${p}?`
-      });
-    });
-  });
-
-  return bank;
-}
-
-const BANK=generateBank(); // 300+ items por combinatoria
+const musicBtn=document.getElementById("musicBtn");
 
 let streak=0, mistakes=0, current;
 let selectedWords=[];
 const shuffle=a=>a.sort(()=>Math.random()-.5);
+
+let music=new Audio("music.mp3");
+music.loop=true;
+
+musicBtn.onclick=()=>{
+  if(music.paused){ music.play(); musicBtn.textContent="🔊"; }
+  else{ music.pause(); musicBtn.textContent="🎵"; }
+};
 
 startBtn.onclick=startGame;
 
@@ -528,11 +417,10 @@ function startGame(){
   playerLabel.textContent="👤 "+playerName.value;
   startScreen.classList.add("hidden");
   gameScreen.classList.remove("hidden");
-  progressBar.style.width="0%";
-  streak=0;
-  mistakes=0;
+  streak=0; mistakes=0;
   streakSpan.textContent="0";
   mistakesSpan.textContent="0";
+  progressBar.style.width="0%";
   next();
 }
 
@@ -542,24 +430,26 @@ function next(){
       `<div class="feedback ok">⭐ YOU WON! ⭐<br>You reached 25 correct answers in a row.</div>`;
     return;
   }
+
   current=shuffle(BANK)[0];
+
   sentence.textContent=current.t;
-  activityLabel.textContent=current.type==="choose"?"CHOOSE THE CORRECT OPTION":"ORDER THE WORDS";
+  activityLabel.textContent=current.type==="choose"?"CHOOSE":"ORDER";
   activityLabel.className="activity-label "+current.type;
+
   modeInstructions.innerHTML=
     current.type==="choose"
-      ? "<b>CHOOSE:</b> Click the correct option to complete the sentence."
-      : "<b>ORDER:</b> Click the words in the correct order to build the sentence or question.";
+      ? "<b>CHOOSE:</b> Click the correct option."
+      : "<b>ORDER:</b> Click the words in the correct order.";
+
   feedback.classList.add("hidden");
   choices.innerHTML="";
   wordbank.innerHTML="";
   answer.textContent="";
   selectedWords=[];
-  if(current.type==="choose"){
-    renderChoose();
-  }else{
-    renderOrder();
-  }
+
+  if(current.type==="choose") renderChoose();
+  else renderOrder();
 }
 
 function renderChoose(){
@@ -628,17 +518,11 @@ function check(v){
   setTimeout(next,1200);
 }
 
-pauseBtn.onclick=()=>{
-  pauseOverlay.classList.remove("hidden");
-};
-
-continueBtn.onclick=()=>{
-  pauseOverlay.classList.add("hidden");
-};
+pauseBtn.onclick=()=>pauseOverlay.classList.remove("hidden");
+continueBtn.onclick=()=>pauseOverlay.classList.add("hidden");
 
 resetBtn.onclick=()=>{
-  streak=0;
-  mistakes=0;
+  streak=0; mistakes=0;
   streakSpan.textContent="0";
   mistakesSpan.textContent="0";
   progressBar.style.width="0%";
