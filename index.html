@@ -3,27 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Be & There Be – Streak to 25</title>
+<title>There Be – Grammar Practice (Streak to 25)</title>
 
 <style>
 :root{
   --bg:#f0fdf4;
   --card:#ffffff;
-  --primary:#7c3aed;     /* purple */
-  --secondary:#0ea5e9;   /* blue */
-  --accent:#22c55e;      /* green */
-  --warn:#f97316;        /* orange */
+  --primary:#7c3aed;
+  --choose:#22c55e;
+  --order:#0ea5e9;
+  --chip:#e0f2fe;
+  --chipBorder:#7dd3fc;
+  --used:#e5e7eb;
+  --warn:#f97316;
   --danger:#ef4444;
-  --muted:#e5e7eb;
   --text:#0f172a;
 }
-
 *{box-sizing:border-box;margin:0;padding:0}
 body{
   font-family:system-ui,sans-serif;
   background:linear-gradient(135deg,#dcfce7,#fef9c3);
   color:var(--text);
 }
+.hidden{display:none}
 
 /* ---------- LAYOUT ---------- */
 .screen{
@@ -33,74 +35,87 @@ body{
   align-items:center;
   padding:20px;
 }
-.hidden{display:none}
-
 .app{
   max-width:1100px;
   width:100%;
-  display:grid;
-  grid-template-columns:1fr;
+  display:flex;
+  flex-direction:column;
   gap:16px;
+}
+
+/* ---------- START ---------- */
+.start{
+  background:var(--card);
+  padding:32px;
+  border-radius:24px;
+  max-width:520px;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+.start h1{text-align:center;color:var(--primary)}
+.start input{
+  padding:14px;
+  border-radius:14px;
+  border:3px solid var(--primary);
+  font-weight:800;
+}
+.start .btn{
+  background:var(--primary);
+  color:white;
+  padding:16px;
+  border-radius:16px;
+  font-weight:900;
+  text-align:center;
+  cursor:pointer;
 }
 
 /* ---------- HEADER ---------- */
 .header{
   background:var(--primary);
   color:white;
-  padding:18px 22px;
-  border-radius:20px;
+  padding:16px 20px;
+  border-radius:18px;
   display:flex;
   justify-content:space-between;
-  align-items:center;
   font-weight:900;
-  font-size:1.1rem;
 }
 
-/* ---------- INFO PANEL ---------- */
+/* ---------- INFO ---------- */
 .info{
   background:#fffbeb;
   border-left:8px solid #facc15;
-  padding:14px 18px;
+  padding:12px 16px;
   border-radius:14px;
   font-weight:700;
-  font-size:0.95rem;
 }
 
 /* ---------- PROGRESS ---------- */
-.progress-box{
+.progressBox{
   background:var(--card);
-  border-radius:18px;
   padding:12px;
-  box-shadow:0 4px 10px rgba(0,0,0,.1);
+  border-radius:18px;
 }
-
-.progress-label{
-  font-weight:900;
-  margin-bottom:6px;
-  text-align:center;
-}
-
-.progress-track{
-  height:28px;
-  background:var(--muted);
-  border-radius:14px;
+.progressTrack{
+  height:30px;
+  background:#e5e7eb;
+  border-radius:15px;
   overflow:hidden;
-  position:relative;
 }
-
-.progress-fill{
+.progressFill{
   height:100%;
-  background:linear-gradient(90deg,var(--accent),#16a34a);
   width:0%;
+  background:linear-gradient(90deg,#22c55e,#16a34a);
+  color:white;
+  font-weight:900;
   display:flex;
   align-items:center;
   justify-content:center;
-  color:white;
-  font-weight:900;
   transition:.3s;
 }
 
-/* ---------- GAME CARD ---------- */
+/* ---------- GAME ---------- */
 .game{
   background:var(--card);
   border-radius:24px;
@@ -109,7 +124,6 @@ body{
   flex-direction:column;
   gap:18px;
 }
-
 .sentence{
   border:4px solid #fde047;
   border-radius:18px;
@@ -118,7 +132,6 @@ body{
   font-weight:900;
   text-align:center;
 }
-
 .mode{
   align-self:center;
   padding:6px 18px;
@@ -126,67 +139,74 @@ body{
   font-weight:900;
   color:white;
 }
-.choose{background:var(--accent)}
-.order{background:var(--secondary)}
+.choose{background:var(--choose)}
+.order{background:var(--order)}
 
-/* ---------- WORD CHIPS ---------- */
+/* ---------- CHOOSE ---------- */
+.choices{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:14px;
+}
+.choice{
+  padding:18px;
+  border-radius:16px;
+  font-weight:900;
+  font-size:1.1rem;
+  color:white;
+  text-align:center;
+  cursor:pointer;
+}
+.c1{background:#22c55e}
+.c2{background:#7c3aed}
+.c3{background:#ec4899}
+.c4{background:#facc15;color:black}
+
+/* ---------- ORDER ---------- */
 .wordbank{
   display:flex;
-  gap:14px;
   flex-wrap:wrap;
+  gap:14px;
   justify-content:center;
 }
-
 .word{
-  background:#e0f2fe;
-  color:#0369a1;
   padding:14px 22px;
   border-radius:999px;
+  background:var(--chip);
+  border:3px solid var(--chipBorder);
   font-weight:900;
-  font-size:1.05rem;
   cursor:pointer;
-  border:3px solid #7dd3fc;
-  transition:.15s;
 }
-
-.word:hover{transform:scale(1.05)}
-
 .word.used{
-  background:#f1f5f9;
-  color:#94a3b8;
+  background:var(--used);
   border:3px dashed #cbd5f5;
+  color:#94a3b8;
   cursor:not-allowed;
 }
-
-/* ---------- ANSWER ---------- */
 .answer{
   min-height:64px;
-  border:4px dashed var(--secondary);
+  border:4px dashed var(--order);
   border-radius:18px;
   display:flex;
   align-items:center;
   justify-content:center;
   font-weight:900;
   font-size:1.2rem;
-  background:#f8fafc;
 }
 
-/* ---------- ACTION BUTTONS ---------- */
+/* ---------- ACTIONS ---------- */
 .actions{
   display:flex;
   gap:16px;
   justify-content:center;
 }
-
 .btn{
   padding:16px 26px;
   border-radius:18px;
   font-weight:900;
   cursor:pointer;
-  font-size:1.05rem;
 }
-
-.check{background:var(--accent);color:white}
+.check{background:var(--choose);color:white}
 .reset{background:var(--warn);color:white}
 
 /* ---------- FEEDBACK ---------- */
@@ -199,26 +219,6 @@ body{
 }
 .ok{background:#dcfce7;color:#166534}
 .no{background:#fee2e2;color:#991b1b}
-
-/* ---------- START ---------- */
-.start{
-  background:var(--card);
-  padding:36px;
-  border-radius:28px;
-  max-width:520px;
-  width:100%;
-  display:flex;
-  flex-direction:column;
-  gap:18px;
-}
-.start h1{text-align:center;color:var(--primary)}
-.start input{
-  padding:14px;
-  border-radius:14px;
-  border:3px solid var(--primary);
-  font-weight:800;
-}
-.start .btn{background:var(--primary);color:white;text-align:center}
 </style>
 </head>
 
@@ -226,9 +226,9 @@ body{
 
 <div class="screen" id="startScreen">
   <div class="start">
-    <h1>Be & There Be</h1>
-    <p><b>Goal:</b> get <b>25 correct answers in a row</b>.</p>
-    <input id="playerName" placeholder="Your name">
+    <h1>There Be – Grammar Practice</h1>
+    <p><b>Goal:</b> 25 correct answers in a row.</p>
+    <input id="name" placeholder="Student name">
     <div class="btn" onclick="start()">▶ START</div>
   </div>
 </div>
@@ -242,26 +242,27 @@ body{
     </div>
 
     <div class="info">
-      👉 Read the sentence. <br>
-      👉 Order the blue words to build it. <br>
-      👉 Click <b>CHECK</b>. Reach <b>25 in a row</b> ⭐
+      🔹 Choose the correct form OR order the sentence.<br>
+      🔹 Includes <b>WH-questions</b> (how many / where / when / why).<br>
+      🔹 Reach <b>25 in a row</b> ⭐
     </div>
 
-    <div class="progress-box">
-      <div class="progress-label">Progress to 25</div>
-      <div class="progress-track">
-        <div class="progress-fill" id="bar">0 / 25</div>
+    <div class="progressBox">
+      <div class="progressTrack">
+        <div class="progressFill" id="bar">0 / 25</div>
       </div>
     </div>
 
     <div class="game">
       <div class="sentence" id="sentence"></div>
-      <div class="mode order">ORDER</div>
+      <div class="mode" id="mode"></div>
 
-      <div class="wordbank" id="bank"></div>
-      <div class="answer" id="answer"></div>
+      <div class="choices hidden" id="choices"></div>
 
-      <div class="actions">
+      <div class="wordbank hidden" id="bank"></div>
+      <div class="answer hidden" id="answer"></div>
+
+      <div class="actions hidden" id="actions">
         <div class="btn check" onclick="check()">✔ CHECK</div>
         <div class="btn reset" onclick="reset()">↺ RESET</div>
       </div>
@@ -273,54 +274,109 @@ body{
 </div>
 
 <script>
-const bank=["there","are","students","in","the","classroom"];
-let used=[],streak=0;
+const $=id=>document.getElementById(id);
+const shuffle=a=>[...a].sort(()=>Math.random()-.5);
+
+/* ---------- SENTENCE BANK (600+) ---------- */
+const places=["classroom","hall","school","park","office","kitchen","garden","library","bathroom","playground","street","cinema"];
+const nouns=["students","chairs","tables","books","windows","doors","computers","bags","teachers","children","cars","trees"];
+const wh=["how many","where","when","why"];
+
+const BANK=[];
+
+places.forEach(p=>{
+  nouns.forEach(n=>{
+    BANK.push({type:"choose",t:`____ ${n} in the ${p}.`,a:"there are",
+      opts:["there is","there are","there was","there were"]});
+    BANK.push({type:"choose",t:`Yesterday, ____ ${n} in the ${p}.`,a:"there were",
+      opts:["there was","there were","there is","there are"]});
+    BANK.push({type:"order",t:"Order the sentence:",a:`there are ${n} in the ${p}`});
+    BANK.push({type:"order",t:"Order the question:",a:`were there ${n} in the ${p}`});
+  });
+});
+
+wh.forEach(w=>{
+  places.forEach(p=>{
+    BANK.push({type:"order",t:"Order the WH-question:",a:`${w} students were there in the ${p}`});
+  });
+});
+
+/* ---------- GAME STATE ---------- */
+let streak=0,current=null;
 
 function start(){
-  player.textContent="👤 "+playerName.value;
+  player.textContent="👤 "+name.value;
   startScreen.classList.add("hidden");
   gameScreen.classList.remove("hidden");
-  load();
+  next();
 }
 
-function load(){
-  bankDiv.innerHTML="";
+function next(){
+  current=BANK[Math.floor(Math.random()*BANK.length)];
+  sentence.textContent=current.t;
+  feedback.classList.add("hidden");
+  bar.textContent=streak+" / 25";
+  bar.style.width=(streak/25*100)+"%";
+
+  current.type==="choose"?renderChoose():renderOrder();
+}
+
+function renderChoose(){
+  mode.textContent="CHOOSE";
+  mode.className="mode choose";
+  choices.innerHTML="";
+  choices.classList.remove("hidden");
+  bank.classList.add("hidden");
+  answer.classList.add("hidden");
+  actions.classList.add("hidden");
+
+  shuffle(current.opts).forEach((o,i)=>{
+    const d=document.createElement("div");
+    d.className="choice c"+(i+1);
+    d.textContent=o;
+    d.onclick=()=>check(o);
+    choices.appendChild(d);
+  });
+}
+
+function renderOrder(){
+  mode.textContent="ORDER";
+  mode.className="mode order";
+  choices.classList.add("hidden");
+  bank.classList.remove("hidden");
+  answer.classList.remove("hidden");
+  actions.classList.remove("hidden");
+  bank.innerHTML="";
   answer.textContent="";
-  used=[];
-  shuffle(bank).forEach(w=>{
+
+  shuffle(current.a.split(" ")).forEach(w=>{
     const d=document.createElement("div");
     d.className="word";
     d.textContent=w;
     d.onclick=()=>{
-      if(used.includes(w))return;
-      used.push(w);
+      if(d.classList.contains("used"))return;
       d.classList.add("used");
       answer.textContent+=(answer.textContent?" ":"")+w;
     };
-    bankDiv.appendChild(d);
+    bank.appendChild(d);
   });
 }
 
-function check(){
+function reset(){ renderOrder(); }
+
+function check(v=answer.textContent){
   feedback.classList.remove("hidden");
-  if(answer.textContent==="there are students in the classroom"){
+  if(v===current.a){
     streak++;
     feedback.textContent="✅ Correct!";
     feedback.className="feedback ok";
+    setTimeout(next,900);
   }else{
     streak=0;
     feedback.textContent="❌ Try again";
     feedback.className="feedback no";
   }
-  bar.style.width=(streak/25*100)+"%";
-  bar.textContent=streak+" / 25";
 }
-
-function reset(){
-  load();
-}
-
-function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
 </script>
 
 </body>
