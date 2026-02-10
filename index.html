@@ -13,21 +13,21 @@
   --primary:#6366f1;
   --secondary:#0f172a;
   --accent:#22c55e;
+  --accent-soft:#bbf7d0;
   --danger:#ef4444;
   --bg:#f8fafc;
   --white:#ffffff;
-  --card:#ffffff;
   --chip:#e0f2fe;
   --chip-text:#0c4a6e;
+  --order-box:#fefce8;
 }
 
+/* Reset */
 *{box-sizing:border-box;margin:0;padding:0}
 body{
   font-family:"Poppins",sans-serif;
   background:linear-gradient(135deg,#eef2ff,#fef9c3);
   color:var(--secondary);
-  padding:0;
-  margin:0;
 }
 
 /* Screens */
@@ -89,7 +89,7 @@ body{
   background:var(--primary);
   color:white;
   font-weight:700;
-  font-size:1.1rem;
+  font-size:1.05rem;
   text-align:center;
   cursor:pointer;
   border:none;
@@ -160,7 +160,7 @@ body{
 
 /* Game Card */
 .game{
-  background:var(--card);
+  background:var(--white);
   padding:22px;
   border-radius:20px;
   display:flex;
@@ -173,7 +173,7 @@ body{
   border:3px solid var(--primary);
   border-radius:16px;
   padding:20px;
-  font-size:1.4rem;
+  font-size:1.3rem;
   font-weight:700;
   text-align:center;
 }
@@ -188,6 +188,7 @@ body{
 .choose{background:var(--accent)}
 .order{background:#14b8a6}
 
+/* Instruction box */
 .game-instructions{
   background:#e0f2fe;
   border-radius:12px;
@@ -198,7 +199,7 @@ body{
   border:1px dashed #38bdf8;
 }
 
-/* Choices */
+/* Choices (buttons) */
 .choices{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
@@ -222,7 +223,7 @@ body{
 .c3{background:#ec4899}
 .c4{background:#facc15;color:black}
 
-/* Wordbank */
+/* Wordbank chips */
 .wordbank{
   display:flex;
   gap:10px;
@@ -246,17 +247,17 @@ body{
   cursor:not-allowed;
 }
 
-/* Answer */
+/* Answer box (ordering target) */
 .answer{
   min-height:60px;
-  background:white;
-  border:3px dashed #14b8a6;
+  background:var(--order-box);
+  border:3px dashed #facc15;
   border-radius:14px;
   display:flex;
   justify-content:center;
   align-items:center;
   font-weight:700;
-  font-size:1.2rem;
+  font-size:1.1rem;
   padding:8px;
 }
 
@@ -292,6 +293,12 @@ body{
   flex-direction:column;
   gap:14px;
 }
+
+/* Small screens */
+@media (max-width:600px){
+  .sentence{font-size:1.1rem}
+  .start-card{padding:24px}
+}
 </style>
 </head>
 
@@ -301,12 +308,12 @@ body{
 <div class="screen" id="startScreen">
   <div class="start-card">
     <div class="start-title">Be & There Be</div>
-    <div class="subtitle">Build a perfect streak of 25 correct answers</div>
+    <div class="subtitle">Streak to 25 – no mistakes</div>
 
     <div class="instructions">
       🎯 <b>Goal:</b> Get <b>25 correct answers in a row</b>.<br>
-      💡 Practise <b>there is / there are / there was / there were</b>.<br>
-      🧠 Affirmative, negative & WH‑questions.
+      💡 Practise <b>there is / there are / there was / there were</b> in affirmative, negative and WH‑questions.<br>
+      📝 Your name is needed to save your result.
     </div>
 
     <input id="playerName" class="name-input" placeholder="Write your name here">
@@ -346,7 +353,7 @@ body{
       <div class="wordbank hidden" id="wordbank"></div>
       <div class="answer hidden" id="answer"></div>
 
-      <div class="actions-row">
+      <div class="actions-row" style="display:flex;gap:10px;justify-content:center;">
         <button class="btn hidden" id="checkBtn">Check</button>
         <button class="btn-secondary hidden" id="undoBtn">Undo</button>
       </div>
@@ -371,8 +378,7 @@ body{
 <script src="sentences.js"></script>
 
 <script>
-/* --- GAME LOGIC (igual que tu versión, pero más limpia) --- */
-
+// DOM
 const startScreen=document.getElementById("startScreen");
 const gameScreen=document.getElementById("gameScreen");
 const playerName=document.getElementById("playerName");
@@ -398,23 +404,34 @@ const pauseOverlay=document.getElementById("pauseOverlay");
 const continueBtn=document.getElementById("continueBtn");
 const musicBtn=document.getElementById("musicBtn");
 
+// State
 let streak=0, mistakes=0, current;
 let selectedWords=[];
 const shuffle=a=>a.sort(()=>Math.random()-.5);
 
-let music=new Audio("music.mp3");
-music.loop=true;
+// Audio
+const bgMusic=new Audio("audio/koala3.mp3");
+bgMusic.loop=true;
+const winSound=new Audio("audio/tadaa.mp3");
 
+// Music button
 musicBtn.onclick=()=>{
-  if(music.paused){ music.play(); musicBtn.textContent="🔊"; }
-  else{ music.pause(); musicBtn.textContent="🎵"; }
+  if(bgMusic.paused){
+    bgMusic.play();
+    musicBtn.textContent="🔊";
+  }else{
+    bgMusic.pause();
+    musicBtn.textContent="🎵";
+  }
 };
 
+// Start
 startBtn.onclick=startGame;
 
 function startGame(){
-  if(!playerName.value.trim()) return;
-  playerLabel.textContent="👤 "+playerName.value;
+  const name=playerName.value.trim();
+  if(!name) return;
+  playerLabel.textContent="👤 "+name;
   startScreen.classList.add("hidden");
   gameScreen.classList.remove("hidden");
   streak=0; mistakes=0;
@@ -424,10 +441,14 @@ function startGame(){
   next();
 }
 
+// Next item
 function next(){
   if(streak>=25){
+    winSound.play();
+    // Hook para Google Sheets (Apps Script)
+    // sendResultToSheets(playerName.value.trim(), streak, mistakes);
     document.querySelector(".game").innerHTML=
-      `<div class="feedback ok">⭐ YOU WON! ⭐<br>You reached 25 correct answers in a row.</div>`;
+      `<div class="feedback ok">🎉 CHALLENGE COMPLETE! 🎉<br>You reached 25 correct answers in a row.</div>`;
     return;
   }
 
@@ -439,8 +460,8 @@ function next(){
 
   modeInstructions.innerHTML=
     current.type==="choose"
-      ? "<b>CHOOSE:</b> Click the correct option."
-      : "<b>ORDER:</b> Click the words in the correct order.";
+      ? "<b>CHOOSE:</b> Click the correct option to complete the sentence."
+      : "<b>ORDER:</b> Click the words in the correct order to build the sentence or question.";
 
   feedback.classList.add("hidden");
   choices.innerHTML="";
@@ -452,6 +473,7 @@ function next(){
   else renderOrder();
 }
 
+// CHOOSE
 function renderChoose(){
   choices.classList.remove("hidden");
   wordbank.classList.add("hidden");
@@ -468,6 +490,7 @@ function renderChoose(){
   });
 }
 
+// ORDER
 function renderOrder(){
   choices.classList.add("hidden");
   wordbank.classList.remove("hidden");
@@ -489,6 +512,7 @@ function renderOrder(){
   });
 }
 
+// Undo
 undoBtn.onclick=()=>{
   if(selectedWords.length===0) return;
   const removed=selectedWords.pop();
@@ -498,6 +522,7 @@ undoBtn.onclick=()=>{
   });
 };
 
+// Check
 checkBtn.onclick=()=>check(answer.textContent);
 
 function check(v){
@@ -518,9 +543,11 @@ function check(v){
   setTimeout(next,1200);
 }
 
+// Pause / Continue
 pauseBtn.onclick=()=>pauseOverlay.classList.remove("hidden");
 continueBtn.onclick=()=>pauseOverlay.classList.add("hidden");
 
+// Reset
 resetBtn.onclick=()=>{
   streak=0; mistakes=0;
   streakSpan.textContent="0";
@@ -529,6 +556,19 @@ resetBtn.onclick=()=>{
   feedback.classList.add("hidden");
   next();
 };
+
+// Ejemplo de hook para Google Sheets (Apps Script)
+// Sustituye la URL por la de tu Web App de Apps Script
+/*
+function sendResultToSheets(name, streak, mistakes){
+  fetch("TU_URL_DE_APPS_SCRIPT",{
+    method:"POST",
+    mode:"no-cors",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({name, streak, mistakes, timestamp:new Date().toISOString()})
+  });
+}
+*/
 </script>
 
 </body>
