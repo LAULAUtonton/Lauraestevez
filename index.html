@@ -3,20 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>There Be – Grammar Practice (Streak to 25)</title>
+<title>There Be – Grammar Practice</title>
 
 <style>
 :root{
-  --primary:#7c3aed;
-  --choose:#22c55e;
-  --order:#0ea5e9;
-  --warn:#f97316;
+  --green:#22c55e;
+  --blue:#0ea5e9;
+  --purple:#7c3aed;
+  --yellow:#facc15;
+  --orange:#fb923c;
   --bg:#f0fdf4;
   --card:#ffffff;
-  --chip:#e0f2fe;
-  --chipBorder:#7dd3fc;
-  --used:#e5e7eb;
   --text:#0f172a;
+  --used:#e5e7eb;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -25,9 +24,10 @@ body{
   background:linear-gradient(135deg,#dcfce7,#fef9c3);
   color:var(--text);
 }
+
 .hidden{display:none}
 
-/* ---------- LAYOUT ---------- */
+/* SCREENS */
 .screen{
   min-height:100svh;
   display:flex;
@@ -35,15 +35,8 @@ body{
   align-items:center;
   padding:20px;
 }
-.app{
-  max-width:1100px;
-  width:100%;
-  display:flex;
-  flex-direction:column;
-  gap:16px;
-}
 
-/* ---------- START ---------- */
+/* START */
 .start{
   background:var(--card);
   padding:32px;
@@ -54,126 +47,116 @@ body{
   flex-direction:column;
   gap:16px;
 }
-.start h1{text-align:center;color:var(--primary)}
+.start h1{text-align:center;color:var(--purple)}
 .start input{
   padding:14px;
   border-radius:14px;
-  border:3px solid var(--primary);
+  border:3px solid var(--purple);
   font-weight:800;
 }
-.start .btn{
-  background:var(--primary);
-  color:white;
+.start button{
   padding:16px;
   border-radius:16px;
+  border:none;
+  background:var(--purple);
+  color:white;
   font-weight:900;
-  text-align:center;
   cursor:pointer;
 }
 
-/* ---------- HEADER ---------- */
+/* GAME */
+.app{
+  max-width:1000px;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
 .header{
-  background:var(--primary);
+  background:var(--purple);
   color:white;
-  padding:16px 20px;
+  padding:16px;
   border-radius:18px;
   display:flex;
   justify-content:space-between;
   font-weight:900;
 }
 
-/* ---------- INFO ---------- */
-.info{
-  background:#fffbeb;
-  border-left:8px solid #facc15;
-  padding:12px 16px;
-  border-radius:14px;
-  font-weight:700;
-}
-
-/* ---------- PROGRESS ---------- */
-.progressBox{
-  background:var(--card);
-  padding:12px;
-  border-radius:18px;
-}
-.progressTrack{
-  height:30px;
+.progress{
   background:#e5e7eb;
-  border-radius:15px;
+  border-radius:14px;
   overflow:hidden;
 }
-.progressFill{
-  height:100%;
+.progress div{
+  height:22px;
+  background:linear-gradient(90deg,var(--green),#16a34a);
   width:0%;
-  background:linear-gradient(90deg,#22c55e,#16a34a);
   color:white;
   font-weight:900;
   display:flex;
   align-items:center;
   justify-content:center;
-  transition:.3s;
 }
 
-/* ---------- GAME ---------- */
-.game{
+.card{
   background:var(--card);
-  border-radius:24px;
   padding:24px;
+  border-radius:24px;
   display:flex;
   flex-direction:column;
-  gap:18px;
+  gap:16px;
 }
+
 .sentence{
-  border:4px solid #fde047;
+  border:4px solid var(--yellow);
   border-radius:18px;
-  padding:22px;
+  padding:20px;
   font-size:1.6rem;
   font-weight:900;
   text-align:center;
 }
+
 .mode{
   align-self:center;
   padding:6px 18px;
   border-radius:999px;
-  font-weight:900;
   color:white;
+  font-weight:900;
 }
-.choose{background:var(--choose)}
-.order{background:var(--order)}
+.choose{background:var(--green)}
+.order{background:var(--blue)}
 
-/* ---------- CHOOSE ---------- */
 .choices{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
   gap:14px;
 }
 .choice{
   padding:18px;
   border-radius:16px;
   font-weight:900;
-  font-size:1.1rem;
   color:white;
   text-align:center;
   cursor:pointer;
 }
-.c1{background:#22c55e}
-.c2{background:#7c3aed}
+.c1{background:var(--green)}
+.c2{background:var(--purple)}
 .c3{background:#ec4899}
-.c4{background:#facc15;color:black}
+.c4{background:var(--yellow);color:black}
 
-/* ---------- ORDER ---------- */
+/* ORDER */
 .wordbank{
   display:flex;
   flex-wrap:wrap;
-  gap:14px;
+  gap:12px;
   justify-content:center;
 }
 .word{
-  padding:14px 22px;
+  padding:14px 20px;
   border-radius:999px;
-  background:var(--chip);
-  border:3px solid var(--chipBorder);
+  background:#e0f2fe;
+  border:3px solid #7dd3fc;
   font-weight:900;
   cursor:pointer;
 }
@@ -183,78 +166,68 @@ body{
   color:#94a3b8;
   cursor:not-allowed;
 }
+
 .answer{
-  min-height:64px;
-  border:4px dashed var(--order);
-  border-radius:18px;
+  min-height:60px;
+  border:4px dashed var(--blue);
+  border-radius:16px;
   display:flex;
   align-items:center;
   justify-content:center;
   font-weight:900;
-  font-size:1.2rem;
 }
 
-/* ---------- ACTIONS ---------- */
 .actions{
   display:flex;
   gap:16px;
   justify-content:center;
 }
-.btn{
+.actions button{
   padding:16px 26px;
   border-radius:18px;
+  border:none;
   font-weight:900;
   cursor:pointer;
 }
-.check{background:var(--choose);color:white}
-.reset{background:var(--warn);color:white}
+.check{background:var(--green);color:white}
+.reset{background:var(--orange);color:white}
 
-/* ---------- FEEDBACK ---------- */
 .feedback{
   text-align:center;
-  font-size:1.4rem;
   font-weight:900;
-  padding:12px;
-  border-radius:14px;
+  font-size:1.3rem;
 }
-.ok{background:#dcfce7;color:#166534}
-.no{background:#fee2e2;color:#991b1b}
+.ok{color:#166534}
+.no{color:#991b1b}
 </style>
 </head>
 
 <body>
 
-<!-- START SCREEN -->
+<!-- START -->
 <div class="screen" id="startScreen">
   <div class="start">
-    <h1>There Be – Grammar Practice</h1>
-    <p><b>Goal:</b> 25 correct answers in a row</p>
+    <h1>There Be – Grammar</h1>
+    <p>25 correct answers in a row</p>
     <input id="nameInput" placeholder="Student name">
-    <div class="btn" id="startBtn">▶ START</div>
+    <button onclick="startGame()">START</button>
   </div>
 </div>
 
-<!-- GAME SCREEN -->
+<!-- GAME -->
 <div class="screen hidden" id="gameScreen">
   <div class="app">
 
     <div class="header">
       <div id="playerLabel"></div>
-      <div>⏸ Pause</div>
+      <div>Streak: <span id="streak">0</span>/25</div>
     </div>
 
-    <div class="info">
-      Choose the correct form OR order the sentence.<br>
-      Includes <b>WH-questions</b>.
+    <div class="progress">
+      <div id="bar">0 / 25</div>
     </div>
 
-    <div class="progressBox">
-      <div class="progressTrack">
-        <div class="progressFill" id="progressFill">0 / 25</div>
-      </div>
-    </div>
-
-    <div class="game">
+    <div class="card">
       <div class="sentence" id="sentence"></div>
       <div class="mode" id="mode"></div>
 
@@ -264,39 +237,27 @@ body{
       <div class="answer hidden" id="answer"></div>
 
       <div class="actions hidden" id="actions">
-        <div class="btn check" id="checkBtn">✔ CHECK</div>
-        <div class="btn reset" id="resetBtn">↺ RESET</div>
+        <button class="check" onclick="checkAnswer()">CHECK</button>
+        <button class="reset" onclick="resetOrder()">RESET</button>
       </div>
 
-      <div class="feedback hidden" id="feedback"></div>
+      <div class="feedback" id="feedback"></div>
     </div>
 
   </div>
 </div>
 
 <script>
-/* ---------- DOM ---------- */
-const $ = id => document.getElementById(id);
+/* DOM */
+const $=id=>document.getElementById(id);
 
-const startBtn = $("startBtn");
-const nameInput = $("nameInput");
-const startScreen = $("startScreen");
-const gameScreen = $("gameScreen");
-const playerLabel = $("playerLabel");
-const sentenceBox = $("sentence");
-const modeBox = $("mode");
-const choicesBox = $("choices");
-const wordbankBox = $("wordbank");
-const answerBox = $("answer");
-const actionsBox = $("actions");
-const feedbackBox = $("feedback");
-const progressFill = $("progressFill");
-const checkBtn = $("checkBtn");
-const resetBtn = $("resetBtn");
+/* STATE */
+let streak=0;
+let current=null;
 
-/* ---------- SENTENCE BANK (600+) ---------- */
-const places=["classroom","hall","school","park","office","kitchen","garden","library","bathroom","playground","street","cinema"];
-const nouns=["students","chairs","tables","books","windows","doors","computers","bags","teachers","children","cars","trees"];
+/* BANK (300+) */
+const places=["classroom","hall","school","park","office","kitchen","garden","library","bathroom","playground"];
+const nouns=["students","chairs","tables","books","windows","doors","computers","bags","teachers","children"];
 const wh=["how many","where","when","why"];
 
 const BANK=[];
@@ -316,62 +277,56 @@ wh.forEach(w=>{
   });
 });
 
-/* ---------- STATE ---------- */
-let streak = 0;
-let current = null;
+/* HELPERS */
+const shuffle=a=>[...a].sort(()=>Math.random()-.5);
 
-/* ---------- HELPERS ---------- */
-const shuffle = a => [...a].sort(()=>Math.random()-.5);
-
-/* ---------- START ---------- */
-startBtn.onclick = () => {
-  if(!nameInput.value.trim()) return;
-  playerLabel.textContent = "👤 " + nameInput.value;
-  startScreen.classList.add("hidden");
-  gameScreen.classList.remove("hidden");
+/* START */
+function startGame(){
+  if(!$("nameInput").value.trim())return;
+  $("playerLabel").textContent="👤 "+$("nameInput").value;
+  $("startScreen").classList.add("hidden");
+  $("gameScreen").classList.remove("hidden");
   next();
-};
+}
 
-/* ---------- GAME FLOW ---------- */
+/* FLOW */
 function next(){
-  current = BANK[Math.floor(Math.random()*BANK.length)];
-  sentenceBox.textContent = current.t;
-  feedbackBox.classList.add("hidden");
+  current=BANK[Math.floor(Math.random()*BANK.length)];
+  $("sentence").textContent=current.t;
+  $("feedback").textContent="";
+  updateProgress();
 
-  progressFill.textContent = streak + " / 25";
-  progressFill.style.width = (streak/25*100) + "%";
-
-  current.type === "choose" ? renderChoose() : renderOrder();
+  if(current.type==="choose") renderChoose();
+  else renderOrder();
 }
 
 function renderChoose(){
-  modeBox.textContent = "CHOOSE";
-  modeBox.className = "mode choose";
-  choicesBox.innerHTML="";
-  choicesBox.classList.remove("hidden");
-  wordbankBox.classList.add("hidden");
-  answerBox.classList.add("hidden");
-  actionsBox.classList.add("hidden");
+  $("mode").textContent="CHOOSE";
+  $("mode").className="mode choose";
+  $("choices").innerHTML="";
+  $("choices").classList.remove("hidden");
+  $("wordbank").classList.add("hidden");
+  $("answer").classList.add("hidden");
+  $("actions").classList.add("hidden");
 
   shuffle(current.opts).forEach((o,i)=>{
     const d=document.createElement("div");
     d.className="choice c"+(i+1);
     d.textContent=o;
     d.onclick=()=>check(o);
-    choicesBox.appendChild(d);
+    $("choices").appendChild(d);
   });
 }
 
 function renderOrder(){
-  modeBox.textContent = "ORDER";
-  modeBox.className = "mode order";
-  choicesBox.classList.add("hidden");
-  wordbankBox.classList.remove("hidden");
-  answerBox.classList.remove("hidden");
-  actionsBox.classList.remove("hidden");
-
-  wordbankBox.innerHTML="";
-  answerBox.textContent="";
+  $("mode").textContent="ORDER";
+  $("mode").className="mode order";
+  $("choices").classList.add("hidden");
+  $("wordbank").classList.remove("hidden");
+  $("answer").classList.remove("hidden");
+  $("actions").classList.remove("hidden");
+  $("wordbank").innerHTML="";
+  $("answer").textContent="";
 
   shuffle(current.a.split(" ")).forEach(w=>{
     const d=document.createElement("div");
@@ -380,28 +335,37 @@ function renderOrder(){
     d.onclick=()=>{
       if(d.classList.contains("used"))return;
       d.classList.add("used");
-      answerBox.textContent+=(answerBox.textContent?" ":"")+w;
+      $("answer").textContent+=( $("answer").textContent?" ":"")+w;
     };
-    wordbankBox.appendChild(d);
+    $("wordbank").appendChild(d);
   });
 }
 
-resetBtn.onclick = renderOrder;
-checkBtn.onclick = () => check(answerBox.textContent);
+function resetOrder(){
+  renderOrder();
+}
 
-/* ---------- CHECK ---------- */
 function check(val){
-  feedbackBox.classList.remove("hidden");
-  if(val === current.a){
+  $("feedback").textContent = val===current.a ? "✔ Correct!" : "✘ Try again";
+  $("feedback").className = "feedback " + (val===current.a?"ok":"no");
+
+  if(val===current.a){
     streak++;
-    feedbackBox.textContent="✅ Correct!";
-    feedbackBox.className="feedback ok";
     setTimeout(next,800);
   }else{
     streak=0;
-    feedbackBox.textContent="❌ Try again";
-    feedbackBox.className="feedback no";
   }
+  updateProgress();
+}
+
+function checkAnswer(){
+  check($("answer").textContent);
+}
+
+function updateProgress(){
+  $("streak").textContent=streak;
+  $("bar").style.width=(streak/25*100)+"%";
+  $("bar").textContent=streak+" / 25";
 }
 </script>
 
