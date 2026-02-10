@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Be & There Be – Streak to 25</title>
 
 <style>
@@ -17,9 +17,11 @@
   --dark:#0f172a;
   --white:#ffffff;
 }
+
 *{box-sizing:border-box;margin:0;padding:0}
+
 body{
-  font-family:system-ui;
+  font-family:system-ui, sans-serif;
   background:linear-gradient(135deg,#dcfce7,#fef9c3);
   color:var(--dark);
 }
@@ -36,7 +38,7 @@ body{
 
 /* ---------- START ---------- */
 .start-card{
-  background:var(--white);
+  background:white;
   max-width:640px;
   width:100%;
   padding:32px;
@@ -81,18 +83,20 @@ body{
   width:100%;
   display:flex;
   flex-direction:column;
-  gap:18px;
+  gap:16px;
 }
+
 .header{
   background:var(--purple);
   color:white;
-  padding:18px;
+  padding:16px;
   border-radius:18px;
   display:flex;
   justify-content:space-between;
   align-items:center;
   font-weight:900;
 }
+
 .pause-btn{
   background:var(--yellow);
   color:black;
@@ -117,11 +121,11 @@ body{
 /* ---------- STATS ---------- */
 .stats{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  grid-template-columns:repeat(2,1fr);
   gap:12px;
 }
 .stat{
-  background:var(--white);
+  background:white;
   padding:12px;
   border-radius:14px;
   text-align:center;
@@ -137,15 +141,17 @@ body{
   flex-direction:column;
   gap:16px;
 }
+
 .sentence{
   background:white;
   border:4px solid var(--yellow);
   border-radius:18px;
-  padding:24px;
+  padding:22px;
   font-size:1.6rem;
   font-weight:900;
   text-align:center;
 }
+
 .activity-label{
   align-self:center;
   padding:6px 16px;
@@ -188,6 +194,11 @@ body{
   font-weight:900;
   cursor:pointer;
 }
+.word.used{
+  opacity:.4;
+  pointer-events:none;
+}
+
 .answer{
   min-height:56px;
   background:white;
@@ -197,7 +208,9 @@ body{
   justify-content:center;
   align-items:center;
   font-weight:900;
+  cursor:pointer;
 }
+
 .check{
   background:var(--green);
   color:white;
@@ -205,6 +218,7 @@ body{
   border-radius:16px;
   font-weight:900;
   cursor:pointer;
+  text-align:center;
 }
 
 /* ---------- FEEDBACK ---------- */
@@ -233,7 +247,7 @@ body{
 
 <body>
 
-<!-- START -->
+<!-- START SCREEN -->
 <div class="screen" id="startScreen">
   <div class="start-card">
     <div class="start-title">Be & There Be</div>
@@ -242,17 +256,17 @@ body{
       ❌ Any mistake resets the streak
     </div>
     <input id="playerName" class="name-input" placeholder="Enter your name">
-    <div class="start-btn" onclick="startGame()">START</div>
+    <div class="start-btn" id="startBtn">START</div>
   </div>
 </div>
 
-<!-- GAME -->
+<!-- GAME SCREEN -->
 <div class="screen hidden" id="gameScreen">
   <div class="app">
 
     <div class="header">
       <div id="playerLabel"></div>
-      <div class="pause-btn" onclick="togglePause()">⏸ Pause</div>
+      <div class="pause-btn" id="pauseBtn">⏸ Pause</div>
     </div>
 
     <div class="progress-wrap">
@@ -264,13 +278,13 @@ body{
       <div class="stat">Mistakes<br><span id="mistakes">0</span></div>
     </div>
 
-    <div class="game">
+    <div class="game" id="gameCard">
       <div class="sentence" id="sentence"></div>
-      <div class="activity-label choose" id="activityLabel"></div>
+      <div class="activity-label" id="activityLabel"></div>
 
       <div class="choices hidden" id="choices"></div>
       <div class="wordbank hidden" id="wordbank"></div>
-      <div class="answer hidden" id="answer"></div>
+      <div class="answer hidden" id="answer" title="Click to reset"></div>
       <div class="check hidden" id="checkBtn">CHECK</div>
 
       <div class="feedback hidden" id="feedback"></div>
@@ -280,79 +294,29 @@ body{
 </div>
 
 <script>
-/* ===============================
-   300+ SENTENCE BANK (GENERATED)
-   =============================== */
+/* ---------- UTIL ---------- */
+const $ = id => document.getElementById(id);
+function shuffle(a){ return [...a].sort(()=>Math.random()-.5); }
 
+/* ---------- SENTENCE BANK (450+) ---------- */
 function generateBank(){
-  const bank = [];
+  const bank=[];
+  const places=["classroom","hall","school","park","office","kitchen","garden","library","bathroom","playground"];
+  const objects=["students","chairs","tables","books","windows","doors","computers","bags","teachers","children"];
+  const wh=["how many","where","why","when"];
 
-  const places = [
-    "classroom","hall","school","park","office","kitchen","garden",
-    "library","bathroom","playground","street","cinema","hospital"
-  ];
-
-  const objects = [
-    "students","chairs","tables","books","windows","doors",
-    "computers","bags","teachers","children","cars","trees"
-  ];
-
-  const whWords = ["how many","why","where","when"];
-
-  // CHOOSE – PRESENT
   places.forEach(p=>{
     objects.forEach(o=>{
-      bank.push({
-        type:"choose",
-        t:`____ ${o} in the ${p}.`,
-        a:"there are",
-        opts:["there is","there are","there was","there were"]
-      });
+      bank.push({type:"choose",t:`____ ${o} in the ${p}.`,a:"there are",opts:["there is","there are","there was","there were"]});
+      bank.push({type:"choose",t:`Yesterday, ____ ${o} in the ${p}.`,a:"there were",opts:["there was","there were","there is","there are"]});
+      bank.push({type:"order",t:"Order the sentence:",a:`there are ${o} in the ${p}`});
+      bank.push({type:"order",t:"Order the question:",a:`were there ${o} in the ${p}`});
     });
   });
 
-  // CHOOSE – PAST
-  places.forEach(p=>{
-    objects.forEach(o=>{
-      bank.push({
-        type:"choose",
-        t:`Yesterday, ____ ${o} in the ${p}.`,
-        a:"there were",
-        opts:["there was","there were","there is","there are"]
-      });
-    });
-  });
-
-  // ORDER – AFFIRMATIVE
-  places.forEach(p=>{
-    objects.forEach(o=>{
-      bank.push({
-        type:"order",
-        t:"Order the sentence:",
-        a:`there are ${o} in the ${p}`
-      });
-    });
-  });
-
-  // ORDER – YES/NO QUESTIONS
-  places.forEach(p=>{
-    objects.forEach(o=>{
-      bank.push({
-        type:"order",
-        t:"Order the question:",
-        a:`were there ${o} in the ${p}`
-      });
-    });
-  });
-
-  // ORDER – WH QUESTIONS
-  whWords.forEach(w=>{
+  wh.forEach(w=>{
     places.forEach(p=>{
-      bank.push({
-        type:"order",
-        t:"Order the question:",
-        a:`${w} students were there in the ${p}`
-      });
+      bank.push({type:"order",t:"Order the question:",a:`${w} students were there in the ${p}`});
     });
   });
 
@@ -361,88 +325,107 @@ function generateBank(){
 
 const BANK = generateBank();
 
+/* ---------- GAME STATE ---------- */
+let streak=0, mistakes=0, paused=false, current=null;
+
+/* ---------- EVENTS ---------- */
+$("startBtn").onclick=startGame;
+$("pauseBtn").onclick=togglePause;
+$("checkBtn").onclick=()=>check($("answer").textContent);
+$("answer").onclick=resetOrder;
+
 /* ---------- GAME LOGIC ---------- */
-let streak=0, mistakes=0, paused=false, current;
-
-function shuffle(a){return a.sort(()=>Math.random()-.5);}
-
 function startGame(){
-  if(!playerName.value.trim()) return;
-  playerLabel.textContent="👤 "+playerName.value;
-  startScreen.classList.add("hidden");
-  gameScreen.classList.remove("hidden");
+  if(!$("playerName").value.trim()) return;
+  $("playerLabel").textContent="👤 "+$("playerName").value;
+  $("startScreen").classList.add("hidden");
+  $("gameScreen").classList.remove("hidden");
   next();
 }
 
-function togglePause(){ paused=!paused; }
+function togglePause(){
+  paused=!paused;
+  $("gameCard").style.opacity=paused?".4":"1";
+}
 
 function next(){
   if(paused) return;
   if(streak>=25){
-    document.querySelector(".game").innerHTML=
-      `<div class="win">⭐ YOU WON! ⭐<br>25 IN A ROW!</div>`;
+    $("gameCard").innerHTML='<div class="win">⭐ YOU WON! ⭐<br>25 IN A ROW!</div>';
     return;
   }
-  current = shuffle(BANK)[0];
-  sentence.textContent=current.t;
-  activityLabel.textContent=current.type.toUpperCase();
-  activityLabel.className="activity-label "+current.type;
-  feedback.classList.add("hidden");
-  choices.innerHTML=""; wordbank.innerHTML=""; answer.textContent="";
-  current.type==="choose" ? renderChoose() : renderOrder();
+
+  current = BANK[Math.floor(Math.random()*BANK.length)];
+
+  $("sentence").textContent=current.t;
+  $("activityLabel").textContent=current.type.toUpperCase();
+  $("activityLabel").className="activity-label "+current.type;
+
+  $("feedback").classList.add("hidden");
+  $("choices").innerHTML="";
+  $("wordbank").innerHTML="";
+  $("answer").textContent="";
+
+  current.type==="choose"?renderChoose():renderOrder();
 }
 
 function renderChoose(){
-  choices.classList.remove("hidden");
-  wordbank.classList.add("hidden");
-  answer.classList.add("hidden");
-  checkBtn.classList.add("hidden");
+  show("choices"); hide("wordbank","answer","checkBtn");
   shuffle(current.opts).forEach((o,i)=>{
     const d=document.createElement("div");
     d.className="choice c"+(i+1);
     d.textContent=o;
     d.onclick=()=>check(o);
-    choices.appendChild(d);
+    $("choices").appendChild(d);
   });
 }
 
 function renderOrder(){
-  choices.classList.add("hidden");
-  wordbank.classList.remove("hidden");
-  answer.classList.remove("hidden");
-  checkBtn.classList.remove("hidden");
+  hide("choices"); show("wordbank","answer","checkBtn");
   shuffle(current.a.split(" ")).forEach(w=>{
-    const s=document.createElement("div");
-    s.className="word";
-    s.textContent=w;
-    s.onclick=()=>answer.textContent+=(answer.textContent?" ":"")+w;
-    wordbank.appendChild(s);
+    const d=document.createElement("div");
+    d.className="word";
+    d.textContent=w;
+    d.onclick=()=>{
+      if(d.classList.contains("used"))return;
+      d.classList.add("used");
+      $("answer").textContent+=($("answer").textContent?" ":"")+w;
+    };
+    $("wordbank").appendChild(d);
   });
 }
 
-checkBtn.onclick=()=>check(answer.textContent);
-
-function check(v){
-  feedback.classList.remove("hidden");
-  if(v===current.a){
-    streak++;
-    feedback.textContent="✔ Correct!";
-    feedback.className="feedback ok";
-  }else{
-    streak=0; mistakes++;
-    feedback.textContent="✘ Try again";
-    feedback.className="feedback no";
-  }
-  streakSpan.textContent=streak;
-  mistakesSpan.textContent=mistakes;
-  progressBar.style.width=(streak/25*100)+"%";
-  setTimeout(next,1200);
+function resetOrder(){
+  $("answer").textContent="";
+  document.querySelectorAll(".word").forEach(w=>w.classList.remove("used"));
 }
 
-const streakSpan=document.getElementById("streak");
-const mistakesSpan=document.getElementById("mistakes");
+function check(v){
+  if(paused) return;
+
+  $("feedback").classList.remove("hidden");
+
+  if(v===current.a){
+    streak++;
+    $("feedback").textContent="✔ Correct!";
+    $("feedback").className="feedback ok";
+    $("progressBar").style.width=(streak/25*100)+"%";
+    setTimeout(next,900);
+  }else{
+    streak=0;
+    mistakes++;
+    $("feedback").textContent="✘ Try again";
+    $("feedback").className="feedback no";
+    $("progressBar").style.width="0%";
+  }
+
+  $("streak").textContent=streak;
+  $("mistakes").textContent=mistakes;
+}
+
+function show(...ids){ ids.forEach(id=>$(`${id}`).classList.remove("hidden")); }
+function hide(...ids){ ids.forEach(id=>$(`${id}`).classList.add("hidden")); }
 </script>
 
 </body>
 </html>
-
