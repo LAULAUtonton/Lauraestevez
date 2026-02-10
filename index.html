@@ -12,8 +12,9 @@
   --teal:#14b8a6;
   --purple:#a855f7;
   --pink:#ec4899;
+  --orange:#fb923c;
   --red:#ef4444;
-  --bg:#f8fafc;
+  --gray:#9ca3af;
   --dark:#0f172a;
   --white:#ffffff;
 }
@@ -42,7 +43,7 @@ body{
   max-width:640px;
   width:100%;
   padding:32px;
-  border-radius:26px;
+  border-radius:28px;
   display:flex;
   flex-direction:column;
   gap:20px;
@@ -50,7 +51,7 @@ body{
 }
 .start-title{
   text-align:center;
-  font-size:2.4rem;
+  font-size:2.6rem;
   font-weight:900;
   color:var(--purple);
 }
@@ -61,18 +62,19 @@ body{
   font-weight:800;
 }
 .name-input{
-  padding:14px;
-  border-radius:16px;
-  border:3px solid var(--purple);
+  padding:16px;
+  border-radius:18px;
+  border:4px solid var(--purple);
+  font-size:1.1rem;
   font-weight:800;
 }
 .start-btn{
-  padding:16px;
-  border-radius:18px;
+  padding:18px;
+  border-radius:20px;
   background:var(--purple);
   color:white;
   font-weight:900;
-  font-size:1.3rem;
+  font-size:1.4rem;
   text-align:center;
   cursor:pointer;
 }
@@ -89,30 +91,32 @@ body{
 .header{
   background:var(--purple);
   color:white;
-  padding:16px;
-  border-radius:18px;
+  padding:18px;
+  border-radius:20px;
   display:flex;
   justify-content:space-between;
   align-items:center;
   font-weight:900;
+  font-size:1.1rem;
 }
 
 .pause-btn{
   background:var(--yellow);
   color:black;
-  padding:8px 14px;
-  border-radius:12px;
+  padding:10px 16px;
+  border-radius:14px;
   cursor:pointer;
+  font-weight:900;
 }
 
 /* ---------- PROGRESS ---------- */
 .progress-wrap{
   background:#e5e7eb;
-  border-radius:14px;
+  border-radius:16px;
   overflow:hidden;
 }
 .progress-bar{
-  height:18px;
+  height:20px;
   background:linear-gradient(90deg,var(--green),var(--teal));
   width:0%;
   transition:.3s;
@@ -126,8 +130,8 @@ body{
 }
 .stat{
   background:white;
-  padding:12px;
-  border-radius:14px;
+  padding:14px;
+  border-radius:16px;
   text-align:center;
   font-weight:900;
 }
@@ -135,99 +139,135 @@ body{
 /* ---------- GAME CARD ---------- */
 .game{
   background:#ecfeff;
-  padding:22px;
-  border-radius:22px;
+  padding:24px;
+  border-radius:26px;
   display:flex;
   flex-direction:column;
-  gap:16px;
+  gap:18px;
 }
 
 .sentence{
   background:white;
-  border:4px solid var(--yellow);
-  border-radius:18px;
-  padding:22px;
-  font-size:1.6rem;
+  border:5px solid var(--yellow);
+  border-radius:20px;
+  padding:26px;
+  font-size:1.7rem;
   font-weight:900;
   text-align:center;
 }
 
 .activity-label{
   align-self:center;
-  padding:6px 16px;
-  border-radius:14px;
+  padding:8px 20px;
+  border-radius:18px;
   color:white;
   font-weight:900;
+  font-size:1.1rem;
 }
 .choose{background:var(--green)}
 .order{background:var(--teal)}
 
+/* ---------- CHOICES ---------- */
 .choices{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-  gap:14px;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:16px;
 }
 .choice{
-  padding:18px;
-  border-radius:16px;
+  padding:20px;
+  border-radius:20px;
   font-weight:900;
   color:white;
   text-align:center;
   cursor:pointer;
+  font-size:1.1rem;
 }
 .c1{background:var(--green)}
 .c2{background:var(--purple)}
 .c3{background:var(--pink)}
 .c4{background:var(--yellow);color:black}
 
+/* ---------- WORD BANK ---------- */
 .wordbank{
   display:flex;
-  gap:10px;
+  gap:14px;
   justify-content:center;
   flex-wrap:wrap;
 }
+
+/* BIG COLORFUL CHIPS */
 .word{
-  background:var(--teal);
-  color:white;
-  padding:12px 18px;
-  border-radius:14px;
+  padding:16px 22px;
+  border-radius:999px;
   font-weight:900;
+  font-size:1.1rem;
   cursor:pointer;
+  color:white;
+  background:linear-gradient(135deg,var(--teal),var(--purple));
+  box-shadow:0 4px 8px rgba(0,0,0,.15);
+  transition:.2s;
 }
+.word:hover{transform:scale(1.05)}
+
+/* USED CHIPS */
 .word.used{
-  opacity:.4;
-  pointer-events:none;
+  background:#e5e7eb;
+  color:#6b7280;
+  box-shadow:none;
+  transform:none;
+  cursor:not-allowed;
+  opacity:.6;
 }
 
+/* ---------- ANSWER ---------- */
 .answer{
-  min-height:56px;
+  min-height:64px;
   background:white;
-  border:3px dashed var(--teal);
-  border-radius:14px;
+  border:4px dashed var(--teal);
+  border-radius:18px;
   display:flex;
   justify-content:center;
   align-items:center;
   font-weight:900;
-  cursor:pointer;
+  font-size:1.2rem;
 }
 
+/* ---------- BUTTON ROW ---------- */
+.controls{
+  display:flex;
+  gap:14px;
+  justify-content:center;
+}
+
+/* CHECK BUTTON */
 .check{
   background:var(--green);
   color:white;
-  padding:14px;
-  border-radius:16px;
+  padding:16px 26px;
+  border-radius:18px;
   font-weight:900;
+  font-size:1.1rem;
   cursor:pointer;
-  text-align:center;
+}
+
+/* RESET BUTTON */
+.reset{
+  background:var(--orange);
+  color:white;
+  padding:16px 26px;
+  border-radius:18px;
+  font-weight:900;
+  font-size:1.1rem;
+  cursor:pointer;
 }
 
 /* ---------- FEEDBACK ---------- */
 .feedback{
   text-align:center;
   font-weight:900;
-  font-size:1.3rem;
-  padding:12px;
-  border-radius:14px;
+  font-size:1.4rem;
+  padding:14px;
+  border-radius:16px;
 }
 .ok{background:#dcfce7;color:#166534}
 .no{background:#fee2e2;color:#991b1b}
@@ -235,11 +275,10 @@ body{
 /* ---------- WIN ---------- */
 .win{
   background:linear-gradient(135deg,var(--yellow),var(--green));
-  color:black;
-  font-size:2.2rem;
+  font-size:2.4rem;
   text-align:center;
-  padding:40px;
-  border-radius:24px;
+  padding:44px;
+  border-radius:28px;
   font-weight:900;
 }
 </style>
@@ -247,20 +286,15 @@ body{
 
 <body>
 
-<!-- START SCREEN -->
 <div class="screen" id="startScreen">
   <div class="start-card">
     <div class="start-title">Be & There Be</div>
-    <div class="instructions">
-      🎯 Goal: <b>25 correct answers in a row</b><br>
-      ❌ Any mistake resets the streak
-    </div>
-    <input id="playerName" class="name-input" placeholder="Enter your name">
-    <div class="start-btn" id="startBtn">START</div>
+    <div class="instructions">🎯 25 correct in a row<br>❌ One mistake = restart</div>
+    <input id="playerName" class="name-input" placeholder="Your name">
+    <div class="start-btn" id="startBtn">▶ START</div>
   </div>
 </div>
 
-<!-- GAME SCREEN -->
 <div class="screen hidden" id="gameScreen">
   <div class="app">
 
@@ -269,13 +303,11 @@ body{
       <div class="pause-btn" id="pauseBtn">⏸ Pause</div>
     </div>
 
-    <div class="progress-wrap">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
+    <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
 
     <div class="stats">
-      <div class="stat">Streak<br><span id="streak">0</span>/25</div>
-      <div class="stat">Mistakes<br><span id="mistakes">0</span></div>
+      <div class="stat">🔥 Streak<br><span id="streak">0</span>/25</div>
+      <div class="stat">❌ Mistakes<br><span id="mistakes">0</span></div>
     </div>
 
     <div class="game" id="gameCard">
@@ -283,9 +315,14 @@ body{
       <div class="activity-label" id="activityLabel"></div>
 
       <div class="choices hidden" id="choices"></div>
+
       <div class="wordbank hidden" id="wordbank"></div>
-      <div class="answer hidden" id="answer" title="Click to reset"></div>
-      <div class="check hidden" id="checkBtn">CHECK</div>
+      <div class="answer hidden" id="answer"></div>
+
+      <div class="controls hidden" id="controls">
+        <div class="check" id="checkBtn">✔ CHECK</div>
+        <div class="reset" id="resetBtn">↺ RESET</div>
+      </div>
 
       <div class="feedback hidden" id="feedback"></div>
     </div>
@@ -294,86 +331,52 @@ body{
 </div>
 
 <script>
-/* ---------- UTIL ---------- */
-const $ = id => document.getElementById(id);
-function shuffle(a){ return [...a].sort(()=>Math.random()-.5); }
+const $=id=>document.getElementById(id);
+const shuffle=a=>[...a].sort(()=>Math.random()-.5);
 
-/* ---------- SENTENCE BANK (450+) ---------- */
+/* SENTENCES */
 function generateBank(){
-  const bank=[];
-  const places=["classroom","hall","school","park","office","kitchen","garden","library","bathroom","playground"];
-  const objects=["students","chairs","tables","books","windows","doors","computers","bags","teachers","children"];
-  const wh=["how many","where","why","when"];
-
-  places.forEach(p=>{
-    objects.forEach(o=>{
-      bank.push({type:"choose",t:`____ ${o} in the ${p}.`,a:"there are",opts:["there is","there are","there was","there were"]});
-      bank.push({type:"choose",t:`Yesterday, ____ ${o} in the ${p}.`,a:"there were",opts:["there was","there were","there is","there are"]});
-      bank.push({type:"order",t:"Order the sentence:",a:`there are ${o} in the ${p}`});
-      bank.push({type:"order",t:"Order the question:",a:`were there ${o} in the ${p}`});
-    });
-  });
-
-  wh.forEach(w=>{
-    places.forEach(p=>{
-      bank.push({type:"order",t:"Order the question:",a:`${w} students were there in the ${p}`});
-    });
-  });
-
-  return bank;
+  const b=[],p=["classroom","park","library","school"],o=["students","chairs","books","teachers"];
+  p.forEach(x=>o.forEach(y=>{
+    b.push({type:"choose",t:`____ ${y} in the ${x}.`,a:"there are",opts:["there is","there are","there was","there were"]});
+    b.push({type:"order",t:"Order the sentence:",a:`there are ${y} in the ${x}`});
+  }));
+  return b;
 }
+const BANK=generateBank();
 
-const BANK = generateBank();
+let streak=0,mistakes=0,paused=false,current=null;
 
-/* ---------- GAME STATE ---------- */
-let streak=0, mistakes=0, paused=false, current=null;
-
-/* ---------- EVENTS ---------- */
-$("startBtn").onclick=startGame;
-$("pauseBtn").onclick=togglePause;
-$("checkBtn").onclick=()=>check($("answer").textContent);
-$("answer").onclick=resetOrder;
-
-/* ---------- GAME LOGIC ---------- */
-function startGame(){
-  if(!$("playerName").value.trim()) return;
+$("startBtn").onclick=()=>{
+  if(!$("playerName").value.trim())return;
   $("playerLabel").textContent="👤 "+$("playerName").value;
   $("startScreen").classList.add("hidden");
   $("gameScreen").classList.remove("hidden");
   next();
-}
+};
 
-function togglePause(){
-  paused=!paused;
-  $("gameCard").style.opacity=paused?".4":"1";
-}
+$("pauseBtn").onclick=()=>paused=!paused;
+$("checkBtn").onclick=()=>check($("answer").textContent);
+$("resetBtn").onclick=resetOrder;
 
 function next(){
-  if(paused) return;
-  if(streak>=25){
-    $("gameCard").innerHTML='<div class="win">⭐ YOU WON! ⭐<br>25 IN A ROW!</div>';
-    return;
-  }
-
-  current = BANK[Math.floor(Math.random()*BANK.length)];
-
+  if(paused)return;
+  current=BANK[Math.floor(Math.random()*BANK.length)];
   $("sentence").textContent=current.t;
   $("activityLabel").textContent=current.type.toUpperCase();
   $("activityLabel").className="activity-label "+current.type;
-
   $("feedback").classList.add("hidden");
   $("choices").innerHTML="";
   $("wordbank").innerHTML="";
   $("answer").textContent="";
-
   current.type==="choose"?renderChoose():renderOrder();
 }
 
 function renderChoose(){
-  show("choices"); hide("wordbank","answer","checkBtn");
-  shuffle(current.opts).forEach((o,i)=>{
+  show("choices"); hide("wordbank","answer","controls");
+  shuffle(current.opts).forEach(o=>{
     const d=document.createElement("div");
-    d.className="choice c"+(i+1);
+    d.className="choice";
     d.textContent=o;
     d.onclick=()=>check(o);
     $("choices").appendChild(d);
@@ -381,7 +384,7 @@ function renderChoose(){
 }
 
 function renderOrder(){
-  hide("choices"); show("wordbank","answer","checkBtn");
+  hide("choices"); show("wordbank","answer","controls");
   shuffle(current.a.split(" ")).forEach(w=>{
     const d=document.createElement("div");
     d.className="word";
@@ -401,30 +404,25 @@ function resetOrder(){
 }
 
 function check(v){
-  if(paused) return;
-
   $("feedback").classList.remove("hidden");
-
   if(v===current.a){
     streak++;
-    $("feedback").textContent="✔ Correct!";
+    $("feedback").textContent="✅ Correct!";
     $("feedback").className="feedback ok";
     $("progressBar").style.width=(streak/25*100)+"%";
     setTimeout(next,900);
   }else{
-    streak=0;
-    mistakes++;
-    $("feedback").textContent="✘ Try again";
+    streak=0;mistakes++;
+    $("feedback").textContent="❌ Try again!";
     $("feedback").className="feedback no";
     $("progressBar").style.width="0%";
   }
-
   $("streak").textContent=streak;
   $("mistakes").textContent=mistakes;
 }
 
-function show(...ids){ ids.forEach(id=>$(`${id}`).classList.remove("hidden")); }
-function hide(...ids){ ids.forEach(id=>$(`${id}`).classList.add("hidden")); }
+function show(...i){i.forEach(x=>$(`${x}`).classList.remove("hidden"))}
+function hide(...i){i.forEach(x=>$(`${x}`).classList.add("hidden"))}
 </script>
 
 </body>
