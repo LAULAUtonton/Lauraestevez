@@ -96,7 +96,8 @@ body{
 .progress-bar{
   height:20px;
   background:linear-gradient(90deg,var(--green),var(--teal));
-  width:0%;
+  width:1%;
+  transition:width .3s ease;
 }
 .stats{
   display:grid;
@@ -196,6 +197,14 @@ body{
   font-weight:900;
   cursor:pointer;
 }
+#undoBtn{
+  background:var(--pink);
+  color:white;
+  padding:14px;
+  border-radius:16px;
+  font-weight:900;
+  cursor:pointer;
+}
 .feedback{
   text-align:center;
   font-weight:900;
@@ -229,6 +238,10 @@ body{
 
     <div class="header">
       <div id="playerLabel"></div>
+      <div style="display:flex; gap:10px;">
+        <div class="start-btn" id="pauseBtn" style="padding:8px 14px;font-size:1rem;">PAUSE</div>
+        <div class="start-btn" id="resetBtn" style="padding:8px 14px;font-size:1rem;background:var(--pink);">RESET</div>
+      </div>
     </div>
 
     <div class="progress-wrap">
@@ -247,7 +260,9 @@ body{
       <div class="choices hidden" id="choices"></div>
       <div class="wordbank hidden" id="wordbank"></div>
       <div class="answer hidden" id="answer"></div>
+
       <div class="check hidden" id="checkBtn">CHECK</div>
+      <div class="check hidden" id="undoBtn">UNDO</div>
 
       <div class="feedback hidden" id="feedback"></div>
     </div>
@@ -256,25 +271,27 @@ body{
 </div>
 
 <script>
-/* ===== REAL DOM REFERENCES (FIX) ===== */
-const startScreen = document.getElementById("startScreen");
-const gameScreen = document.getElementById("gameScreen");
-const playerName = document.getElementById("playerName");
-const playerLabel = document.getElementById("playerLabel");
-const startBtn = document.getElementById("startBtn");
+const startScreen=document.getElementById("startScreen");
+const gameScreen=document.getElementById("gameScreen");
+const playerName=document.getElementById("playerName");
+const playerLabel=document.getElementById("playerLabel");
+const startBtn=document.getElementById("startBtn");
 
-const sentence = document.getElementById("sentence");
-const activityLabel = document.getElementById("activityLabel");
-const choices = document.getElementById("choices");
-const wordbank = document.getElementById("wordbank");
-const answer = document.getElementById("answer");
-const checkBtn = document.getElementById("checkBtn");
-const feedback = document.getElementById("feedback");
-const progressBar = document.getElementById("progressBar");
-const streakSpan = document.getElementById("streak");
-const mistakesSpan = document.getElementById("mistakes");
+const sentence=document.getElementById("sentence");
+const activityLabel=document.getElementById("activityLabel");
+const choices=document.getElementById("choices");
+const wordbank=document.getElementById("wordbank");
+const answer=document.getElementById("answer");
+const checkBtn=document.getElementById("checkBtn");
+const undoBtn=document.getElementById("undoBtn");
+const feedback=document.getElementById("feedback");
+const progressBar=document.getElementById("progressBar");
+const streakSpan=document.getElementById("streak");
+const mistakesSpan=document.getElementById("mistakes");
 
-/* ===== SENTENCE BANK ===== */
+const pauseBtn=document.getElementById("pauseBtn");
+const resetBtn=document.getElementById("resetBtn");
+
 function generateBank(){
   const bank=[];
   const places=["classroom","hall","school","park","office","kitchen","garden","library","bathroom","playground"];
@@ -300,19 +317,20 @@ function generateBank(){
 
   return bank;
 }
-const BANK = generateBank();
+const BANK=generateBank();
 
-/* ===== GAME LOGIC (UNCHANGED) ===== */
 let streak=0, mistakes=0, current;
+let selectedWords=[];
 const shuffle=a=>a.sort(()=>Math.random()-.5);
 
-startBtn.onclick = startGame;
+startBtn.onclick=startGame;
 
 function startGame(){
   if(!playerName.value.trim()) return;
   playerLabel.textContent="👤 "+playerName.value;
   startScreen.classList.add("hidden");
   gameScreen.classList.remove("hidden");
+  progressBar.style.width="0%";
   next();
 }
 
@@ -322,7 +340,7 @@ function next(){
       `<div class="feedback ok">⭐ YOU WON! ⭐<br>25 IN A ROW!</div>`;
     return;
   }
-  current = shuffle(BANK)[0];
+  current=shuffle(BANK)[0];
   sentence.textContent=current.t;
   activityLabel.textContent=current.type.toUpperCase();
   activityLabel.className="activity-label "+current.type;
@@ -330,6 +348,7 @@ function next(){
   choices.innerHTML="";
   wordbank.innerHTML="";
   answer.textContent="";
+  selectedWords=[];
   current.type==="choose" ? renderChoose() : renderOrder();
 }
 
@@ -338,6 +357,8 @@ function renderChoose(){
   wordbank.classList.add("hidden");
   answer.classList.add("hidden");
   checkBtn.classList.add("hidden");
+  undoBtn.classList.add("hidden");
+
   shuffle(current.opts).forEach((o,i)=>{
     const d=document.createElement("div");
     d.className="choice c"+(i+1);
@@ -352,6 +373,8 @@ function renderOrder(){
   wordbank.classList.remove("hidden");
   answer.classList.remove("hidden");
   checkBtn.classList.remove("hidden");
+  undoBtn.classList.remove("hidden");
+
   shuffle(current.a.split(" ")).forEach(w=>{
     const s=document.createElement("div");
     s.className="word";
@@ -359,11 +382,21 @@ function renderOrder(){
     s.onclick=()=>{
       if(s.classList.contains("used"))return;
       s.classList.add("used");
-      answer.textContent+=(answer.textContent?" ":"")+w;
+      selectedWords.push(w);
+      answer.textContent=selectedWords.join(" ");
     };
     wordbank.appendChild(s);
   });
 }
+
+undoBtn.onclick=()=>{
+  if(selectedWords.length===0) return;
+  const removed=selectedWords.pop();
+  answer.textContent=selectedWords.join(" ");
+  [...wordbank.children].forEach(w=>{
+    if(w.textContent===removed) w.classList.remove("used");
+  });
+};
 
 checkBtn.onclick=()=>check(answer.textContent);
 
@@ -383,8 +416,20 @@ function check(v){
   progressBar.style.width=(streak/25*100)+"%";
   setTimeout(next,1200);
 }
+
+pauseBtn.onclick=()=>{
+  alert("Game paused. Press OK to continue.");
+};
+
+resetBtn.onclick=()=>{
+  streak=0;
+  mistakes=0;
+  streakSpan.textContent=0;
+  mistakesSpan.textContent=0;
+  progressBar.style.width="0%";
+  next();
+};
 </script>
 
 </body>
 </html>
-
