@@ -136,7 +136,7 @@ const BANK = [
 {type:"order",t:"Order the WH-question:",a:"Why was there a delay yesterday"},
 {type:"order",t:"Order the WH-question:",a:"Where are there public libraries"},
 {type:"order",t:"Order the WH-question:",a:"When was there a test last term"},
-{type:"order",t:"Order the WH-question:",a:"Why were there so many people"}
+{type:"order",t:"Order the WH-question:",a:"Why were there so many people"};
 /* =====================================================
    BLOQUE 3 / 3  →  FRASES 201–300
    ===================================================== */
