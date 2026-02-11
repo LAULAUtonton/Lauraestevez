@@ -374,7 +374,25 @@ body{
     <button class="btn" id="continueBtn">▶ Continue</button>
   </div>
 </div>
+<script>
+// Crear shadow root y mover la app dentro
+const host = document.getElementById("app-root");
+const shadow = host.attachShadow({ mode: "open" });
 
+// coger todos los hijos del body excepto #app-root
+const originalChildren = [...document.body.children].filter(el => el.id !== "app-root");
+
+// moverlos al shadow
+originalChildren.forEach(el => shadow.appendChild(el));
+</script>
+
+<script>
+// Mover el <style> principal al shadow también
+const mainStyle = document.querySelector("style");
+if (mainStyle) {
+  shadow.appendChild(mainStyle);
+}
+</script>
 <script src="sentences.js"></script>
 
 <script>
