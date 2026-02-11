@@ -396,8 +396,31 @@ if (mainStyle) {
 <script src="sentences.js"></script>
 
 <script>
-// DOM
-const startScreen=document.getElementById("startScreen");
+// DOM dentro del shadow
+const host = document.getElementById("app-root");
+const shadow = host.shadowRoot;
+
+const startScreen = shadow.getElementById("startScreen");
+const gameScreen = shadow.getElementById("gameScreen");
+const playerName = shadow.getElementById("playerName");
+const playerLabel = shadow.getElementById("playerLabel");
+const sentence = shadow.getElementById("sentence");
+const activityLabel = shadow.getElementById("activityLabel");
+const modeInstructions = shadow.getElementById("modeInstructions");
+const choices = shadow.getElementById("choices");
+const wordbank = shadow.getElementById("wordbank");
+const answer = shadow.getElementById("answer");
+const checkBtn = shadow.getElementById("checkBtn");
+const undoBtn = shadow.getElementById("undoBtn");
+const feedback = shadow.getElementById("feedback");
+const progressBar = shadow.getElementById("progressBar");
+const streakSpan = shadow.getElementById("streak");
+const mistakesSpan = shadow.getElementById("mistakes");
+const pauseBtn = shadow.getElementById("pauseBtn");
+const resetBtn = shadow.getElementById("resetBtn");
+const pauseOverlay = shadow.getElementById("pauseOverlay");
+const continueBtn = shadow.getElementById("continueBtn");
+const musicBtn = shadow.getElementById("musicBtn");
 const gameScreen=document.getElementById("gameScreen");
 const playerName=document.getElementById("playerName");
 const playerLabel=document.getElementById("playerLabel");
