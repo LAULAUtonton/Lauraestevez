@@ -438,7 +438,7 @@ opts:["There is","There are","There was","There were"]
 }
 
  // END BLOCK 1
-/* ----------------------------- */
+ /* ----------------------------- */
 /* 100 NEGATIVE (CHOOSE)         */
 /* ----------------------------- */
 
@@ -1045,17 +1045,17 @@ a:"Why was there a football coach shouting loudly during the match yesterday?"
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Where are there parents waiting anxiously outside the school gate?"
+a:"Where are there excited parents waiting outside the school gate this afternoon?"
 },
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Why was there a dog barking loudly behind the fence last night?"
+a:"Why was there a small dog barking loudly behind the fence last night?"
 },
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Where are there volunteers helping generously at the charity event?"
+a:"Where were there volunteers helping generously at the charity event this morning?"
 },
 
 {
@@ -1066,7 +1066,7 @@ a:"Why is there a tall bookshelf standing firmly against the living‑room wall?
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Where are there bright stars shining beautifully in the night sky?"
+a:"Where are there bright stars shining beautifully in the night sky tonight?"
 },
 {
 type:"order",
@@ -1076,59 +1076,59 @@ a:"Why is there a chef preparing a special dish for the customers right now?"
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Where are there children drawing happily on the art room floor?"
+a:"Where are there children drawing happily on the floor of the art room this morning?"
 },
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Why is there a taxi driver waiting patiently outside the hotel entrance?"
-},
-
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Where are there nurses working tirelessly in the hospital today?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Why is there a gardener planting colourful flowers beside the playground?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Where are there students revising quietly before the exam?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Why is there a teacher explaining the lesson clearly this morning?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Where are there birds singing loudly near your window at sunrise?"
+a:"Why is there a taxi driver waiting patiently outside the hotel entrance this evening?"
 },
 
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Why is there a heavy box sitting awkwardly on the table today?"
+a:"Where are there several nurses working tirelessly in the hospital today?"
 },
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Where are there people walking slowly through the crowded market?"
+a:"Why is there a gardener planting colourful flowers beside the playground this afternoon?"
 },
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Why is there a neighbour waving happily from her balcony right now?"
+a:"Where are there many students revising quietly before the exam starts today?"
 },
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Where are there workers repairing the road near the school this week?"
+a:"Why is there a teacher explaining clearly the lesson during the morning class?"
+},
+{
+type:"order",
+t:"Order the WH‑question:",
+a:"Where are there several birds singing loudly near my window at sunrise today?"
+},
+
+{
+type:"order",
+t:"Order the WH‑question:",
+a:"Why is there a heavy box sitting awkwardly on the table this morning?"
+},
+{
+type:"order",
+t:"Order the WH‑question:",
+a:"Where are there many people walking slowly through the crowded market today?"
+},
+{
+type:"order",
+t:"Order the WH‑question:",
+a:"Why is there a friendly neighbour waving happily from her balcony right now?"
+},
+{
+type:"order",
+t:"Order the WH‑question:",
+a:"Where are there workers repairing carefully the road near the school this week?"
 },
 {
 type:"order",
@@ -1139,17 +1139,17 @@ a:"Why is there a cat stretching lazily on the warm carpet in the living room?"
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Where are there posters advertising different clubs on the notice board?"
+a:"Where are there many posters advertising different clubs on the notice board today?"
 },
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Why is there a bus driver greeting passengers politely this morning?"
+a:"Why is there a bus driver greeting politely every passenger who gets on this morning?"
 },
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Where are there teenagers practising guitar loudly in the garage?"
+a:"Where are there several teenagers practising guitar loudly in the garage this afternoon?"
 },
 {
 type:"order",
@@ -1159,437 +1159,297 @@ a:"Why is there a scientist writing quickly in her notebook during the experimen
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Where are there colourful markers scattered messily across the desk?"
+a:"Where are there many colourful markers scattered messily across the desk today?"
 },
 
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Why is there a journalist reporting live from the city centre today?"
+a:"Why is there a journalist reporting live from the crowded city centre this morning?"
 },
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Where are there dancers performing gracefully on the stage tonight?"
+a:"Where are there several dancers performing gracefully on the stage tonight?"
 },
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Why is there a chef preparing breakfast early this morning?"
+a:"Why is there a chef preparing breakfast early in the morning today?"
 },
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Where are there customers waiting impatiently outside the bakery?"
+a:"Where are there many customers waiting impatiently outside the bakery right now?"
 },
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Why is there a librarian organising new books on the shelves today?"
+a:"Why is there a librarian organising carefully the new books on the shelves today?"
 },
 
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Where are there students discussing quietly in the corner of the classroom?"
+a:"Where are there some students discussing quietly in the corner of the classroom this morning?"
 },
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Why is there a painter mixing colours slowly on his palette?"
+a:"Why is there a painter mixing colours slowly on his palette right now?"
 },
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Where are there insects flying noisily around the garden lights tonight?"
+a:"Where are there many insects flying noisily around the garden lights tonight?"
 },
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Why is there a doctor checking the patient’s heartbeat gently this afternoon?"
+a:"Why is there a doctor checking gently the patient’s heartbeat this afternoon?"
 },
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Where are there swimmers practising daily in the indoor pool?"
+a:"Where are there several swimmers practising daily in the indoor pool this week?"
 }
 
-// END BLOCK 3
+ // END BLOCK 3
 /* ----------------------------- */
-/* 100 EXTRA MIXED SENTENCES     */
+/* 100 MIXED (CHOOSE + ORDER)    */
 /* ----------------------------- */
 
 {
 type:"choose",
-t:"____ a friendly paramedic helping a cyclist with an injured leg near the park entrance this morning.",
+t:"____ a group of students preparing a science project in the library this afternoon.",
 a:"There is",
 opts:["There is","There are","There was","There were"]
 },
 {
 type:"choose",
-t:"____ several noisy construction workers drilling loudly behind the school today.",
-a:"There are",
-opts:["There is","There are","There was","There were"]
-},
-{
-type:"choose",
-t:"____ a delicious smell coming from the kitchen because the chef is preparing a new recipe.",
-a:"There is",
-opts:["There is","There are","There was","There were"]
-},
-{
-type:"choose",
-t:"____ many colourful umbrellas on the beach because it is extremely sunny today.",
-a:"There are",
-opts:["There is","There are","There was","There were"]
-},
-{
-type:"choose",
-t:"____ a firefighter climbing carefully up the ladder during the emergency yesterday.",
-a:"There was",
-opts:["There is","There are","There was","There were"]
-},
-
-{
-type:"choose",
-t:"____ several dancers practising their routine gracefully in the theatre this afternoon.",
-a:"There are",
-opts:["There is","There are","There was","There were"]
-},
-{
-type:"choose",
-t:"____ a loud alarm ringing suddenly in the building last night.",
-a:"There was",
-opts:["There is","There are","There was","There were"]
-},
-{
-type:"choose",
-t:"____ any clean glasses in the cupboard; we need to wash some before dinner.",
-a:"There aren’t",
-opts:["There isn’t","There aren’t","There wasn’t","There weren’t"]
-},
-{
-type:"choose",
-t:"____ a comfortable bench under the tree where students usually sit during break.",
-a:"There is",
-opts:["There is","There are","There was","There were"]
-},
-{
-type:"choose",
-t:"____ many birds flying quickly above the lake this morning.",
-a:"There are",
-opts:["There is","There are","There was","There were"]
-},
-
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Why is there a mechanic repairing the noisy engine behind the supermarket today?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Where was there a group of tourists taking photos near the old castle yesterday?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"When was there a strange smell coming from the science lab last week?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Why are there so many students waiting nervously outside the exam room?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Where is there a comfortable place to study quietly in this building?"
-},
-
-{
-type:"choose",
-t:"____ a nurse checking the patient’s temperature gently in the emergency room.",
-a:"There is",
-opts:["There is","There are","There was","There were"]
-},
-{
-type:"choose",
-t:"____ several broken pencils on the floor after the art activity.",
-a:"There are",
-opts:["There is","There are","There was","There were"]
-},
-{
-type:"choose",
-t:"____ a tall tree blocking the view from my bedroom window.",
-a:"There is",
-opts:["There is","There are","There was","There were"]
-},
-{
-type:"choose",
-t:"____ many people walking slowly through the crowded market this afternoon.",
-a:"There are",
-opts:["There is","There are","There was","There were"]
-},
-{
-type:"choose",
-t:"____ a dentist cleaning a patient’s teeth carefully this morning.",
-a:"There is",
-opts:["There is","There are","There was","There were"]
-},
-
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Why was there a police officer standing quietly near the entrance last night?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Where are there colourful decorations hanging above the main street today?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"When is there a good moment to talk privately with the teacher?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Why were there so many people shouting excitedly during the football match?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Where was there a small dog barking loudly behind the house yesterday?"
-},
-
-{
-type:"choose",
-t:"____ any free tables in the cafeteria right now; everything is full.",
-a:"There aren’t",
-opts:["There isn’t","There aren’t","There wasn’t","There weren’t"]
-},
-{
-type:"choose",
-t:"____ a new poster about recycling next to the science classroom.",
-a:"There is",
-opts:["There is","There are","There was","There were"]
-},
-{
-type:"choose",
-t:"____ several students laughing loudly near the lockers this morning.",
-a:"There are",
-opts:["There is","There are","There was","There were"]
-},
-{
-type:"choose",
-t:"____ a chef decorating a chocolate cake beautifully in the kitchen.",
-a:"There is",
-opts:["There is","There are","There was","There were"]
-},
-{
-type:"choose",
-t:"____ many clouds covering the sky completely today.",
-a:"There are",
-opts:["There is","There are","There was","There were"]
-},
-
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Why is there a runner stretching carefully before the race starts?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Where are there students practising quietly for the music exam?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Why was there a loud noise coming from the basement last night?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Where were there volunteers helping generously during the charity event?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Why is there a cat sleeping peacefully on the warm sofa right now?"
-},
-
-{
-type:"choose",
-t:"____ a librarian reading quietly behind the counter this afternoon.",
-a:"There is",
-opts:["There is","There are","There was","There were"]
-},
-{
-type:"choose",
-t:"____ several tourists walking slowly along the beach this morning.",
-a:"There are",
-opts:["There is","There are","There was","There were"]
-},
-{
-type:"choose",
-t:"____ a painter working silently in his studio late last night.",
-a:"There was",
-opts:["There is","There are","There was","There were"]
-},
-{
-type:"choose",
-t:"____ many insects flying noisily around the garden lights tonight.",
-a:"There are",
-opts:["There is","There are","There was","There were"]
-},
-{
-type:"choose",
-t:"____ a friendly neighbour waving happily from her balcony right now.",
-a:"There is",
-opts:["There is","There are","There was","There were"]
-},
-
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Why are there so many bicycles parked outside the school entrance today?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Where is there a musician practising quietly before the concert?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Why was there a firefighter rescuing a cat from the roof yesterday?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Where were there children jumping happily in the playground last week?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Why is there a gardener watering the plants gently this morning?"
-},
-
-{
-type:"choose",
-t:"____ any clean plates in the cupboard; everything is dirty.",
-a:"There aren’t",
-opts:["There isn’t","There aren’t","There wasn’t","There weren’t"]
-},
-{
-type:"choose",
-t:"____ a doctor speaking calmly to a worried mother in the hallway.",
-a:"There is",
-opts:["There is","There are","There was","There were"]
-},
-{
-type:"choose",
-t:"____ several artists painting colourful murals downtown today.",
-a:"There are",
-opts:["There is","There are","There was","There were"]
-},
-{
-type:"choose",
-t:"____ a strong wind blowing loudly through the trees this afternoon.",
-a:"There is",
-opts:["There is","There are","There was","There were"]
-},
-{
-type:"choose",
-t:"____ many students waiting nervously for their results outside the hall.",
-a:"There are",
-opts:["There is","There are","There was","There were"]
-},
-
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Where is there a safe place to leave your backpack during PE class?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Why are there so many people shopping busily in the supermarket today?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Where was there a journalist reporting live from the city centre yesterday?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Why is there a teacher writing instructions neatly on the whiteboard?"
-},
-{
-type:"order",
-t:"Order the WH‑question:",
-a:"Where are there swimmers warming up before the competition starts?"
-},
-
-{
-type:"choose",
-t:"____ a pilot checking the controls carefully before take‑off.",
-a:"There is",
-opts:["There is","There are","There was","There were"]
-},
-{
-type:"choose",
-t:"____ several neighbours celebrating happily in the street last night.",
+t:"____ several boxes stacked neatly in the storage room yesterday.",
 a:"There were",
 opts:["There is","There are","There was","There were"]
 },
 {
 type:"choose",
-t:"____ a musician composing a new melody slowly in the music room.",
+t:"____ a strange smell coming from the kitchen right now.",
 a:"There is",
 opts:["There is","There are","There was","There were"]
 },
 {
 type:"choose",
-t:"____ many posters hanging neatly on the classroom wall today.",
+t:"____ many people waiting outside the theatre before the show started.",
+a:"There were",
+opts:["There is","There are","There was","There were"]
+},
+{
+type:"choose",
+t:"____ a loud noise coming from the classroom next door this morning.",
+a:"There was",
+opts:["There is","There are","There was","There were"]
+},
+
+{
+type:"order",
+t:"Order the WH‑question:",
+a:"Why is there a student crying quietly in the corner of the playground today?"
+},
+{
+type:"order",
+t:"Order the WH‑question:",
+a:"Where are there many bicycles parked outside the school entrance this morning?"
+},
+{
+type:"order",
+t:"Order the WH‑question:",
+a:"Why was there a teacher shouting instructions loudly during the sports event yesterday?"
+},
+{
+type:"order",
+t:"Order the WH‑question:",
+a:"Where were there several children playing happily near the fountain last weekend?"
+},
+{
+type:"order",
+t:"Order the WH‑question:",
+a:"Why is there a delicious smell coming from the cafeteria kitchen right now?"
+},
+
+{
+type:"choose",
+t:"____ any clean tables available in the cafeteria during lunchtime today.",
+a:"There aren’t",
+opts:["There isn’t","There aren’t","There wasn’t","There weren’t"]
+},
+{
+type:"choose",
+t:"____ a teacher supervising the hallway yesterday afternoon.",
+a:"There was",
+opts:["There is","There are","There was","There were"]
+},
+{
+type:"choose",
+t:"____ many colourful posters on the walls for the school festival this week.",
 a:"There are",
 opts:["There is","There are","There was","There were"]
 },
 {
 type:"choose",
-t:"____ a chef cooking delicious meals in the kitchen right now.",
+t:"____ a football match taking place on the field right now.",
 a:"There is",
+opts:["There is","There are","There was","There were"]
+},
+{
+type:"choose",
+t:"____ several students missing from class yesterday.",
+a:"There were",
 opts:["There is","There are","There was","There were"]
 },
 
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Why was there a painter working silently in his studio last night?"
+a:"Why is there a long line of students waiting outside the computer room today?"
 },
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Where are there children building sandcastles happily on the beach?"
+a:"Where are there many books scattered across the library tables this morning?"
 },
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Why is there a nurse checking the patient’s temperature carefully today?"
+a:"Why was there a broken window in the art classroom yesterday afternoon?"
 },
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Where were there athletes running energetically on the track yesterday?"
+a:"Where were there several teachers meeting to plan the school trip last week?"
 },
 {
 type:"order",
 t:"Order the WH‑question:",
-a:"Why is there a friendly dog wagging its tail excitedly near the door?"
+a:"Why is there a cat sleeping peacefully on the warm carpet in the living room?"
+},
+
+{
+type:"choose",
+t:"____ a new rule added to the classroom door this morning.",
+a:"There is",
+opts:["There is","There are","There was","There were"]
+},
+{
+type:"choose",
+t:"____ many students talking loudly in the corridor during break time today.",
+a:"There are",
+opts:["There is","There are","There was","There were"]
+},
+{
+type:"choose",
+t:"____ a missing backpack reported to the office yesterday.",
+a:"There was",
+opts:["There is","There are","There was","There were"]
+},
+{
+type:"choose",
+t:"____ several teachers attending a meeting right now.",
+a:"There are",
+opts:["There is","There are","There was","There were"]
+},
+{
+type:"choose",
+t:"____ a strange noise coming from the science lab this morning.",
+a:"There was",
+opts:["There is","There are","There was","There were"]
+},
+
+{
+type:"order",
+t:"Order the WH‑question:",
+a:"Where are there many students practising their dance routine for the festival today?"
+},
+{
+type:"order",
+t:"Order the WH‑question:",
+a:"Why is there a teacher explaining the new project instructions clearly this morning?"
+},
+{
+type:"order",
+t:"Order the WH‑question:",
+a:"Where were there colourful decorations hanging in the school hall yesterday?"
+},
+{
+type:"order",
+t:"Order the WH‑question:",
+a:"Why was there a group of students cleaning the playground after school last week?"
+},
+{
+type:"order",
+t:"Order the WH‑question:",
+a:"Where is there a comfortable chair where you can sit and read quietly?"
+},
+
+{
+type:"choose",
+t:"____ any pencils left in the drawer this morning.",
+a:"There aren’t",
+opts:["There isn’t","There aren’t","There wasn’t","There weren’t"]
+},
+{
+type:"choose",
+t:"____ a teacher helping a student with homework after school yesterday.",
+a:"There was",
+opts:["There is","There are","There was","There were"]
+},
+{
+type:"choose",
+t:"____ many clouds in the sky today; it looks like it might rain.",
+a:"There are",
+opts:["There is","There are","There was","There were"]
+},
+{
+type:"choose",
+t:"____ a meeting scheduled for teachers this afternoon.",
+a:"There is",
+opts:["There is","There are","There was","There were"]
+},
+{
+type:"choose",
+t:"____ several birds flying above the playground this morning.",
+a:"There are",
+opts:["There is","There are","There was","There were"]
+},
+
+{
+type:"order",
+t:"Order the WH‑question:",
+a:"Why is there a student waiting nervously outside the principal’s office today?"
+},
+{
+type:"order",
+t:"Order the WH‑question:",
+a:"Where are there many chairs arranged neatly for the school assembly?"
+},
+{
+type:"order",
+t:"Order the WH‑question:",
+a:"Why was there a loud noise coming from the gym yesterday afternoon?"
+},
+{
+type:"order",
+t:"Order the WH‑question:",
+a:"Where were there several students practising instruments in the music room last week?"
+},
+{
+type:"order",
+t:"Order the WH‑question:",
+a:"Why is there a delicious cake cooling on the kitchen table right now?"
 }
 
-]; // END BLOCK 4
+ // END BLOCK 4
+
+];
+
+
+
