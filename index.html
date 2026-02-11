@@ -1,10 +1,128 @@
-<!-- ❌ ELIMINADO TODO LO DEL SHADOW DOM -->
-<!-- NO app-root, NO attachShadow, NO mover body -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Be & There Be – Streak to 25</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:"Poppins",sans-serif;
+  background:linear-gradient(135deg,#eef2ff,#fef9c3);
+  min-height:100vh;
+}
+
+.hidden{display:none}
+
+.screen{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.start-card,.game{
+  background:white;
+  padding:24px;
+  border-radius:18px;
+  box-shadow:0 10px 30px rgba(0,0,0,.2);
+  max-width:700px;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+button{
+  padding:12px;
+  border:none;
+  border-radius:12px;
+  font-weight:700;
+  cursor:pointer;
+  background:#6366f1;
+  color:white;
+}
+
+.choice{
+  padding:14px;
+  border-radius:12px;
+  background:#22c55e;
+  color:white;
+  font-weight:700;
+  text-align:center;
+  cursor:pointer;
+}
+
+.word{
+  padding:10px 16px;
+  border-radius:999px;
+  background:#e0f2fe;
+  cursor:pointer;
+  font-weight:700;
+}
+
+.word.used{
+  opacity:.4;
+  cursor:not-allowed;
+}
+
+.feedback.ok{background:#dcfce7;padding:10px}
+.feedback.no{background:#fee2e2;padding:10px}
+</style>
+</head>
+
+<body>
+
+<!-- START -->
+<div class="screen" id="startScreen">
+  <div class="start-card">
+    <h1>Be & There Be</h1>
+    <p>Streak to 25</p>
+    <input id="playerName" placeholder="Your name">
+    <button id="startBtn">Start</button>
+  </div>
+</div>
+
+<!-- GAME -->
+<div class="screen hidden" id="gameScreen">
+  <div class="game">
+    <div id="playerLabel"></div>
+
+    <div id="sentence"></div>
+    <strong id="activityLabel"></strong>
+    <div id="modeInstructions"></div>
+
+    <div id="choices"></div>
+    <div id="wordbank"></div>
+    <div id="answer"></div>
+
+    <button id="checkBtn">Check</button>
+    <button id="undoBtn">Undo</button>
+
+    <div id="feedback" class="feedback hidden"></div>
+
+    <div>
+      Streak: <span id="streak">0</span>/25 |
+      Mistakes: <span id="mistakes">0</span>
+    </div>
+
+    <div style="height:10px;background:#ddd">
+      <div id="progressBar" style="height:10px;width:0%;background:#22c55e"></div>
+    </div>
+
+    <button id="resetBtn">Reset</button>
+  </div>
+</div>
 
 <script src="sentences.js"></script>
 
 <script>
-// ================= DOM =================
+// ---------- DOM ----------
 const startScreen = document.getElementById("startScreen");
 const gameScreen = document.getElementById("gameScreen");
 const startBtn = document.getElementById("startBtn");
@@ -24,57 +142,51 @@ const checkBtn = document.getElementById("checkBtn");
 const undoBtn = document.getElementById("undoBtn");
 const feedback = document.getElementById("feedback");
 
-const progressBar = document.getElementById("progressBar");
 const streakSpan = document.getElementById("streak");
 const mistakesSpan = document.getElementById("mistakes");
+const progressBar = document.getElementById("progressBar");
 
-const pauseBtn = document.getElementById("pauseBtn");
 const resetBtn = document.getElementById("resetBtn");
-const pauseOverlay = document.getElementById("pauseOverlay");
-const continueBtn = document.getElementById("continueBtn");
-const musicBtn = document.getElementById("musicBtn");
 
-// ================= STATE =================
+// ---------- STATE ----------
 let streak = 0;
 let mistakes = 0;
 let current;
-let selectedWords = [];
+let selected = [];
 
 const shuffle = arr => [...arr].sort(() => Math.random() - 0.5);
 
-// ================= START =================
+// ---------- START ----------
 startBtn.onclick = () => {
-  const name = playerName.value.trim();
-  if (!name) return;
-
-  playerLabel.textContent = "👤 " + name;
+  if (!playerName.value.trim()) return;
+  playerLabel.textContent = "👤 " + playerName.value;
   startScreen.classList.add("hidden");
   gameScreen.classList.remove("hidden");
-
-  streak = 0;
-  mistakes = 0;
-  updateStats();
   next();
 };
 
-// ================= GAME FLOW =================
-function next() {
-  if (!window.BANK || BANK.length === 0) {
-    alert("Sentence bank not loaded");
+// ---------- GAME ----------
+function next(){
+  if (!window.BANK || BANK.length === 0){
+    alert("BANK not loaded");
     return;
   }
 
-  if (streak >= 25) {
+  if (streak >= 25){
     document.querySelector(".game").innerHTML =
-      `<div class="feedback ok">🎉 CHALLENGE COMPLETE!</div>`;
+      "<h2>🎉 CHALLENGE COMPLETE</h2>";
     return;
   }
 
   current = shuffle(BANK)[0];
-  selectedWords = [];
+  selected = [];
 
   sentence.textContent = current.t;
   activityLabel.textContent = current.type.toUpperCase();
+  modeInstructions.textContent =
+    current.type === "choose"
+      ? "Choose the correct option"
+      : "Order the words";
 
   choices.innerHTML = "";
   wordbank.innerHTML = "";
@@ -85,77 +197,66 @@ function next() {
   else renderOrder();
 }
 
-// ================= MODES =================
-function renderChoose() {
-  choices.classList.remove("hidden");
-  wordbank.classList.add("hidden");
-  answer.classList.add("hidden");
-  checkBtn.classList.add("hidden");
-  undoBtn.classList.add("hidden");
-
-  shuffle(current.opts).forEach(opt => {
+// ---------- MODES ----------
+function renderChoose(){
+  current.opts.forEach(o=>{
     const d = document.createElement("div");
     d.className = "choice";
-    d.textContent = opt;
-    d.onclick = () => check(opt);
+    d.textContent = o;
+    d.onclick = () => check(o);
     choices.appendChild(d);
   });
 }
 
-function renderOrder() {
-  choices.classList.add("hidden");
-  wordbank.classList.remove("hidden");
-  answer.classList.remove("hidden");
-  checkBtn.classList.remove("hidden");
-  undoBtn.classList.remove("hidden");
-
-  shuffle(current.a.split(" ")).forEach(word => {
-    const w = document.createElement("div");
-    w.className = "word";
-    w.textContent = word;
-    w.onclick = () => {
-      if (w.classList.contains("used")) return;
-      w.classList.add("used");
-      selectedWords.push(word);
-      answer.textContent = selectedWords.join(" ");
+function renderOrder(){
+  shuffle(current.a.split(" ")).forEach(w=>{
+    const s = document.createElement("span");
+    s.className = "word";
+    s.textContent = w;
+    s.onclick = ()=>{
+      if (s.classList.contains("used")) return;
+      s.classList.add("used");
+      selected.push(w);
+      answer.textContent = selected.join(" ");
     };
-    wordbank.appendChild(w);
+    wordbank.appendChild(s);
   });
 }
 
-// ================= CHECK =================
+// ---------- CHECK ----------
 checkBtn.onclick = () => check(answer.textContent);
 
-function check(value) {
+function check(v){
   feedback.classList.remove("hidden");
 
-  if (value === current.a) {
+  if (v === current.a){
     streak++;
-    feedback.textContent = "✔ Correct!";
+    feedback.textContent = "✔ Correct";
     feedback.className = "feedback ok";
   } else {
     streak = 0;
     mistakes++;
-    feedback.textContent = `✘ ${current.a}`;
+    feedback.textContent = "✘ " + current.a;
     feedback.className = "feedback no";
   }
 
-  updateStats();
-  setTimeout(next, 1200);
-}
-
-// ================= HELPERS =================
-function updateStats() {
   streakSpan.textContent = streak;
   mistakesSpan.textContent = mistakes;
   progressBar.style.width = (streak / 25 * 100) + "%";
+
+  setTimeout(next, 1000);
 }
 
-// ================= RESET =================
+// ---------- RESET ----------
 resetBtn.onclick = () => {
   streak = 0;
   mistakes = 0;
-  updateStats();
+  streakSpan.textContent = "0";
+  mistakesSpan.textContent = "0";
+  progressBar.style.width = "0%";
   next();
 };
 </script>
+
+</body>
+</html>
