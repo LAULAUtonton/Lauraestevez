@@ -316,7 +316,12 @@ startBtn.onclick=()=>{
     alert("Name required");
     return;
   }
+
   playerLabel.textContent="👤 "+playerName.value;
+
+  // 🔑 ARREGLO CLAVE: forzar salida de pausa
+  pauseOverlay.classList.add("hidden");
+
   startScreen.classList.add("hidden");
   gameScreen.classList.remove("hidden");
   resetGame();
@@ -430,6 +435,9 @@ function updateStats(){
 }
 
 function resetGame(){
+  // 🔑 ARREGLO CLAVE: reset también quita pausa
+  pauseOverlay.classList.add("hidden");
+
   streak=0;
   mistakes=0;
   updateStats();
@@ -440,5 +448,3 @@ function resetGame(){
 resetBtn.onclick=resetGame;
 </script>
 
-</body>
-</html>
