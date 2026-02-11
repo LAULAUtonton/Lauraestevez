@@ -1,20 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Be & There Be – Streak to 25</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be & There Be — Streak to 25</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
+:root{
+  --primary:#6366f1;
+  --accent:#22c55e;
+  --danger:#ef4444;
+  --bg1:#eef2ff;
+  --bg2:#fef9c3;
+  --chip:#e0f2fe;
+  --chip-text:#0c4a6e;
+}
+
 *{box-sizing:border-box;margin:0;padding:0}
 
 body{
-  font-family:"Poppins",sans-serif;
-  background:linear-gradient(135deg,#eef2ff,#fef9c3);
+  font-family:Poppins,sans-serif;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
   min-height:100vh;
+  color:#0f172a;
 }
 
 .hidden{display:none}
@@ -24,238 +34,410 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
+  padding:20px;
 }
 
-.start-card,.game{
+.card{
   background:white;
-  padding:24px;
-  border-radius:18px;
-  box-shadow:0 10px 30px rgba(0,0,0,.2);
-  max-width:700px;
+  max-width:900px;
   width:100%;
+  padding:28px;
+  border-radius:24px;
+  box-shadow:0 20px 40px rgba(0,0,0,.15);
   display:flex;
   flex-direction:column;
-  gap:16px;
+  gap:18px;
 }
 
+/* ---------- TEXT ---------- */
+h1{text-align:center;color:var(--primary);font-weight:800;font-size:2.3rem}
+.subtitle{text-align:center;font-weight:600;color:#475569}
+
+/* ---------- BUTTONS ---------- */
 button{
-  padding:12px;
+  padding:14px 18px;
+  border-radius:14px;
   border:none;
-  border-radius:12px;
-  font-weight:700;
+  font-weight:800;
+  font-size:1rem;
   cursor:pointer;
-  background:#6366f1;
   color:white;
 }
+.btn-main{background:var(--primary)}
+.btn-alt{background:#0f172a}
+.btn-danger{background:var(--danger)}
+.btn-music{background:#10b981}
 
-.choice{
-  padding:14px;
-  border-radius:12px;
-  background:#22c55e;
+/* ---------- HEADER ---------- */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:var(--primary);
   color:white;
-  font-weight:700;
+  padding:16px;
+  border-radius:16px;
+}
+
+/* ---------- PROGRESS ---------- */
+.progress-wrap{
+  background:#e5e7eb;
+  border-radius:14px;
+  overflow:hidden;
+}
+.progress-bar{
+  height:20px;
+  background:linear-gradient(90deg,#22c55e,#14b8a6);
+  width:0%;
+  transition:width .3s ease;
+}
+
+/* ---------- STATS ---------- */
+.stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.stat{
+  background:white;
+  padding:14px;
+  border-radius:14px;
+  text-align:center;
+  font-weight:800;
+}
+
+/* ---------- SENTENCE ---------- */
+.sentence{
+  border:4px solid var(--primary);
+  border-radius:18px;
+  padding:20px;
+  font-size:1.4rem;
+  font-weight:800;
+  text-align:center;
+}
+
+/* ---------- INSTRUCTIONS ---------- */
+.instructions{
+  background:#e0f2fe;
+  padding:14px;
+  border-radius:14px;
+  font-weight:600;
+}
+
+/* ---------- CHOOSE ---------- */
+.choices{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:14px;
+}
+.choice{
+  background:var(--primary);
+  color:white;
+  padding:16px;
+  border-radius:16px;
+  font-weight:800;
   text-align:center;
   cursor:pointer;
 }
 
-.word{
-  padding:10px 16px;
-  border-radius:999px;
-  background:#e0f2fe;
-  cursor:pointer;
-  font-weight:700;
+/* ---------- ORDER ---------- */
+.wordbank{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
 }
-
+.word{
+  background:var(--chip);
+  color:var(--chip-text);
+  padding:12px 18px;
+  border-radius:999px;
+  font-weight:800;
+  cursor:pointer;
+  border:2px solid #bae6fd;
+}
 .word.used{
   opacity:.4;
   cursor:not-allowed;
 }
 
-.feedback.ok{background:#dcfce7;padding:10px}
-.feedback.no{background:#fee2e2;padding:10px}
+.answer{
+  min-height:70px;
+  background:#fefce8;
+  border:3px dashed #facc15;
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  font-size:1.2rem;
+}
+
+/* ---------- FEEDBACK ---------- */
+.feedback{
+  text-align:center;
+  font-weight:800;
+  padding:14px;
+  border-radius:14px;
+  font-size:1.15rem;
+}
+.ok{background:#dcfce7;color:#166534}
+.no{background:#fee2e2;color:#991b1b}
+
+/* ---------- PAUSE ---------- */
+.pause{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:50;
+}
+.pause-box{
+  background:white;
+  padding:28px;
+  border-radius:18px;
+  text-align:center;
+  box-shadow:0 20px 40px rgba(0,0,0,.4);
+}
 </style>
 </head>
 
 <body>
 
-<!-- START -->
+<!-- ================= START ================= -->
 <div class="screen" id="startScreen">
-  <div class="start-card">
+  <div class="card">
     <h1>Be & There Be</h1>
-    <p>Streak to 25</p>
-    <input id="playerName" placeholder="Your name">
-    <button id="startBtn">Start</button>
+    <div class="subtitle">Streak to 25 · No mistakes</div>
+    <div class="instructions">
+      🎯 Get <b>25 correct answers in a row</b><br>
+      🧠 there is / are / was / were<br>
+      ✍️ Name required to start
+    </div>
+    <input id="playerName" placeholder="Write your name">
+    <button class="btn-main" id="startBtn">Start game</button>
   </div>
 </div>
 
-<!-- GAME -->
+<!-- ================= GAME ================= -->
 <div class="screen hidden" id="gameScreen">
-  <div class="game">
-    <div id="playerLabel"></div>
+  <div class="card">
 
-    <div id="sentence"></div>
-    <strong id="activityLabel"></strong>
-    <div id="modeInstructions"></div>
-
-    <div id="choices"></div>
-    <div id="wordbank"></div>
-    <div id="answer"></div>
-
-    <button id="checkBtn">Check</button>
-    <button id="undoBtn">Undo</button>
-
-    <div id="feedback" class="feedback hidden"></div>
-
-    <div>
-      Streak: <span id="streak">0</span>/25 |
-      Mistakes: <span id="mistakes">0</span>
+    <div class="header">
+      <div id="playerLabel"></div>
+      <div style="display:flex;gap:10px">
+        <button class="btn-music" id="musicBtn">🎵</button>
+        <button class="btn-alt" id="pauseBtn">⏸</button>
+        <button class="btn-danger" id="resetBtn">↻</button>
+      </div>
     </div>
 
-    <div style="height:10px;background:#ddd">
-      <div id="progressBar" style="height:10px;width:0%;background:#22c55e"></div>
+    <div class="progress-wrap">
+      <div class="progress-bar" id="progressBar"></div>
     </div>
 
-    <button id="resetBtn">Reset</button>
+    <div class="stats">
+      <div class="stat">Streak<br><span id="streak">0</span>/25</div>
+      <div class="stat">Mistakes<br><span id="mistakes">0</span></div>
+    </div>
+
+    <div class="sentence" id="sentence"></div>
+    <div class="instructions" id="modeInstructions"></div>
+
+    <div class="choices hidden" id="choices"></div>
+
+    <div class="wordbank hidden" id="wordbank"></div>
+    <div class="answer hidden" id="answer"></div>
+
+    <div style="display:flex;gap:12px;justify-content:center">
+      <button class="btn-main hidden" id="checkBtn">Check</button>
+      <button class="btn-alt hidden" id="undoBtn">Undo</button>
+    </div>
+
+    <div class="feedback hidden" id="feedback"></div>
+
+  </div>
+</div>
+
+<!-- ================= PAUSE ================= -->
+<div class="pause hidden" id="pauseOverlay">
+  <div class="pause-box">
+    <h2>Game paused</h2>
+    <button class="btn-main" id="continueBtn">Continue</button>
   </div>
 </div>
 
 <script src="sentences.js"></script>
 
 <script>
-// ---------- DOM ----------
-const startScreen = document.getElementById("startScreen");
-const gameScreen = document.getElementById("gameScreen");
-const startBtn = document.getElementById("startBtn");
+/* ================= DOM ================= */
+const qs=id=>document.getElementById(id);
+const startScreen=qs("startScreen");
+const gameScreen=qs("gameScreen");
+const startBtn=qs("startBtn");
+const playerName=qs("playerName");
+const playerLabel=qs("playerLabel");
 
-const playerName = document.getElementById("playerName");
-const playerLabel = document.getElementById("playerLabel");
+const sentence=qs("sentence");
+const modeInstructions=qs("modeInstructions");
+const choices=qs("choices");
+const wordbank=qs("wordbank");
+const answer=qs("answer");
 
-const sentence = document.getElementById("sentence");
-const activityLabel = document.getElementById("activityLabel");
-const modeInstructions = document.getElementById("modeInstructions");
+const checkBtn=qs("checkBtn");
+const undoBtn=qs("undoBtn");
+const feedback=qs("feedback");
 
-const choices = document.getElementById("choices");
-const wordbank = document.getElementById("wordbank");
-const answer = document.getElementById("answer");
+const streakSpan=qs("streak");
+const mistakesSpan=qs("mistakes");
+const progressBar=qs("progressBar");
 
-const checkBtn = document.getElementById("checkBtn");
-const undoBtn = document.getElementById("undoBtn");
-const feedback = document.getElementById("feedback");
+const pauseBtn=qs("pauseBtn");
+const resetBtn=qs("resetBtn");
+const pauseOverlay=qs("pauseOverlay");
+const continueBtn=qs("continueBtn");
+const musicBtn=qs("musicBtn");
 
-const streakSpan = document.getElementById("streak");
-const mistakesSpan = document.getElementById("mistakes");
-const progressBar = document.getElementById("progressBar");
+/* ================= STATE ================= */
+let streak=0, mistakes=0, current;
+let selected=[];
+const shuffle=a=>[...a].sort(()=>Math.random()-.5);
 
-const resetBtn = document.getElementById("resetBtn");
+/* ================= AUDIO ================= */
+const music=new Audio("audio/koala3.mp3");
+music.loop=true;
+const winSound=new Audio("audio/tadaa.mp3");
 
-// ---------- STATE ----------
-let streak = 0;
-let mistakes = 0;
-let current;
-let selected = [];
-
-const shuffle = arr => [...arr].sort(() => Math.random() - 0.5);
-
-// ---------- START ----------
-startBtn.onclick = () => {
-  if (!playerName.value.trim()) return;
-  playerLabel.textContent = "👤 " + playerName.value;
+/* ================= START ================= */
+startBtn.onclick=()=>{
+  if(!playerName.value.trim()){
+    alert("Name required");
+    return;
+  }
+  playerLabel.textContent="👤 "+playerName.value;
   startScreen.classList.add("hidden");
   gameScreen.classList.remove("hidden");
-  next();
+  resetGame();
 };
 
-// ---------- GAME ----------
+/* ================= MUSIC ================= */
+musicBtn.onclick=()=>{
+  if(music.paused){
+    music.play();
+    musicBtn.textContent="🔊";
+  }else{
+    music.pause();
+    musicBtn.textContent="🎵";
+  }
+};
+
+/* ================= PAUSE ================= */
+pauseBtn.onclick=()=>pauseOverlay.classList.remove("hidden");
+continueBtn.onclick=()=>pauseOverlay.classList.add("hidden");
+
+/* ================= GAME FLOW ================= */
 function next(){
-  if (!window.BANK || BANK.length === 0){
-    alert("BANK not loaded");
+  if(streak>=25){
+    music.pause();
+    winSound.play();
+    document.querySelector(".card").innerHTML=
+      `<div class="feedback ok">🎉 YOU WIN!<br>25 correct in a row!</div>`;
     return;
   }
 
-  if (streak >= 25){
-    document.querySelector(".game").innerHTML =
-      "<h2>🎉 CHALLENGE COMPLETE</h2>";
-    return;
-  }
+  current=shuffle(BANK)[0];
+  selected=[];
 
-  current = shuffle(BANK)[0];
-  selected = [];
-
-  sentence.textContent = current.t;
-  activityLabel.textContent = current.type.toUpperCase();
-  modeInstructions.textContent =
-    current.type === "choose"
+  sentence.textContent=current.t;
+  modeInstructions.textContent=
+    current.type==="choose"
       ? "Choose the correct option"
-      : "Order the words";
+      : "Order the words to build the sentence";
 
-  choices.innerHTML = "";
-  wordbank.innerHTML = "";
-  answer.textContent = "";
+  choices.innerHTML="";
+  wordbank.innerHTML="";
+  answer.textContent="";
   feedback.classList.add("hidden");
 
-  if (current.type === "choose") renderChoose();
+  if(current.type==="choose") renderChoose();
   else renderOrder();
 }
 
-// ---------- MODES ----------
+/* ================= MODES ================= */
 function renderChoose(){
-  current.opts.forEach(o=>{
-    const d = document.createElement("div");
-    d.className = "choice";
-    d.textContent = o;
-    d.onclick = () => check(o);
+  choices.classList.remove("hidden");
+  wordbank.classList.add("hidden");
+  answer.classList.add("hidden");
+  checkBtn.classList.add("hidden");
+  undoBtn.classList.add("hidden");
+
+  shuffle(current.opts).forEach(o=>{
+    const d=document.createElement("div");
+    d.className="choice";
+    d.textContent=o;
+    d.onclick=()=>check(o);
     choices.appendChild(d);
   });
 }
 
 function renderOrder(){
+  choices.classList.add("hidden");
+  wordbank.classList.remove("hidden");
+  answer.classList.remove("hidden");
+  checkBtn.classList.remove("hidden");
+  undoBtn.classList.remove("hidden");
+
   shuffle(current.a.split(" ")).forEach(w=>{
-    const s = document.createElement("span");
-    s.className = "word";
-    s.textContent = w;
-    s.onclick = ()=>{
-      if (s.classList.contains("used")) return;
+    const s=document.createElement("div");
+    s.className="word";
+    s.textContent=w;
+    s.onclick=()=>{
+      if(s.classList.contains("used"))return;
       s.classList.add("used");
       selected.push(w);
-      answer.textContent = selected.join(" ");
+      answer.textContent=selected.join(" ");
     };
     wordbank.appendChild(s);
   });
 }
 
-// ---------- CHECK ----------
-checkBtn.onclick = () => check(answer.textContent);
+/* ================= CHECK ================= */
+checkBtn.onclick=()=>check(answer.textContent);
 
 function check(v){
   feedback.classList.remove("hidden");
-
-  if (v === current.a){
+  if(v===current.a){
     streak++;
-    feedback.textContent = "✔ Correct";
-    feedback.className = "feedback ok";
-  } else {
-    streak = 0;
+    feedback.textContent="✔ Correct!";
+    feedback.className="feedback ok";
+  }else{
+    streak=0;
     mistakes++;
-    feedback.textContent = "✘ " + current.a;
-    feedback.className = "feedback no";
+    feedback.textContent="✘ Correct answer: "+current.a;
+    feedback.className="feedback no";
   }
-
-  streakSpan.textContent = streak;
-  mistakesSpan.textContent = mistakes;
-  progressBar.style.width = (streak / 25 * 100) + "%";
-
-  setTimeout(next, 1000);
+  updateStats();
+  setTimeout(next,1200);
 }
 
-// ---------- RESET ----------
-resetBtn.onclick = () => {
-  streak = 0;
-  mistakes = 0;
-  streakSpan.textContent = "0";
-  mistakesSpan.textContent = "0";
-  progressBar.style.width = "0%";
+/* ================= HELPERS ================= */
+function updateStats(){
+  streakSpan.textContent=streak;
+  mistakesSpan.textContent=mistakes;
+  progressBar.style.width=(streak/25*100)+"%";
+}
+
+function resetGame(){
+  streak=0;
+  mistakes=0;
+  updateStats();
   next();
-};
+}
+
+/* ================= RESET ================= */
+resetBtn.onclick=resetGame;
 </script>
 
 </body>
